@@ -7,7 +7,7 @@
     </div>
     <div v-else>
       <SignupForm />
-      <p>Already Registered? <span @click="showLogin = true">Signin</span> Instead</p>
+      <p>Already registered? <span @click="showLogin = true">Login</span> Instead</p>
     </div>
   </div>
 </template>
@@ -57,5 +57,18 @@ export default {
 }
 .welcome button{
   margin: 20px auto;
+}
+
+@media (max-width: 700px){
+    .welcome input{
+        width: 90%;
+    }
+    .welcome > div:nth-child(2) > form:nth-child(1) > h1:nth-child(1){
+      font-size: 16px;
+    }
+    .welcome > div:nth-child(2) > p:nth-child(2){
+      font-size: 13px;
+    }
+
 }
 </style>

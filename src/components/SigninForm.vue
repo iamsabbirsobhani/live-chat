@@ -1,33 +1,70 @@
 <template>
-  <form @submit.prevent="handleSumbit">
-      <h1>Login</h1>
-      <input type="email" required placeholder="email" v-model="email">
-      <input type="password" required placeholder="password" v-model="password">
-      <div class="error">{{ error }}</div>
-      <button>Sign in</button>
+  <form @submit.prevent="handleSumbit" class="signin">
+    <h1 class="login">Login</h1>
+    <InputText type="email" required placeholder="Email" v-model="email" />
+    <Password
+      required
+      placeholder="Password"
+      v-model="password"
+      :feedback="false"
+    />
+    <Button class="btn" label="Submit" type="submit" />
+    <Toast />
   </form>
 </template>
 
 <script>
-import { ref } from 'vue'
-import useLogin from '../composable/userLogin'
+import Button from "primevue/button";
+import Password from "primevue/password";
+import InputText from "primevue/inputtext";
+import { ref } from "vue";
+import useLogin from "../composable/userLogin";
+import { useToast } from "primevue/usetoast";
 export default {
-    setup(){
-        const email = ref('')
-        const password = ref('')
-        const { login, error } = useLogin()
-        const handleSumbit = async () => {
-            await login(email.value, password.value)
-            if(error.value){
-                console.log('Signed In')
-            }
-        }
+  components: { InputText, Password, Button },
 
-        return { email, password, handleSumbit, error}
-    }
-}
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const { login, error } = useLogin();
+    const toast = useToast();
+
+    const handleSumbit = async () => {
+      await login(email.value, password.value);
+      if (!error.value) {
+        console.log("Signed In");
+        toast.add({
+          severity: "success",
+          summary: "Login Info",
+          detail: "Login Success",
+          life: 3000,
+        });
+      } else {
+        toast.add({
+          severity: "error",
+          summary: "Login Failed",
+          detail: error.value,
+          life: 4000,
+        });
+      }
+    };
+
+    return { email, password, handleSumbit, error };
+  },
+};
 </script>
 
 <style>
 
+.btn{
+    font-weight: bold;
+}
+.signin{
+    padding: 10px;
+}
+.login{
+    padding: 10px;
+    border: 1px solid  transparent;
+    border-bottom: 3px dashed orangered;
+}
 </style>

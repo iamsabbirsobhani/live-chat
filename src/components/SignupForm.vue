@@ -1,35 +1,74 @@
 <template>
-  <form @submit.prevent="handleSumbit">
-      <h1>Sign Up</h1>
-      <input type="text" required placeholder="display name" v-model="displayName">
-      <input type="email" required placeholder="email" v-model="email">
-      <input type="password" required placeholder="password" v-model="password">
-      <div class="error">{{ error }}</div>
-      <button>Sign up</button>
+  <form @submit.prevent="handleSumbit" class="signup">
+    <h1 class="signup">Sign Up</h1>
+    <InputText
+      type="text"
+      required
+      placeholder="Display Name"
+      v-model="displayName"
+    />
+    <InputText type="email" required placeholder="Email" v-model="email" />
+
+    <Password
+      required
+      placeholder="Password"
+      v-model="password"
+      class="p-password-info"
+    />
+    <Toast/>
+    <Button class="btn" label="Submit" type="submit" />
   </form>
 </template>
 
 <script>
-import { ref } from 'vue'
-import useSignup from '../composable/useSignup'
+import Button from "primevue/button";
+import Password from "primevue/password";
+import InputText from "primevue/inputtext";
+import { ref } from "vue";
+import useSignup from "../composable/useSignup";
+import { useToast } from "primevue/usetoast";
+
 export default {
-    setup(){
-        const { error, signup } = useSignup()
+  components: { InputText, Password, Button },
+  setup() {
+    const { error, signup } = useSignup();
 
-        const displayName = ref('')
-        const email = ref('')
-        const password = ref('')
+    const displayName = ref("");
+    const email = ref("");
+    const password = ref("");
+    const toast = useToast();
 
-        const handleSumbit = async () => {
-            await signup(email.value, password.value, displayName.value)
-            console.log('Signed up')
-        }
+    const handleSumbit = async () => {
+      await signup(email.value, password.value, displayName.value);
+       if (!error.value) {
+        console.log("Signed Up");
+        toast.add({
+          severity: "success",
+          summary: "Signup Info",
+          detail: "Signup Success",
+          life: 3000,
+        });
+      } else {
+        toast.add({
+          severity: "error",
+          summary: "Signup Failed",
+          detail: error.value,
+          life: 4000,
+        });
+      }
+    };
 
-        return { displayName, email, password, handleSumbit, error}
-    }
-}
+    return { displayName, email, password, handleSumbit, error };
+  },
+};
 </script>
 
 <style>
+
+.signup{
+    padding: 10px;
+    border: 1px solid  transparent;
+    border-bottom: 3px dashed orangered;
+}
 
 </style>

@@ -19,7 +19,7 @@ const signup = async (email, password, displayname) => {
 
         await res.user.updateProfile({ displayName: displayname })
         error.value = null
-        console.log(res.user)
+        // console.log(res.user)
         return res
     } catch (err) {
         console.log(err.message)

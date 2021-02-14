@@ -13,6 +13,7 @@
     </div>
     <div>
       <Button
+        @click="handleClick"
         style="height: 50px;width: 50px;"
         class="signoutbtn p-button-secondary p-button-raised p-button-rounded p-button-lg"
         icon="pi pi-sign-out"
@@ -25,9 +26,21 @@
 <script>
 import Button from "primevue/button";
 import Menubar from "primevue/menubar";
+import  useLogout  from '../composable/useLogout'
 export default {
   components: { Menubar, Button },
-  setup() {},
+  setup() {
+       const { logout, error } = useLogout()
+
+        const handleClick = async () => {
+            await logout()
+            if(!error.value){
+                console.log("Logged Out")
+            }
+        }
+
+       return { handleClick }
+  },
 };
 </script>
 

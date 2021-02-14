@@ -1,5 +1,5 @@
 <template>
-  <div id="start">
+  <div id="start" v-if="user">
     <img
       style="margin: 20px; margin-right: 30px"
       alt="logo"
@@ -8,8 +8,8 @@
       class="p-mr-2"
     />
     <div>
-      <p>Hey There...display name here</p>
-      <p class="email">Currently logged in as...email</p>
+      <p>Hey There {{ user.displayName }}</p>
+      <p class="email">Currently logged in as {{ user.email }}</p>
     </div>
     <div>
       <Button
@@ -27,10 +27,12 @@
 import Button from "primevue/button";
 import Menubar from "primevue/menubar";
 import  useLogout  from '../composable/useLogout'
+import  getUser  from '../composable/getUser'
 export default {
   components: { Menubar, Button },
   setup() {
        const { logout, error } = useLogout()
+       const { user } = getUser()
 
         const handleClick = async () => {
             await logout()
@@ -39,7 +41,7 @@ export default {
             }
         }
 
-       return { handleClick }
+       return { handleClick, user }
   },
 };
 </script>

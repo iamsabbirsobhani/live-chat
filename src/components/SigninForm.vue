@@ -24,7 +24,7 @@ import { useToast } from "primevue/usetoast";
 export default {
   components: { InputText, Password, Button },
 
-  setup() {
+  setup(props, context) {
     const email = ref("");
     const password = ref("");
     const { login, error } = useLogin();
@@ -38,8 +38,9 @@ export default {
           severity: "success",
           summary: "Login Info",
           detail: "Successfully logged in",
-          life: 3000,
+          life: 2000,
         });
+        setTimeout(function(){ context.emit('login') }, 2000)
       } else {
         toast.add({
           severity: "error",

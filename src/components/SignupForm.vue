@@ -33,7 +33,7 @@ import { useToast } from "primevue/usetoast";
 
 export default {
   components: { InputText, Password, Button },
-  setup() {
+  setup(props, context) {
     const { error, signup } = useSignup();
 
     const displayName = ref("");
@@ -52,8 +52,9 @@ export default {
           severity: "success",
           summary: "Signup Info",
           detail: "Successfully signed up",
-          life: 3000,
+          life: 2000,
         });
+        setTimeout(function(){ context.emit('signup') }, 2000)
       } else {
         toast.add({
           severity: "error",

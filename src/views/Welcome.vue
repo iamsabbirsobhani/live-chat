@@ -2,13 +2,13 @@
   <div class="welcome container">
     <h1>Live Chat</h1>
     <div v-if="showLogin">
-      <SigninForm />
+      <SigninForm @login="chatroom"/>
 
       <p>Not registered? <span @click="show">Sign up</span> Instead</p>
     </div>
 
     <div v-if="showSignup">
-      <SignupForm />
+      <SignupForm @signup="chatroom"/>
       <p>Already registered? <span @click="show">Login</span> Instead</p>
     </div>
   </div>
@@ -20,18 +20,24 @@ import SignupForm from "../components/SignupForm.vue";
 
 import SigninForm from "../components/SigninForm.vue";
 import { ref } from "vue";
+import { useRouter } from 'vue-router'
 export default {
   components: { SignupForm, SigninForm },
   setup() {
     const showLogin = ref(true);
     const showSignup = ref(false);
+    const router = useRouter()
 
     const show = () => {
       showLogin.value = !showLogin.value;
       showSignup.value = !showSignup.value;
     };
 
-    return { showLogin, showSignup, show };
+    const chatroom = () => {
+      router.push({ name: 'Chatroom' })
+    }
+
+    return { showLogin, showSignup, show, chatroom };
   },
 };
 </script>

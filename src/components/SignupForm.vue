@@ -17,7 +17,7 @@
       class="p-password-info"
     />
     <Toast />
-    <Button class="btn" label="Submit" type="submit" />
+    <Button class="btn" label="Signup" type="submit" />
   </form>
 </template>
 

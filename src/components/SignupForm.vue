@@ -1,6 +1,7 @@
 <template>
   <form @submit.prevent="handleSumbit" class="signup">
     <h1 class="signup">Sign Up</h1>
+
     <InputText
       type="text"
       required
@@ -15,7 +16,7 @@
       v-model="password"
       class="p-password-info"
     />
-    <Toast/>
+    <Toast />
     <Button class="btn" label="Submit" type="submit" />
   </form>
 </template>
@@ -40,7 +41,10 @@ export default {
 
     const handleSumbit = async () => {
       await signup(email.value, password.value, displayName.value);
-       if (!error.value) {
+      if (!error.value) {
+        displayName.value = null;
+        email.value = null;
+        password.value = null;
         console.log("Signed Up");
         toast.add({
           severity: "success",
@@ -64,11 +68,9 @@ export default {
 </script>
 
 <style>
-
-.signup{
-    padding: 10px;
-    border: 1px solid  transparent;
-    border-bottom: 3px dashed orangered;
+.signup {
+  padding: 10px;
+  /* border: 1px solid transparent;
+  border-bottom: 3px dashed orangered; */
 }
-
 </style>

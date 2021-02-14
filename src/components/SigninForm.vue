@@ -8,7 +8,7 @@
       v-model="password"
       :feedback="false"
     />
-    <Button class="btn" label="Submit" type="submit" />
+    <Button class="btn" label="Login" type="submit" />
     <Toast />
   </form>
 </template>
@@ -65,6 +65,8 @@ export default {
 .login{
     padding: 10px;
     border: 1px solid  transparent;
-    border-bottom: 3px dashed orangered;
+    /* border-left: 3px dashed orangered; */
+  /* border-left-width: 5px; */
+  /* width: 50px; */
 }
 </style>

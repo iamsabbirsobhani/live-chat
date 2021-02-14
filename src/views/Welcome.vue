@@ -3,15 +3,13 @@
     <h1>Live Chat</h1>
     <div v-if="showLogin">
       <SigninForm />
-      <p>
-        Not registered? <span @click="showLogin = false">Signup</span> Instead
-      </p>
+
+      <p>Not registered? <span @click="show">Signup</span> Instead</p>
     </div>
-    <div v-else>
+
+    <div v-if="showSignup">
       <SignupForm />
-      <p>
-        Already registered? <span @click="showLogin = true">Login</span> Instead
-      </p>
+      <p>Already registered? <span @click="show">Login</span> Instead</p>
     </div>
   </div>
 </template>
@@ -26,8 +24,14 @@ export default {
   components: { SignupForm, SigninForm },
   setup() {
     const showLogin = ref(true);
+    const showSignup = ref(false);
 
-    return { showLogin };
+    const show = () => {
+      showLogin.value = !showLogin.value;
+      showSignup.value = !showSignup.value;
+    };
+
+    return { showLogin, showSignup, show };
   },
 };
 </script>
@@ -123,14 +127,14 @@ export default {
     width: 300px;
   }
   .welcome input {
-  width: 260px;
-  height: 40px;
-  padding: 10px;
-  border-radius: 5px;
-  /* border: 1px solid #eee; */
-  outline: none;
-  color: #999;
-  margin: 10px auto;
-}
+    width: 260px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 5px;
+    /* border: 1px solid #eee; */
+    outline: none;
+    color: #999;
+    margin: 10px auto;
+  }
 }
 </style>

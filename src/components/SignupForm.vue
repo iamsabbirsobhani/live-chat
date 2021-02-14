@@ -11,10 +11,12 @@
     <InputText type="email" required placeholder="Email" v-model="email" />
 
     <Password
+      style="margin: 10px; margin-top: 0px;"
       required
       placeholder="Password"
       v-model="password"
       class="p-password-info"
+      toggleMask
     />
     <Toast />
     <Button class="btn" label="Signup" type="submit" />
@@ -49,7 +51,7 @@ export default {
         toast.add({
           severity: "success",
           summary: "Signup Info",
-          detail: "Signup Success",
+          detail: "Successfully signed up",
           life: 3000,
         });
       } else {
@@ -70,7 +72,5 @@ export default {
 <style>
 .signup {
   padding: 10px;
-  /* border: 1px solid transparent;
-  border-bottom: 3px dashed orangered; */
 }
 </style>

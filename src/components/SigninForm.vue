@@ -2,11 +2,12 @@
   <form @submit.prevent="handleSumbit" class="signin">
     <h1 class="login">Login</h1>
     <InputText type="email" required placeholder="Email" v-model="email" />
-    <Password
+    <Password style="margin: 10px; margin-top: 0px;"
       required
       placeholder="Password"
       v-model="password"
       :feedback="false"
+      toggleMask
     />
     <Button class="btn" label="Login" type="submit" />
     <Toast />
@@ -36,7 +37,7 @@ export default {
         toast.add({
           severity: "success",
           summary: "Login Info",
-          detail: "Login Success",
+          detail: "Successfully logged in",
           life: 3000,
         });
       } else {
@@ -65,8 +66,6 @@ export default {
 .login{
     padding: 10px;
     border: 1px solid  transparent;
-    /* border-left: 3px dashed orangered; */
-  /* border-left-width: 5px; */
-  /* width: 50px; */
 }
+
 </style>

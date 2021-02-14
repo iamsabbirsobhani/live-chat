@@ -12,11 +12,17 @@ import "primeicons/primeicons.css"
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
-const app = createApp(App)
+import { projectAuth } from './firebase/config'
 
-app.use(router)
-app.use(ToastService)
-app.use(PrimeVue, {ripple: true})
-app.component('Toast', Toast)
+let app
 
-app.mount('#app')
+projectAuth.onAuthStateChanged(() => {
+    if(!app){
+        app = createApp(App)
+        app.use(router)
+        app.use(ToastService)
+        app.use(PrimeVue, {ripple: true})
+        app.component('Toast', Toast)
+        app.mount('#app')
+    }
+})

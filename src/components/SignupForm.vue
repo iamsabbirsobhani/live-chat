@@ -19,7 +19,7 @@
       toggleMask
     />
     <Toast />
-    <Button class="btn" label="Signup" type="submit" />
+    <Button class="btn" label="Sign up" type="submit" />
   </form>
 </template>
 

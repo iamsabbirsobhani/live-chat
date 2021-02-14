@@ -4,7 +4,7 @@
     <div v-if="showLogin">
       <SigninForm />
 
-      <p>Not registered? <span @click="show">Signup</span> Instead</p>
+      <p>Not registered? <span @click="show">Sign up</span> Instead</p>
     </div>
 
     <div v-if="showSignup">

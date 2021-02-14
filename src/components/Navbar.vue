@@ -13,8 +13,8 @@
     </div>
     <div>
       <Button
-        class="signoutbtn"
-        label="Logout"
+        style="height: 50px;width: 50px;"
+        class="signoutbtn p-button-secondary p-button-raised p-button-rounded p-button-lg"
         icon="pi pi-sign-out"
         iconPos="right"
       />

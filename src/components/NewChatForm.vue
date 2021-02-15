@@ -22,7 +22,7 @@
             <Textarea
           @keypress.enter.prevent="handleSumbit"
           class="textarea"
-          v-model="message"
+          v-model.trim="message"
           :autoResize="true"
           rows="5"
           cols="30"
@@ -45,11 +45,12 @@ import Button from "primevue/button";
 export default {
   components: { Textarea, Card, Button, ChatWindow },
   setup() {
-    const message = ref("");
+    const message = ref('');
     const { user } = getUser();
     const { addDoc, error } = useCollection("messages");
 
     const handleSumbit = async () => {
+      if(message.value){
       const chat = {
         name: user.value.displayName,
         message: message.value,
@@ -58,6 +59,7 @@ export default {
       await addDoc(chat);
       if (!error.value) {
         message.value = "";
+      }
       }
     };
 
@@ -81,6 +83,134 @@ export default {
   overflow-y: scroll !important;
   /* border-radius: 30px; */
 }
+
+
+/* Scroll Style */
+
+
+
+header
+{
+	font-family: 'Lobster', cursive;
+	text-align: center;
+	font-size: 25px;
+}
+
+#info
+{
+	font-size: 18px;
+	color: #555;
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+a{
+	color: #074E8C;
+}
+
+.scrollbar
+{
+	margin-left: 30px;
+	float: left;
+	height: 300px;
+	width: 65px;
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
+
+.force-overflow
+{
+	min-height: 450px;
+}
+
+#wrapper
+{
+	text-align: center;
+	width: 500px;
+	margin: auto;
+}
+
+/*
+ *  STYLE 1
+ */
+
+#style-1::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#style-1::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
+}
+
+/*
+ *  STYLE 2
+ */
+
+
+/* for Textarea */
+#app>form>textarea::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#app>form>textarea::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#app>form>textarea::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
+
+/* end of for Textarea */
+
+
+/* For Chat Card */
+
+.card::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.card::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.card::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
+/* End ofFor Chat Card */
+
+
+/* End of Scroll Style */
+
+
 .p-button-danger {
   display: block;
   margin: 20px auto;

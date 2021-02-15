@@ -68,9 +68,9 @@ export default {
 
 
 <style scoped>
-#app > form > textarea {
-  width: 300px;
-  max-width: 90%;
+#app>form>textarea {
+  width: 400px;
+  /* max-width: 400px; */
   position: relative;
   bottom: 0;
   height: 66px !important;
@@ -97,6 +97,9 @@ export default {
 @media (max-width: 425px) {
   .card {
     width: 300px !important;
+  }
+  #app > form > textarea {
+  width: 300px;
   }
 }
 </style>

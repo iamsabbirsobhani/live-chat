@@ -72,6 +72,7 @@ export default {
   height: 66px !important;
   margin-bottom: 10px;
   overflow-y: scroll !important;
+  /* border-radius: 30px; */
 }
 .p-button-danger {
   display: block;

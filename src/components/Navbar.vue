@@ -8,7 +8,7 @@
       class="p-mr-2"
     />
     <div>
-      <p>Hey There {{ user.displayName }}</p>
+      <p> <span class="dname">{{ user.displayName }} </span>  </p>
       <p class="email">Currently logged in as {{ user.email }}</p>
     </div>
     <div>
@@ -57,5 +57,9 @@ export default {
 }
 .p-button-secondary{
   margin: 10px;
+}
+.dname{
+  font-size: 25px;
+  color: rgb(88, 240, 0);
 }
 </style>

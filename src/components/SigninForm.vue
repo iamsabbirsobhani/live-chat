@@ -2,7 +2,8 @@
   <form @submit.prevent="handleSumbit" class="signin">
     <h1 class="login">Login</h1>
     <InputText type="email" required placeholder="Email" v-model="email" />
-    <Password style="margin: 10px; margin-top: 0px;"
+    <Password
+      style="margin: 10px; margin-top: 0px"
       required
       placeholder="Password"
       v-model="password"
@@ -40,7 +41,9 @@ export default {
           detail: "Successfully logged in",
           life: 2000,
         });
-        setTimeout(function(){ context.emit('login') }, 2000)
+        setTimeout(function () {
+          context.emit("login");
+        }, 2000);
       } else {
         toast.add({
           severity: "error",
@@ -57,16 +60,14 @@ export default {
 </script>
 
 <style>
-
-.btn{
-    font-weight: bold;
+.btn {
+  font-weight: bold;
 }
-.signin{
-    padding: 10px;
+.signin {
+  padding: 10px;
 }
-.login{
-    padding: 10px;
-    border: 1px solid  transparent;
+.login {
+  padding: 10px;
+  border: 1px solid transparent;
 }
-
 </style>

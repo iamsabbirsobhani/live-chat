@@ -46,7 +46,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #start {
   display: flex;
   justify-content: space-between;
@@ -54,5 +54,8 @@ export default {
   max-width: 600px;
   margin: 20px auto;
   border-bottom: 1px solid #eee;
+}
+.p-button-secondary{
+  margin: 10px;
 }
 </style>

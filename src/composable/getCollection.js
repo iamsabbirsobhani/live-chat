@@ -29,3 +29,4 @@ const getCollection = (collection) => {
         error.value = "Could not fetch data"
     })
 }
+// s

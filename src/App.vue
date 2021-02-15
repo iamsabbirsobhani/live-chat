@@ -13,6 +13,10 @@
 html{
     background: white;
     color: rgb(63, 63, 63);
+    margin: 0px;
+}
+body{
+  margin: 0px;
 }
 
 </style>

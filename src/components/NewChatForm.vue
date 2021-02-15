@@ -11,7 +11,6 @@
       "
     >
       <template #title>
-        <h3 style="text-align: center">Chatroom</h3>
       </template>
       <template #content>
         <Textarea
@@ -37,13 +36,14 @@ import { ref } from "vue";
 import getUser from "../composable/getUser";
 import { timestamp } from "../firebase/config";
 import useCollection from "../composable/useCollection";
+import Button from "primevue/button";
 
 export default {
-  components: { Textarea, Card },
+  components: { Textarea, Card, Button },
   setup() {
     const message = ref("");
     const { user } = getUser();
-    const { addDoc, error  } = useCollection('messages');
+    const { addDoc, error } = useCollection("messages");
 
     const handleSumbit = async () => {
       const chat = {
@@ -72,6 +72,10 @@ export default {
   height: 66px !important;
   margin-bottom: 10px;
   overflow-y: scroll !important;
+}
+.p-button-danger {
+  display: block;
+  margin: 20px auto;
 }
 @media (max-width: 425px) {
   .card {

@@ -11,6 +11,9 @@ import "primevue/resources/primevue.min.css"
 import "primeicons/primeicons.css"
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmPopup from 'primevue/confirmpopup';
+
 
 import { projectAuth } from './firebase/config'
 
@@ -19,10 +22,12 @@ let app
 projectAuth.onAuthStateChanged(() => {
     if(!app){
         app = createApp(App)
+        app.component('ConfirmPopup', ConfirmPopup)
         app.use(router)
         app.use(ToastService)
         app.use(PrimeVue, {ripple: true})
         app.component('Toast', Toast)
+        app.use(ConfirmationService);
         app.mount('#app')
     }
 })

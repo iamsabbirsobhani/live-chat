@@ -11,7 +11,7 @@
     <InputText type="email" required placeholder="Email" v-model="email" />
 
     <Password
-      style="margin: 10px; margin-top: 0px;"
+      style="margin: 10px; margin-top: 0px"
       required
       placeholder="Password"
       v-model="password"
@@ -54,7 +54,9 @@ export default {
           detail: "Successfully signed up",
           life: 2000,
         });
-        setTimeout(function(){ context.emit('signup') }, 2000)
+        setTimeout(function () {
+          context.emit("signup");
+        }, 2000);
       } else {
         toast.add({
           severity: "error",

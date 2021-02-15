@@ -10,10 +10,16 @@
         margin-bottom: 2em;
       "
     >
+
+
       <template #title>
       </template>
       <template #content>
-        <Textarea
+        <ChatWindow class="cwindow"/>
+
+      </template>
+    </Card>
+            <Textarea
           @keypress.enter.prevent="handleSumbit"
           class="textarea"
           v-model="message"
@@ -22,15 +28,13 @@
           cols="30"
           placeholder="Type a message and hit enter to send..."
         />
-      </template>
-    </Card>
     <div>{{ error }}</div>
   </form>
 </template>
 
 <script>
 import Card from "primevue/card";
-
+import ChatWindow from "../components/ChatWindow.vue";
 import Textarea from "primevue/textarea";
 import { ref } from "vue";
 import getUser from "../composable/getUser";
@@ -39,7 +43,7 @@ import useCollection from "../composable/useCollection";
 import Button from "primevue/button";
 
 export default {
-  components: { Textarea, Card, Button },
+  components: { Textarea, Card, Button, ChatWindow },
   setup() {
     const message = ref("");
     const { user } = getUser();
@@ -64,19 +68,31 @@ export default {
 
 
 <style scoped>
-#app > form > div > div > div.p-card-content > textarea {
-  width: 100%;
+#app > form > textarea {
+  width: 300px;
   max-width: 90%;
-  position: absolute;
+  position: relative;
   bottom: 0;
   height: 66px !important;
   margin-bottom: 10px;
+  display: block;
+  margin: 10px auto  !important;
+  margin-top: 0px;
   overflow-y: scroll !important;
   /* border-radius: 30px; */
 }
 .p-button-danger {
   display: block;
   margin: 20px auto;
+}
+.card{
+  overflow-y: scroll !important;
+  height: 300px;
+  padding: 10px;
+}
+#app > form > div.p-card.p-component.card {
+  height: 300px  !important;
+  margin: 0px auto !important;
 }
 @media (max-width: 425px) {
   .card {

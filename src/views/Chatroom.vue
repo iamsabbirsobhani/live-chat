@@ -1,7 +1,7 @@
 <template>
   <Navbar />
   <h3 style="text-align: center">Chatroom</h3>
-  <NewChatForm />
+  <NewChatForm/>
   <ConfirmPopup></ConfirmPopup>
   <div class="card">
     <Button
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
 import userDelete from "../composable/userDelete";
 import Button from "primevue/button";
 import { useConfirm } from "primevue/useconfirm";

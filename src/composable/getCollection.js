@@ -28,5 +28,8 @@ const getCollection = (collection) => {
         documents.value = null
         error.value = "Could not fetch data"
     })
+
+    return { error, documents }
 }
-// s
+
+export default getCollection

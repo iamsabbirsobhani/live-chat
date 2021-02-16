@@ -22,6 +22,9 @@
       :position="position"
       :modal="false"
     >
+    <Avatar style=" font-weight: 500px; font-size:22px;width: 60px; height:60px;" label="SS" shape="circle"/>
+      <br>
+      <br>
       <p class="p-m-0">Software Engineer & Web Developer</p>
       <br>
       <p>Thank you for checking my project</p>
@@ -37,6 +40,7 @@
 </template>
 
 <script>
+import Avatar from 'primevue/avatar';
 import Dialog from "primevue/dialog";
 import projectFirestore from "../firebase/config.js";
 import SignupForm from "../components/SignupForm.vue";
@@ -45,7 +49,7 @@ import SigninForm from "../components/SigninForm.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 export default {
-  components: { SignupForm, SigninForm, Dialog },
+  components: { SignupForm, SigninForm, Dialog, Avatar },
   setup() {
     const showLogin = ref(true);
     const showSignup = ref(false);
@@ -164,6 +168,7 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
+
 }
 
 .welcome > div:nth-child(2) > form:nth-child(1) > h1:nth-child(1) {

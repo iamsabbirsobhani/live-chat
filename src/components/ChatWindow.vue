@@ -18,7 +18,7 @@ import getCollection from '../composable/getCollection'
 export default {
     setup(){
         const { error, documents } = getCollection('messages')
-        //When to use Computed Properties?
+        //When to use Computed Properties ?
         //Ans: Sometimes, When situation like this in here we are going to use Computed Property.
         //Computed properties allow us to define a property that is used the
         //same way as data , but can also have some custom logic that is cached

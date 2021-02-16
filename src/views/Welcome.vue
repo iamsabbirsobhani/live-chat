@@ -30,9 +30,9 @@
       <p>Thank you for checking my project</p>
       <br>
         <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
-        ><i class="pi pi-envelope" style="fontSize: 2rem"></i></a>
-        <a href="https://github.com/iamsabbirsobhani" target="_blank"><i class="pi pi-github" style="fontSize: 3rem"></i></a>
-        <a href="https://twitter.com/sabbirsobhani" target="_blank"><i class="pi pi-twitter" style="fontSize: 2rem"></i></a>
+        ><i class="pi pi-envelope ficon" style="fontSize: 2rem"></i></a>
+        <a href="https://github.com/iamsabbirsobhani" target="_blank"><i class="pi pi-github ficon" style="fontSize: 3rem"></i></a>
+        <a href="https://twitter.com/sabbirsobhani" target="_blank"><i class="pi pi-twitter ficon" style="fontSize: 2rem"></i></a>
       <template #footer> </template>
     </Dialog>
     <!-- End of Footer -->
@@ -102,8 +102,8 @@ export default {
   color: rgb(163, 163, 163);
   margin-top: 20px;
 }
-.pi{
-  margin: 10px
+.ficon{
+  margin: 10px;
 }
 /* End of Footer */
 

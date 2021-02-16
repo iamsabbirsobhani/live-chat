@@ -25,9 +25,11 @@
       <p class="p-m-0">Software Engineer & Web Developer</p>
       <br>
       <p>Thank you for checking my project</p>
-      <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
-        >Email Me</a
-      >
+      <br>
+        <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
+        ><i class="pi pi-envelope" style="fontSize: 2rem"></i></a>
+        <a href="https://github.com/iamsabbirsobhani" target="_blank"><i class="pi pi-github" style="fontSize: 3rem"></i></a>
+        <a href="https://twitter.com/sabbirsobhani" target="_blank"><i class="pi pi-twitter" style="fontSize: 2rem"></i></a>
       <template #footer> </template>
     </Dialog>
     <!-- End of Footer -->
@@ -95,6 +97,9 @@ export default {
   align-items: center;
   color: rgb(163, 163, 163);
   margin-top: 20px;
+}
+.pi{
+  margin: 10px
 }
 /* End of Footer */
 

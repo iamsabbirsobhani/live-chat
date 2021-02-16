@@ -9,10 +9,33 @@
       <SignupForm @signup="chatroom" />
       <p>Already registered? <span @click="show">Login</span> Instead</p>
     </div>
+    <!-- Footer -->
+    <div class="footer">
+      <span>Copyright © 2021 </span>
+      <Button @click="openPosition" label="See Credit" class="p-button-link" />
+    </div>
+    <Dialog
+      header="Sabbir Sobhani"
+      v-model:visible="displayPosition"
+      :style="{ width: '30vw' }"
+      class="dialog"
+      :position="position"
+      :modal="false"
+    >
+      <p class="p-m-0">Software Engineer & Web Developer</p>
+      <br>
+      <p>Thank you for checking my project</p>
+      <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
+        >Email Me</a
+      >
+      <template #footer> </template>
+    </Dialog>
+    <!-- End of Footer -->
   </div>
 </template>
 
 <script>
+import Dialog from "primevue/dialog";
 import projectFirestore from "../firebase/config.js";
 import SignupForm from "../components/SignupForm.vue";
 
@@ -20,11 +43,17 @@ import SigninForm from "../components/SigninForm.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 export default {
-  components: { SignupForm, SigninForm },
+  components: { SignupForm, SigninForm, Dialog },
   setup() {
     const showLogin = ref(true);
     const showSignup = ref(false);
     const router = useRouter();
+
+    const displayPosition = ref(false);
+    const position = ref("bottom");
+    const openPosition = () => {
+      displayPosition.value = true;
+    };
 
     const show = () => {
       showLogin.value = !showLogin.value;
@@ -35,12 +64,45 @@ export default {
       router.push({ name: "Chatroom" });
     };
 
-    return { showLogin, showSignup, show, chatroom };
+    return {
+      showLogin,
+      showSignup,
+      show,
+      chatroom,
+      openPosition,
+      position,
+      displayPosition,
+    };
   },
 };
 </script>
 
 <style>
+/* Footer */
+.p-dialog-content p {
+  margin: 0 !important;
+}
+
+.confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer {
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(163, 163, 163);
+  margin-top: 20px;
+}
+/* End of Footer */
+
+.p-button-link {
+  margin: 0 !important;
+  margin-bottom: 5px !important;
+  margin-left: 5px !important;
+}
 .welcome > h1:nth-child(1) {
   font-family: "Hammersmith One", sans-serif;
   /* background: -webkit-linear-gradient(139deg, rgba(13,137,236,1) 0%, rgba(79,33,252,1) 36%, rgba(81,92,222,1) 64%, rgba(0,212,255,1) 100%); */
@@ -61,7 +123,6 @@ export default {
 }
 
 .welcome form {
-  /* background-color: #ffffff; */
   background-color: #f6f8fa;
   display: flex;
   flex-direction: column;
@@ -83,7 +144,6 @@ export default {
   height: 40px;
   padding: 10px;
   border-radius: 5px;
-  /* border: 1px solid #eee; */
   outline: none;
   color: #999;
   margin: 10px auto;
@@ -91,11 +151,6 @@ export default {
 .input.p-inputtext:nth-child(1) {
   width: 310px;
   padding: 10px;
-  /* border-radius: 20px; */
-  /* border: 1px solid #eee; */
-  /* outline: none;
-  color: #999;
-  margin: 10px auto; */
 }
 .welcome > div:nth-child(2) > p:nth-child(2) > span:nth-child(1) {
   font-weight: bold;
@@ -139,6 +194,14 @@ export default {
     outline: none;
     color: #999;
     margin: 10px auto;
+  }
+  .footer{
+    margin-top: 70px;
+  }
+  .dialog{
+    width: 300px !important;
+    /* text-align: left; */
+    overflow-x: hidden;
   }
 }
 </style>

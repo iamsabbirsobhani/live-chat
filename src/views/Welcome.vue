@@ -196,7 +196,7 @@ export default {
     margin: 10px auto;
   }
   .footer{
-    margin-top: 70px;
+    margin-top: 170px;
   }
   .dialog{
     width: 300px !important;

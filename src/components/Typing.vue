@@ -1,6 +1,6 @@
 <template>
   <div class="typingContainer">
-    <p class="typing" v-if="type">Typing...</p>
+    <p class="typing" v-if="type">Buddy is typing...</p>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
 }
 /* Animated Typing Style */
 .typing {
-  animation: typing 0.5s infinite steps(9);
+  animation: typing 0.7s infinite steps(9);
   overflow: hidden;
   animation-iteration-count: infinite;
   letter-spacing: 1px;
@@ -43,13 +43,13 @@ export default {
 
 @keyframes typing {
   0% {
-    width: 6ch;
+    width: 13ch;
   }
   50% {
-    width: 7ch;
+    width: 18ch;
   }
   100% {
-    width: 9ch;
+    width: 13ch;
   }
 }
 /* End of Animated Typing Style */

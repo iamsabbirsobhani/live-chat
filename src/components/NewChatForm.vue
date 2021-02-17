@@ -15,9 +15,11 @@
       </template>
     </Card>
     <Textarea
+      v-model.trim="message"
+      v-debounce:610ms.cancelonempty="stopTyping"
+      v-model="typeStatus"
       @keypress.enter.prevent="handleSumbit"
       class="textarea"
-      v-model.trim="message"
       :autoResize="true"
       rows="5"
       cols="30"
@@ -31,18 +33,21 @@
 import Card from "primevue/card";
 import ChatWindow from "../components/ChatWindow.vue";
 import Textarea from "primevue/textarea";
-import { ref } from "vue";
+import { onMounted, onUpdated, ref, watch } from "vue";
 import getUser from "../composable/getUser";
 import { timestamp } from "../firebase/config";
 import useCollection from "../composable/useCollection";
+import userTypingSetFlag from "../composable/userTypingSetFlagValue";
 import Button from "primevue/button";
 
 export default {
   components: { Textarea, Card, Button, ChatWindow },
   setup() {
     const message = ref("");
+    const typeStatus = ref(null);
     const { user } = getUser();
     const { addDoc, error } = useCollection("messages");
+    const { addDocType } = userTypingSetFlag();
 
     const handleSumbit = async () => {
       if (message.value) {
@@ -52,13 +57,46 @@ export default {
           createdAt: timestamp(),
         };
         await addDoc(chat);
+
         if (!error.value) {
           message.value = "";
         }
       }
     };
 
-    return { message, handleSumbit, error };
+    // Type Status Check
+    watch(typeStatus, () => {
+      // console.log(typeStatus.value);
+      keypressF();
+    });
+
+
+    const keypressF = async () => {
+      if (typeStatus.value) {
+        // console.log(typeStatus.value);
+        var keypresss = {
+          isType: true,
+        };
+        // console.log("Typing Start");
+        await addDocType(keypresss);
+      } else {
+        var keypresss = {
+          isType: false,
+        };
+        await addDocType(keypresss);
+      }
+    };
+
+    const stopTyping = () => {
+      const key = {
+        isType: false,
+      };
+      addDocType(key);
+      // console.log("Typing Stopped");
+    };
+        // End of Type Status Check
+
+    return { message, handleSumbit, error, typeStatus, stopTyping };
   },
 };
 </script>

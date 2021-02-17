@@ -14,6 +14,8 @@ import Toast from 'primevue/toast';
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Button from 'primevue/button';
+import vueDebounce from 'vue-debounce'
+
 
 import { projectAuth } from './firebase/config'
 
@@ -25,6 +27,7 @@ projectAuth.onAuthStateChanged(() => {
         app.component('ConfirmPopup', ConfirmPopup)
         app.use(router)
         app.use(ToastService)
+        app.use(vueDebounce)
         app.use(PrimeVue, {ripple: true})
         app.component('Toast', Toast)
         app.component('Button', Button)

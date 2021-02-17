@@ -1,6 +1,7 @@
 <template>
   <Navbar />
   <h3 style="text-align: center">Chatroom</h3>
+  <Typing/>
   <NewChatForm/>
   <ConfirmPopup></ConfirmPopup>
   <div class="card">
@@ -15,7 +16,7 @@
 </template>
 
 <script>
-
+import Typing from '../components/Typing.vue'
 import userDelete from "../composable/userDelete";
 import Button from "primevue/button";
 import { useConfirm } from "primevue/useconfirm";
@@ -27,7 +28,7 @@ import getUser from "../composable/getUser";
 import { useRouter } from "vue-router";
 import { watch } from "vue";
 export default {
-  components: { Navbar, NewChatForm, Button },
+  components: { Navbar, NewChatForm, Button, Typing },
   setup() {
     const { user } = getUser();
     const router = useRouter();

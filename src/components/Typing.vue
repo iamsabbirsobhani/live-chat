@@ -27,7 +27,7 @@ export default {
 }
 /* Animated Typing Style */
 .typing {
-  animation: typing 0.7s infinite steps(9);
+  animation: typing 1s infinite steps(9);
   overflow: hidden;
   animation-iteration-count: infinite;
   letter-spacing: 1px;
@@ -47,6 +47,13 @@ export default {
   }
   50% {
     width: 18ch;
+  }
+  70%{
+      width: 10ch;
+  }
+  90%{
+      width: 13ch;
+
   }
   100% {
     width: 13ch;

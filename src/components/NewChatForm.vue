@@ -13,6 +13,11 @@
       <template #content>
         <ChatWindow class="cwindow" />
       </template>
+          <template #footer>
+            <div class="typeStatus">
+        <Typing/>
+        </div>
+    </template>
     </Card>
     <Textarea
       v-model.trim="message"
@@ -30,6 +35,7 @@
 </template>
 
 <script>
+import Typing from '../components/Typing.vue'
 import Card from "primevue/card";
 import ChatWindow from "../components/ChatWindow.vue";
 import Textarea from "primevue/textarea";
@@ -41,7 +47,7 @@ import userTypingSetFlag from "../composable/userTypingSetFlagValue";
 import Button from "primevue/button";
 
 export default {
-  components: { Textarea, Card, Button, ChatWindow },
+  components: { Textarea, Card, Button, ChatWindow, Typing },
   setup() {
     const message = ref("");
     const typeStatus = ref(null);
@@ -103,6 +109,16 @@ export default {
 
 
 <style scoped>
+
+.typeStatus {
+    z-index: 2;
+    z-index: 2;
+    /* margin: 111px !important; */
+    /* top: 35px; */
+    position: absolute;
+    top: 314px;
+    margin-left: 20px;
+}
 #app > form > textarea {
   width: 400px;
   position: relative;

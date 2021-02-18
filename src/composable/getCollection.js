@@ -31,7 +31,7 @@ const getCollection = (collection) => {
     })
     watchEffect((onInvalidate) => {
         onInvalidate(() => {
-            unsub
+            unsub()
         })
     })
     return {

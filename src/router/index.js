@@ -3,29 +3,49 @@ import Welcome from '../views/Welcome.vue'
 import Chatroom from '../views/Chatroom.vue'
 import { projectAuth } from '../firebase/config'
 
+
+// Authintication guard
 const requiredAuth = ( to, from, next ) => {
-  let user = projectAuth.currentUser
+  let user = projectAuth.currentUser //Checking if a user is authinticated or not
 
   console.log('Current user is auth guard', user)
-  if(!user){
-    next({ name: 'Welcome' })
+  if(!user){ //if user is not authinticated
+    next({ name: 'Welcome' }) //it will be redirected to 'Welcome' route
+  } else {
+    next()//if user is authinticated, then it will be permitted to go to 'chatroom' route only.
+  } //here next() means the route where we will place requiredAuth(), for this case we placed requiredAuth()
+    //inside "routes" at '/chatroom's' path, So for this case if user is authenticated they can go to 'Chatroom'
+
+}
+// Final Route Guard
+// if a user is authincated or logged in, then the user can not see the "sign in"/"root"/"sign up" page again.
+// Once user logged out, only then user can see the "sign in"/"root"/"sign up" page again.
+
+const requiredNoAuth = (to, from, next) => {
+  let user = projectAuth.currentUser
+
+  if(user){
+    next({ name: 'Chatroom' })
   } else {
     next()
   }
-
 }
+
+
+// End of Authintication guard
 
 const routes = [
   {
     path: '/',
     name: 'Welcome',
-    component: Welcome
+    component: Welcome,
+    beforeEnter: requiredNoAuth //users have to face "beforeEnter" key, before they want to come to this route
   },
   {
     path: '/chatroom',
     name: "Chatroom",
     component: Chatroom,
-    beforeEnter: requiredAuth
+    beforeEnter: requiredAuth //users have to face "beforeEnter" key, before they want to come to this route
   }
 ]
 

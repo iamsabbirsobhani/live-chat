@@ -27,7 +27,7 @@
       <br>
       <p class="p-m-0">Software Engineer & Web Developer</p>
       <br>
-      <p>Thank you for checking my project</p>
+      <p>Thank you for checking my project.</p>
       <br>
         <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
         ><i class="pi pi-envelope ficon" style="fontSize: 2rem"></i></a>

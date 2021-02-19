@@ -24,6 +24,8 @@ const getCollection = (collection) => {
         })
         documents.value = results
         error.value = null
+        // console.log(documents.value.name)
+
     }, (err) => {
         console.log(err.message)
         documents.value = null
@@ -36,7 +38,7 @@ const getCollection = (collection) => {
     })
     return {
         error,
-        documents
+        documents,
     }
 }
 

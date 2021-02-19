@@ -1,6 +1,6 @@
 <template>
   <div class="chat-window">
-    <div v-if="error">{{ error }}</div>
+    <!-- <div v-if="error">{{ error }}</div> -->
     <div v-if="documents" class="messages" ref="messages">
       <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
         <span class="created-at">{{ doc.createdAt }} ago</span>
@@ -8,16 +8,51 @@
         <span class="message">{{ doc.message }}</span>
       </div>
     </div>
+
+        <!-- Primevue Error Popup -->
+    <div v-if="error">
+      <Dialog
+        header="Network Error"
+        v-model:visible="displayConfirmation"
+        :style="{ width: '350px' }"
+        :modal="true"
+      >
+        <div class="confirmation-content">
+          <i
+            class="pi pi-exclamation-triangle p-mr-3"
+            style="font-size: 2rem"
+          />
+          <span>{{ error }}</span>
+        </div>
+        <template #footer>
+        </template>
+      </Dialog>
+    </div>
+    <!-- End of Primevue Error Popup -->
+
   </div>
 </template>
 
 <script>
-import { computed, onUpdated, ref } from "vue";
+import { computed, onUpdated, ref, watch } from "vue";
 import { formatDistanceToNow } from "date-fns";
 import getCollection from "../composable/getCollection";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
+
 export default {
+  components: { Dialog, Button },
   setup() {
     const { error, documents } = getCollection("messages");
+
+    const displayConfirmation = ref(false);
+
+    watch(error, (newErrorValue) => {
+      if (newErrorValue) {
+        displayConfirmation.value = true;
+      }
+    });
+
 
     //When to use Computed Properties?
     //Ans: Sometimes, When situation like this in here we are going to use Computed Property.
@@ -41,10 +76,22 @@ export default {
 
     onUpdated(() => {
       messages.value.scrollTop = messages.value.scrollHeight;
+      //for getting scrollTop
+      //the container should have css properties,
+      //height: whatever;
+      //overflow: auto;    or
+      //max-height: whatever;
+      //overflow-y: auto;
     });
     //End of Auto Scrolling
 
-    return { error, documents, formattedDocuments, messages };
+    return {
+      error,
+      documents,
+      formattedDocuments,
+      messages,
+      displayConfirmation,
+    };
   },
 };
 </script>

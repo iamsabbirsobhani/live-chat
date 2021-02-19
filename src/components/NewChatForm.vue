@@ -13,11 +13,11 @@
       <template #content>
         <ChatWindow class="cwindow" />
       </template>
-          <template #footer>
-            <div class="typeStatus">
-        <Typing/>
+      <template #footer>
+        <div class="typeStatus">
+          <Typing />
         </div>
-    </template>
+      </template>
     </Card>
     <Textarea
       v-model.trim="message"
@@ -30,12 +30,40 @@
       cols="30"
       placeholder="Type a message and hit enter to send..."
     />
-    <div>{{ error }}</div>
+
+    <!-- Primevue Error Popup -->
+    <div v-if="error">
+      <Dialog
+        header="Network Error"
+        v-model:visible="displayConfirmation"
+        :style="{ width: '350px' }"
+        :modal="true"
+      >
+        <div class="confirmation-content">
+          <i
+            class="pi pi-exclamation-triangle p-mr-3"
+            style="font-size: 2rem"
+          />
+          <span>{{ error }}</span>
+        </div>
+        <template #footer>
+          <Button
+            label="Close"
+            icon="pi pi-times"
+            @click="closeConfirmation"
+            class="p-button-text"
+          />
+        </template>
+      </Dialog>
+    </div>
+    <!-- End of Primevue Error Popup -->
+
   </form>
 </template>
 
 <script>
-import Typing from '../components/Typing.vue'
+import Dialog from "primevue/dialog";
+import Typing from "../components/Typing.vue";
 import Card from "primevue/card";
 import ChatWindow from "../components/ChatWindow.vue";
 import Textarea from "primevue/textarea";
@@ -47,13 +75,21 @@ import userTypingSetFlag from "../composable/userTypingSetFlagValue";
 import Button from "primevue/button";
 
 export default {
-  components: { Textarea, Card, Button, ChatWindow, Typing },
+  components: { Textarea, Card, Button, ChatWindow, Typing, Dialog },
   setup() {
     const message = ref("");
     const typeStatus = ref(null);
     const { user } = getUser();
     const { addDoc, error } = useCollection("messages");
     const { addDocType } = userTypingSetFlag();
+    const displayConfirmation = ref(false);
+
+
+    watch(error, (newErrorValue) => {
+      if (newErrorValue) {
+        displayConfirmation.value = true;
+      }
+    });
 
     const handleSumbit = async () => {
       if (message.value) {
@@ -75,7 +111,6 @@ export default {
       // console.log(typeStatus.value);
       keypressF();
     });
-
 
     const keypressF = async () => {
       if (typeStatus.value) {
@@ -100,24 +135,37 @@ export default {
       addDocType(key);
       // console.log("Typing Stopped");
     };
-        // End of Type Status Check
+    // End of Type Status Check
 
-    return { message, handleSumbit, error, typeStatus, stopTyping };
+
+    const closeConfirmation = () => {
+        displayConfirmation.value = false;
+    }
+
+
+    return {
+      message,
+      handleSumbit,
+      error,
+      typeStatus,
+      stopTyping,
+      displayConfirmation,
+      closeConfirmation,
+    };
   },
 };
 </script>
 
 
 <style scoped>
-
 .typeStatus {
-    z-index: 2;
-    z-index: 2;
-    /* margin: 111px !important; */
-    /* top: 35px; */
-    position: absolute;
-    top: 314px;
-    margin-left: 20px;
+  z-index: 2;
+  z-index: 2;
+  /* margin: 111px !important; */
+  /* top: 35px; */
+  position: absolute;
+  top: 314px;
+  margin-left: 20px;
 }
 #app > form > textarea {
   width: 400px;

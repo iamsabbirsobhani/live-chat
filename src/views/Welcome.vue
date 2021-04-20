@@ -12,7 +12,7 @@
     <!-- Footer -->
     <div class="footer">
       <span>Copyright © 2021 </span>
-      <Button @click="openPosition" label="See Credit" class="p-button-link" />
+      <!-- <Button @click="openPosition" label="See Credit" class="p-button-link" /> -->
     </div>
     <Dialog
       header="Sabbir Sobhani"

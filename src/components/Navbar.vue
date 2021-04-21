@@ -67,6 +67,38 @@
         </template>
       </Dialog>
       <!-- end of new logout/del -->
+
+      <!-- delete chat confirmation -->
+      <Dialog
+        header="Confirmation"
+        v-model:visible="chatDelConfirmation"
+        :style="{ width: '350px' }"
+        :modal="true"
+      >
+        <div class="confirmation-content">
+          <i
+            class="pi pi-exclamation-triangle p-mr-3"
+            style="font-size: 2rem"
+          />
+          <span>Are you sure want to delete all chats?</span>
+        </div>
+        <template #footer>
+          <Button
+            label="No"
+            icon="pi pi-times"
+            @click="chatDelNo"
+            class="p-button-text"
+          />
+          <Button
+            label="Yes"
+            icon="pi pi-check"
+            @click="chatDelYes"
+            class="p-button-text"
+            autofocus
+          />
+        </template>
+      </Dialog>
+      <!-- end of delete chat confirmation -->
     </div>
   </div>
 </template>
@@ -80,12 +112,16 @@ import Menubar from "primevue/menubar";
 import Menu from "primevue/menu";
 import useLogout from "../composable/useLogout";
 import getUser from "../composable/getUser";
+import deleteCollection from "@/composable/delChat.js";
+
 export default {
   components: { Menubar, Button, Menu, Dialog },
   setup(props, context) {
     const { logout, error } = useLogout();
     const { user } = getUser();
+    const { delChat } = deleteCollection();
     const displayConfirmation = ref(false);
+    const chatDelConfirmation = ref(false);
     const toast = useToast();
     const menu = ref();
     const items = ref([
@@ -105,6 +141,13 @@ export default {
                 detail: "Successfully Signed Out",
                 life: 3000,
               });
+            },
+          },
+          {
+            label: "Delete Chats",
+            icon: "pi pi-trash",
+            command: () => {
+              chatDel();
             },
           },
           {
@@ -141,6 +184,41 @@ export default {
       displayConfirmation.value = true;
     };
 
+    const chatDel = () => {
+      chatDelConfirmation.value = true;
+    };
+
+    const chatDelYes = async () => {
+      if (user.value.uid === `zRbyG4De88UDZjQE2tgbdseOmnY2`) {
+        await delChat();
+        toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Chat deleted",
+          life: 3000,
+        });
+        chatDelConfirmation.value = false;
+      } else {
+        toast.add({
+          severity: "warn",
+          summary: "Unauthorized Access!",
+          detail: "Only an Admin can delete chats.",
+          life: 5000,
+        });
+        chatDelConfirmation.value = false;
+      }
+    };
+
+    const chatDelNo = () => {
+      toast.add({
+        severity: "error",
+        summary: "Rejected",
+        detail: "Chat deletion has been halted!",
+        life: 3000,
+      });
+      chatDelConfirmation.value = false;
+    };
+
     const deleteConfirmation = () => {
       setTimeout(() => {
         context.emit("delete");
@@ -164,6 +242,7 @@ export default {
       });
       displayConfirmation.value = false;
     };
+
     return {
       deleteConfirmation,
       handleClick,
@@ -174,6 +253,10 @@ export default {
       save,
       displayConfirmation,
       closeConfirmation,
+      chatDelConfirmation,
+      chatDel,
+      chatDelYes,
+      chatDelNo,
     };
   },
 };

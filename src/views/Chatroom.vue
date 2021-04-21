@@ -5,13 +5,6 @@
   <ConfirmPopup></ConfirmPopup>
 
   <div class="card">
-    <!-- <Button
-      @click="deletes"
-      icon="pi pi-trash"
-      label="Delete"
-      class="p-button-danger p-button-outlined"
-    ></Button> -->
-
     <Toast />
   </div>
 </template>
@@ -21,7 +14,6 @@ import userDelete from "../composable/userDelete";
 import Button from "primevue/button";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-
 import NewChatForm from "../components/NewChatForm.vue";
 import Navbar from "../components/Navbar.vue";
 import getUser from "../composable/getUser";

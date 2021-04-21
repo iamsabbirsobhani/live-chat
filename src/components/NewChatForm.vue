@@ -57,7 +57,6 @@
       </Dialog>
     </div>
     <!-- End of Primevue Error Popup -->
-
   </form>
 </template>
 
@@ -83,7 +82,6 @@ export default {
     const { addDoc, error } = useCollection("messages");
     const { addDocType } = userTypingSetFlag();
     const displayConfirmation = ref(false);
-
 
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
@@ -137,11 +135,9 @@ export default {
     };
     // End of Type Status Check
 
-
     const closeConfirmation = () => {
-        displayConfirmation.value = false;
-    }
-
+      displayConfirmation.value = false;
+    };
 
     return {
       message,

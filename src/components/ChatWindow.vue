@@ -9,8 +9,8 @@
       </div>
     </div>
 
-        <!-- Primevue Error Popup -->
-    <div v-if="error">
+    <!-- Primevue Error Popup -->
+    <div v-if="!error">
       <Dialog
         header="Network Error"
         v-model:visible="displayConfirmation"
@@ -24,12 +24,10 @@
           />
           <span>{{ error }}</span>
         </div>
-        <template #footer>
-        </template>
+        <template #footer> </template>
       </Dialog>
     </div>
     <!-- End of Primevue Error Popup -->
-
   </div>
 </template>
 
@@ -52,7 +50,6 @@ export default {
         displayConfirmation.value = true;
       }
     });
-
 
     //When to use Computed Properties?
     //Ans: Sometimes, When situation like this in here we are going to use Computed Property.

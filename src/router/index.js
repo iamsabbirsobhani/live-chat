@@ -8,7 +8,8 @@ import { projectAuth } from '../firebase/config'
 const requiredAuth = ( to, from, next ) => {
   let user = projectAuth.currentUser //Checking if a user is authinticated or not
 
-  console.log('Current user is auth guard', user)
+  // console.log('Current user is auth guard', user)
+
   if(!user){ //if user is not authinticated
     next({ name: 'Welcome' }) //it will be redirected to 'Welcome' route
   } else {

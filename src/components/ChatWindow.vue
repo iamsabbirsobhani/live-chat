@@ -7,8 +7,6 @@
         <span class="name">{{ doc.name }}</span>
         <span class="message">{{ doc.message }}</span>
 
-        <!-- <img class="images" :src="doc.imgUrl" alt="" /> -->
-
         <!-- element-plus Image Preview -->
         <div class="demo-image__preview" v-if="doc.imgUrl">
           <el-image

@@ -8,6 +8,7 @@ import {
 
 const getCollection = (collection) => {
     const documents = ref(null)
+    const esourceList = ref(null)
     const error = ref(null)
 
     let collectionRef = projectFirestore.collection(collection).doc('chat').collection('chat')
@@ -25,7 +26,26 @@ const getCollection = (collection) => {
         })
         documents.value = results
         error.value = null
-        // console.log(documents.value.name)
+        // console.log(documents.value[1].imgUrl)
+
+
+        // element-plus Image Preview
+
+        const sourceList = results.filter((img) =>{
+            return img.imgUrl;
+        });
+        const newSourceList = sourceList.map((img) =>{
+            return img.imgUrl;
+        });
+        esourceList.value = newSourceList
+        //    console.log(sourceList);
+        //    console.log(newSourceList);
+        //    console.log(esourceList);
+        // for previewing full screen image element-plus needs "previewSrcList" array
+        // with all the image urls. Thats why I need to go with this code block process. Joy JavaScript
+
+        // end of element-plus Image Preview
+
 
     }, (err) => {
         console.log(err.message)
@@ -40,6 +60,7 @@ const getCollection = (collection) => {
     return {
         error,
         documents,
+        esourceList
     }
 }
 

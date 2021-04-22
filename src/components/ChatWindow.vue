@@ -6,7 +6,19 @@
         <span class="created-at">{{ doc.createdAt }} ago</span>
         <span class="name">{{ doc.name }}</span>
         <span class="message">{{ doc.message }}</span>
-        <img class="images" :src="doc.imgUrl" alt="">
+
+        <!-- <img class="images" :src="doc.imgUrl" alt="" /> -->
+
+        <!-- element-plus Image Preview -->
+        <div class="demo-image__preview" v-if="doc.imgUrl">
+          <el-image
+            class="images"
+            :src="doc.imgUrl"
+            :preview-src-list="esourceList"
+          >
+          </el-image>
+        </div>
+        <!-- end of element-plus Image Preview -->
       </div>
     </div>
 
@@ -42,7 +54,7 @@ import Button from "primevue/button";
 export default {
   components: { Dialog, Button },
   setup() {
-    const { error, documents } = getCollection("messages");
+    const { error, documents, esourceList } = getCollection("messages");
 
     const displayConfirmation = ref(false);
 
@@ -89,6 +101,7 @@ export default {
       formattedDocuments,
       messages,
       displayConfirmation,
+      esourceList
     };
   },
 };
@@ -180,11 +193,11 @@ a {
 }
 @media (max-width: 425px) {
   .images {
-  max-width: 200px;
-  max-height: 250px;
-  overflow: hidden;
-  display: block;
-}
+    max-width: 200px;
+    max-height: 250px;
+    overflow: hidden;
+    display: block;
+  }
 }
 /* End of Scrollbar Style */
 </style>

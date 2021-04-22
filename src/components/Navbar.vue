@@ -28,10 +28,10 @@
 
       <Button
         type="button"
-        style="height: 50px; width: 50px; margin: 20px"
+        style="height: 50px; width: 50px; margin: 20px;"
         @click="toggle"
         aria-haspopup="true"
-        icon="pi pi-sign-out"
+        icon="pi pi-bars"
         iconPos="right"
         aria-controls="overlay_menu"
       />

@@ -6,6 +6,7 @@
         <span class="created-at">{{ doc.createdAt }} ago</span>
         <span class="name">{{ doc.name }}</span>
         <span class="message">{{ doc.message }}</span>
+        <img class="images" :src="doc.imgUrl" alt="">
       </div>
     </div>
 
@@ -170,6 +171,20 @@ a {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #d62929;
 }
-
+.images {
+  max-width: 300px;
+  max-height: 400px;
+  overflow: hidden;
+  display: block;
+  border-radius: 10px;
+}
+@media (max-width: 425px) {
+  .images {
+  max-width: 200px;
+  max-height: 250px;
+  overflow: hidden;
+  display: block;
+}
+}
 /* End of Scrollbar Style */
 </style>

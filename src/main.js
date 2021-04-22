@@ -15,7 +15,8 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Button from 'primevue/button';
 import vueDebounce from 'vue-debounce'
-
+import ElementPlus from 'element-plus';
+import 'element-plus/lib/theme-chalk/index.css';
 
 import { projectAuth } from './firebase/config'
 
@@ -31,6 +32,7 @@ projectAuth.onAuthStateChanged(() => {
         app.use(PrimeVue, {ripple: true})
         app.component('Toast', Toast)
         app.component('Button', Button)
+        app.use(ElementPlus)
         app.use(ConfirmationService);
         app.mount('#app')
     }

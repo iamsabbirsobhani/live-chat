@@ -9,9 +9,9 @@ import {
 const getTypeStatus = () => {
     const type = ref(null)
     type.value = null
-projectFirestore.collection("userTyping").doc("typing")
+    projectFirestore.collection("userTyping").doc("typing")
         .onSnapshot((doc) => {
-        // console.log('snapshot typing')
+            // console.log('snapshot typing')
             // console.log("Current data: ", doc.data().isType);
             if (doc.data().isType) {
                 type.value = {

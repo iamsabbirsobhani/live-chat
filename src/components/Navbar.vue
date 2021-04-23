@@ -9,9 +9,10 @@
     />
     <div>
       <p>
-        <span class="dname">{{ user.displayName }} </span>
+        <!-- <span class="dname">{{ user.displayName }} </span> -->
+        <Chip :label="user.displayName" icon="pi pi-user" />
       </p>
-      <p class="email">Currently logged in as {{ user.email }}</p>
+      <p >Currently logged in as <span class="email"> {{ user.email }} </span></p>
     </div>
     <div>
       <!-- old logout -->
@@ -28,7 +29,7 @@
 
       <Button
         type="button"
-        style="height: 50px; width: 50px; margin: 20px;"
+        style="height: 50px; width: 50px; margin: 20px"
         @click="toggle"
         aria-haspopup="true"
         icon="pi pi-bars"
@@ -100,6 +101,7 @@
       </Dialog>
       <!-- end of delete chat confirmation -->
     </div>
+    <!-- <p>{{ firstThree }}</p> -->
   </div>
 </template>
 
@@ -113,13 +115,16 @@ import Menu from "primevue/menu";
 import useLogout from "../composable/useLogout";
 import getUser from "../composable/getUser";
 import deleteCollection from "@/composable/delChat.js";
+import usePagination from "@/composable/usePagination.js";
+import Chip from 'primevue/chip';
 
 export default {
-  components: { Menubar, Button, Menu, Dialog },
+  components: { Menubar, Button, Menu, Dialog, Chip },
   setup(props, context) {
     const { logout, error } = useLogout();
     const { user } = getUser();
     const { delChat } = deleteCollection();
+    const { paginator, firstThree } = usePagination();
     const displayConfirmation = ref(false);
     const chatDelConfirmation = ref(false);
     const toast = useToast();
@@ -189,6 +194,7 @@ export default {
     };
 
     const chatDelYes = async () => {
+      await paginator()
       if (user.value.uid === `zRbyG4De88UDZjQE2tgbdseOmnY2`) {
         await delChat();
         toast.add({
@@ -270,7 +276,11 @@ export default {
   align-items: center;
   max-width: 600px;
   margin: 20px auto;
+  margin-top: 0;
   border-bottom: 1px solid #eee;
+  /* background-color: #1671cc; */
+  background: linear-gradient(-90deg, rgba(40,148,255,1) 0%, rgba(0,110,219,1) 43%, rgba(37,113,189,1) 100%);
+  color: white;
 }
 .p-button-secondary {
   margin: 10px;
@@ -279,4 +289,8 @@ export default {
   font-size: 25px;
   color: rgb(88, 240, 0);
 }
+  .email {
+    font-weight: 700;
+    color: white;
+  }
 </style>

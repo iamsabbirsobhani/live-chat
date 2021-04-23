@@ -3,7 +3,6 @@
   <h3 style="text-align: center">Chatroom</h3>
   <NewChatForm />
   <ConfirmPopup></ConfirmPopup>
-
   <div class="card">
     <Toast />
   </div>

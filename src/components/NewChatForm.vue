@@ -117,7 +117,7 @@ export default {
     const toast = useToast();
     const typeStatus = ref(null);
     const { user } = getUser();
-    const { addDoc, error } = useCollection("messages");
+    const { addDoc, error } = useCollection("test-messages");
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);
@@ -223,6 +223,7 @@ export default {
 
 
 <style scoped>
+
 .typeStatus {
   z-index: 2;
   z-index: 2;

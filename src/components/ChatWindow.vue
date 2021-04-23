@@ -17,6 +17,7 @@
           </el-image>
         </div>
         <!-- end of element-plus Image Preview -->
+
       </div>
     </div>
 
@@ -52,7 +53,7 @@ import Button from "primevue/button";
 export default {
   components: { Dialog, Button },
   setup() {
-    const { error, documents, esourceList } = getCollection("messages");
+    const { error, documents, esourceList } = getCollection("test-messages");
 
     const displayConfirmation = ref(false);
 

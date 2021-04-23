@@ -117,7 +117,7 @@ export default {
     const toast = useToast();
     const typeStatus = ref(null);
     const { user } = getUser();
-    const { addDoc, error } = useCollection("test-messages");
+    const { addDoc, error } = useCollection("messages");
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);

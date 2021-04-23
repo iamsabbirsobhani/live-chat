@@ -53,7 +53,7 @@ import Button from "primevue/button";
 export default {
   components: { Dialog, Button },
   setup() {
-    const { error, documents, esourceList } = getCollection("test-messages");
+    const { error, documents, esourceList } = getCollection("messages");
 
     const displayConfirmation = ref(false);
 

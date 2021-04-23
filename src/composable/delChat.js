@@ -8,7 +8,7 @@ const deleteCollection = () => {
     const delChat = async () => {
 
         try {
-            let ref = await projectFirestore.collection('test-messages').doc('chat').collection('chat')
+            let ref = await projectFirestore.collection('messages').doc('chat').collection('chat')
 
             ref.onSnapshot(snapshot => {
                 snapshot.docs.forEach(doc => {

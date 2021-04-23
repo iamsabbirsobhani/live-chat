@@ -71,6 +71,7 @@
             class="pi pi-exclamation-triangle p-mr-3"
             style="font-size: 2rem"
           />
+
           <span>{{ error }}</span>
         </div>
         <template #footer>

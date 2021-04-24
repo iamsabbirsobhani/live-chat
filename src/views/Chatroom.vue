@@ -87,7 +87,7 @@ export default {
   width: 40px;
   height: 40px;
   /* background:#f1f1f1; */
-  background: #a8dcff67;
+  background: #a8dcff2f;
   border-radius: 50%;
   opacity: 0.5;
   animation: rise 20s infinite ease-in;

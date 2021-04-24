@@ -17,7 +17,6 @@
           </el-image>
         </div>
         <!-- end of element-plus Image Preview -->
-
       </div>
     </div>
 
@@ -84,7 +83,12 @@ export default {
     const messages = ref(null);
 
     onUpdated(() => {
-      messages.value.scrollTop = messages.value.scrollHeight;
+      const time = setInterval(() => {
+        messages.value.scrollTop = messages.value.scrollHeight;
+      }, 300);
+      setTimeout(() => {
+        clearInterval(time);
+      }, 3000);
       //for getting scrollTop
       //the container should have css properties,
       //height: whatever;
@@ -100,7 +104,7 @@ export default {
       formattedDocuments,
       messages,
       displayConfirmation,
-      esourceList
+      esourceList,
     };
   },
 };
@@ -128,7 +132,7 @@ export default {
   max-height: 250px;
   overflow: auto;
 }
-.message{
+.message {
   word-wrap: break-word;
 }
 /* Scrollbar Style */

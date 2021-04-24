@@ -88,7 +88,7 @@ export default {
       }, 300);
       setTimeout(() => {
         clearInterval(time);
-      }, 3000);
+      }, 5000);
       //for getting scrollTop
       //the container should have css properties,
       //height: whatever;

@@ -128,7 +128,9 @@ export default {
   max-height: 250px;
   overflow: auto;
 }
-
+.message{
+  word-wrap: break-word;
+}
 /* Scrollbar Style */
 header {
   font-family: "Lobster", cursive;

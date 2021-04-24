@@ -115,7 +115,6 @@ import Menu from "primevue/menu";
 import useLogout from "../composable/useLogout";
 import getUser from "../composable/getUser";
 import deleteCollection from "@/composable/delChat.js";
-import usePagination from "@/composable/usePagination.js";
 import Chip from 'primevue/chip';
 
 export default {
@@ -124,7 +123,6 @@ export default {
     const { logout, error } = useLogout();
     const { user } = getUser();
     const { delChat } = deleteCollection();
-    const { paginator, firstThree } = usePagination();
     const displayConfirmation = ref(false);
     const chatDelConfirmation = ref(false);
     const toast = useToast();
@@ -194,7 +192,6 @@ export default {
     };
 
     const chatDelYes = async () => {
-      await paginator()
       if (user.value.uid === `zRbyG4De88UDZjQE2tgbdseOmnY2`) {
         await delChat();
         toast.add({

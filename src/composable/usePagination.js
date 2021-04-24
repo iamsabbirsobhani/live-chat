@@ -7,7 +7,7 @@ const usePagination = () => {
     const firstThree = ref(null)
 
     const paginator = async () => {
-        const first = projectFirestore.collection('test-messages').doc('chat').collection('chat').orderBy('name')
+        const first = projectFirestore.collection('messages').doc('chat').collection('chat').orderBy('name')
 
         const firstThreeRaw = await first.limit(3).get()
 
@@ -31,7 +31,7 @@ const usePagination = () => {
 
         // const next = projectFirestore.collection('test-messages').doc('chat').collection('chat').orderBy('createdAt').startAfter(last.data()).limit(3);
 
-        console.log(firstThree.value)
+        // console.log(firstThree.value)
 
     }
 

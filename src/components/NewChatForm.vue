@@ -1,26 +1,12 @@
 <template>
-  <form>
-    <Card
-      class="card"
-      style="
-        position: relative;
-        width: 25rem;
-        height: 400px;
-        margin: 10px auto;
-        margin-bottom: 2em;
-        padding: 0px;
-        overflow: hidden;
-      "
-    >
-      <template #content>
-        <ChatWindow class="cwindow" />
-      </template>
-      <template #footer>
-        <div class="typeStatus">
-          <Typing />
-        </div>
-      </template>
-    </Card>
+  <form >
+    <div class="chatbox">
+      <ChatWindow class="cwindow" />
+      <div class="typeStatus">
+        <Typing />
+      </div>
+    </div>
+
     <div class="type">
       <Textarea
         v-model.trim="message"
@@ -32,7 +18,7 @@
         rows="2"
         cols="30"
         placeholder="Type a message and hit enter to send..."
-        style="margin-right: 5px"
+        style="margin-right: 5px; padding: 5px;"
       />
 
       <div class="files">
@@ -58,6 +44,7 @@
         </el-upload>
       </div>
     </div>
+
     <!-- Primevue Error Popup -->
     <div v-if="error">
       <Dialog
@@ -130,11 +117,11 @@ export default {
     });
 
     const handleSumbit = async () => {
-
       if (message.value) {
         const chat = {
           name: user.value.displayName,
           message: message.value,
+          userId: user.value.uid,
           createdAt: timestamp(),
         };
         await addDoc(chat);
@@ -181,13 +168,13 @@ export default {
     };
 
     const myUploader = async (file) => {
-
       if (file) {
         await uploadImage(file);
       }
 
       const chat = {
         name: user.value.displayName,
+        userId: user.value.uid,
         createdAt: timestamp(),
         imgUrl: url.value,
       };
@@ -200,7 +187,6 @@ export default {
         life: 3000,
       });
       file.value = null;
-
     };
 
     const handleAvatarSuccess = (file) => {
@@ -224,6 +210,15 @@ export default {
 
 
 <style scoped>
+.chatbox {
+  max-width: 450px;
+  max-height: 450px;
+  margin: 10px auto;
+  margin-top: 0px;
+  padding: 5px;
+  position: relative;
+  /* box-sizing: border-box; */
+}
 
 .typeStatus {
   z-index: 2;
@@ -231,7 +226,8 @@ export default {
   /* margin: 111px !important; */
   /* top: 35px; */
   position: absolute;
-  top: 314px;
+  /* top: 314px; */
+  bottom: -5px;
   margin-left: 20px;
 }
 #app > form > textarea {
@@ -290,6 +286,10 @@ export default {
   }
   .upbutton {
     width: 70px;
+  }
+  .chatbox {
+    max-width: 350px;
+    margin: 10px auto;
   }
 }
 </style>

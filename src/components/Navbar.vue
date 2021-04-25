@@ -274,6 +274,7 @@ export default {
   max-width: 600px;
   margin: 20px auto;
   margin-top: 0;
+  margin-bottom: 5px;
   border-bottom: 1px solid #eee;
   /* background-color: #1671cc; */
   background: linear-gradient(-90deg, rgba(40,148,255,1) 0%, rgba(0,110,219,1) 43%, rgba(37,113,189,1) 100%);

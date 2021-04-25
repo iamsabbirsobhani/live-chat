@@ -1,22 +1,70 @@
 <template>
   <div class="chat-window">
-    <!-- <div v-if="error">{{ error }}</div> -->
+    <div v-if="error">{{ error }}</div>
     <div v-if="documents" class="messages" ref="messages">
       <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
-        <span class="created-at">{{ doc.createdAt }} ago</span>
-        <span class="name">{{ doc.name }}</span>
-        <span class="message">{{ doc.message }}</span>
+        <!-- self user -->
 
-        <!-- element-plus Image Preview -->
-        <div class="demo-image__preview" v-if="doc.imgUrl">
-          <el-image
-            class="images"
-            :src="doc.imgUrl"
-            :preview-src-list="esourceList"
+        <div
+          style="max-width: 90%"
+          v-if="user.uid == doc.userId"
+          class="selfUser"
+        >
+          <div class="name-wraper" style="width: 100%; text-align: end">
+            <!-- <span class="name">{{ doc.name }}</span> -->
+          </div>
+          <!-- <div v-if="doc.message" class="message-wraper"> -->
+          <div style="max-width: 100%; text-align: end">
+            <!-- <p  class="message">{{ doc.message }}</p> -->
+            <Chip
+              style="text-align: start"
+              v-if="doc.message"
+              :label="doc.message"
+              class="p-mr-2 p-mb-2 custom-chip"
+            />
+            <!-- </div> -->
+          </div>
+          <!-- element-plus Image Preview -->
+          <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+            <el-image
+              class="images"
+              :src="doc.imgUrl"
+              :preview-src-list="esourceList"
+            >
+            </el-image>
+          </div>
+          <!-- end of element-plus Image Preview -->
+          <span style="margin-left: 5px; margin-right: 5px" class="created-at"
+            >{{ doc.createdAt }} ago by you</span
           >
-          </el-image>
         </div>
-        <!-- end of element-plus Image Preview -->
+
+        <!-- end of self user -->
+
+        <!-- other user -->
+
+        <div style="max-width: 90%" v-else class="otherUser">
+          <br />
+          <Chip v-if="doc.message" :label="doc.message" />
+          <!-- </div> -->
+
+          <!-- element-plus Image Preview -->
+          <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+            <el-image
+              class="images"
+              :src="doc.imgUrl"
+              :preview-src-list="esourceList"
+            >
+            </el-image>
+          </div>
+          <!-- end of element-plus Image Preview -->
+
+          <span style="margin-right: 5px" class="created-at"
+            >{{ doc.createdAt }} ago by {{ doc.name }}</span
+          >
+        </div>
+
+        <!-- end of other user -->
       </div>
     </div>
 
@@ -43,18 +91,21 @@
 </template>
 
 <script>
+import Chip from "primevue/chip";
 import { computed, onUpdated, ref, watch } from "vue";
 import { formatDistanceToNow } from "date-fns";
 import getCollection from "../composable/getCollection";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
-
+import getUser from "@/composable/getUser.js";
 export default {
-  components: { Dialog, Button },
+  components: { Dialog, Button, Chip },
   setup() {
     const { error, documents, esourceList } = getCollection("users");
 
     const displayConfirmation = ref(false);
+
+    const { user } = getUser();
 
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
@@ -105,15 +156,24 @@ export default {
       messages,
       displayConfirmation,
       esourceList,
+      user,
     };
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.p-chip.custom-chip {
+  background: var(--primary-color);
+  color: var(--primary-color-text);
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
+
 .chat-window {
   /* background: #fafafa; */
-  padding: 30px 20px;
+  // padding: 30px 20px;
+  padding: 10px 10px;
 }
 .single {
   margin: 18px 0;
@@ -122,6 +182,8 @@ export default {
   display: block;
   color: #999;
   font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin-bottom: 4px;
 }
 .name {
@@ -129,7 +191,7 @@ export default {
   margin-right: 6px;
 }
 .messages {
-  max-height: 250px;
+  max-height: 380px;
   overflow: auto;
 }
 .message {
@@ -187,21 +249,91 @@ a {
 .messages::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #d62929;
+  // background-color: #d62929;
+  // background-color: #838383;
+  background-color: #b6b6b6a9;
 }
-.images {
-  max-width: 300px;
+
+.selfUser .images {
+  max-width: 200px;
+  max-height: 400px;
+  overflow: hidden;
+  display: block;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.otherUser .images {
+  max-width: 200px;
   max-height: 400px;
   overflow: hidden;
   display: block;
   border-radius: 10px;
 }
+
+.single {
+  display: flex;
+  flex-direction: column;
+}
+
+.selfUser {
+  align-self: flex-end;
+}
+
+.selfUser .message-wraper {
+  max-width: 180px;
+  border-radius: 25px;
+  padding: 1px;
+  background-color: #0086f9;
+  margin-right: 5px;
+}
+.otherUser .message-wraper {
+  max-width: 180px;
+  border-radius: 25px;
+  padding: 5px;
+  background-color: #e4e6eb;
+}
+
+.selfUser .message {
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.otherUser .message {
+  color: rgb(63, 63, 63);
+  font-weight: bold;
+}
+
+.message {
+  margin-left: 10px;
+}
+
+.selfUser p {
+  margin: 8px;
+}
+
+.selfUser span {
+}
+
+.otherUser p {
+  margin: 8px;
+}
+
+.otherUser .name {
+  color: #02060b;
+}
+
 @media (max-width: 425px) {
   .images {
     max-width: 200px;
     max-height: 250px;
     overflow: hidden;
     display: block;
+  }
+  .messages {
+    max-height: 390px;
+    overflow: auto;
   }
 }
 /* End of Scrollbar Style */

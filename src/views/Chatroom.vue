@@ -1,6 +1,6 @@
 <template>
   <Navbar @delete="deletes" />
-  <h3 style="text-align: center">Chatroom</h3>
+  <h3 style="text-align: center; margin: 0px; padding: 0px; position: relative;">Chatroom</h3>
   <NewChatForm />
   <ConfirmPopup></ConfirmPopup>
   <div class="card">

@@ -25,6 +25,32 @@ const getCollection = (collection) => {
             })
         })
 
+
+        // experimental code
+
+        const nextCollection = async () => {
+            const next = await collectionRef.get()
+
+            let lastVisible = next.docs[next.docs.length-1]
+
+            lastVisible.onSnapshot((snap) => {
+                let res = []
+
+                snap.docs.forEach(doc => {
+                    doc.data().createdAt && res.push({
+                        ...doc.data(),
+                        id: doc.id
+                    })
+                })
+            })
+
+
+            console.log('last', res)
+        }
+        nextCollection()
+
+        // end of  experimental code
+
         results.reverse()
 
         documents.value = results

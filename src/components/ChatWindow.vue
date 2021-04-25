@@ -52,7 +52,7 @@ import Button from "primevue/button";
 export default {
   components: { Dialog, Button },
   setup() {
-    const { error, documents, esourceList } = getCollection("messages");
+    const { error, documents, esourceList } = getCollection("users");
 
     const displayConfirmation = ref(false);
 
@@ -85,7 +85,7 @@ export default {
     onUpdated(() => {
       const time = setInterval(() => {
         messages.value.scrollTop = messages.value.scrollHeight;
-      }, 300);
+      }, 10);
       setTimeout(() => {
         clearInterval(time);
       }, 5000);

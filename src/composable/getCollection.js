@@ -12,7 +12,7 @@ const getCollection = (collection) => {
     const error = ref(null)
 
     let collectionRef = projectFirestore.collection(collection).doc('chat').collection('chat')
-        .orderBy('createdAt')
+        .orderBy('createdAt', 'desc').limit(20)
     // we can only add "custom id" documents under a "collection"
     // we can not add "custom id" documents inside a "document"
     const unsub = collectionRef.onSnapshot((snap) => {
@@ -24,6 +24,9 @@ const getCollection = (collection) => {
                 id: doc.id
             })
         })
+
+        results.reverse()
+
         documents.value = results
         error.value = null
         // console.log(documents.value[1].imgUrl)

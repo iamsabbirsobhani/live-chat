@@ -1,8 +1,15 @@
 <template>
   <div class="typingContainer">
-    <p class="typing" v-if="type.user !== user.uid && type.isType">
+    <!-- <p class="typing" v-if="type.user !== user.uid && type.isType">
       Buddy is typing...
-    </p>
+    </p> -->
+    <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
+  <!-- <div class="tiblock">
+    <div class="tidot"></div>
+    <div class="tidot"></div>
+    <div class="tidot"></div>
+  </div> -->
+</div>
   </div>
 </template>
 
@@ -22,6 +29,50 @@ export default {
 </script>
 
 <style scoped>
+
+/* facebook typing indicator */
+
+.tiblock {
+    align-items: center;
+    display: flex;
+    height: 17px;
+}
+
+.ticontainer .tidot {
+    background-color: #90949c;
+}
+
+.tidot {
+    -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+    border-radius: 2px;
+    display: inline-block;
+    height: 4px;
+    margin-right: 2px;
+    width: 4px;
+}
+
+@-webkit-keyframes mercuryTypingAnimation{
+0%{
+  -webkit-transform:translateY(0px)
+}
+28%{
+  -webkit-transform:translateY(-5px)
+}
+44%{
+  -webkit-transform:translateY(0px)
+}
+}
+
+.tidot:nth-child(1){
+-webkit-animation-delay:200ms;
+}
+.tidot:nth-child(2){
+-webkit-animation-delay:300ms;
+}
+.tidot:nth-child(3){
+-webkit-animation-delay:400ms;
+}
+/* end of facebook typing indicator */
 .typing {
   font-size: 15px;
   text-align: center;

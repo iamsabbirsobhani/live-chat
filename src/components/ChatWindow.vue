@@ -66,6 +66,16 @@
 
         <!-- end of other user -->
       </div>
+
+      <!-- facebook typing indicator -->
+      <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
+        <div class="tiblock">
+          <div class="tidot"></div>
+          <div class="tidot"></div>
+          <div class="tidot"></div>
+        </div>
+      </div>
+      <!-- end of facebook typing indicator -->
     </div>
 
     <!-- Primevue Error Popup -->
@@ -99,12 +109,16 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
+
+import getTypeStatus from "../composable/getTypeStatus";
 export default {
   components: { Dialog, Button, Chip, ScrollPanel },
   setup() {
     const { error, documents, esourceList } = getCollection("users");
 
     const displayConfirmation = ref(false);
+
+    const { type } = getTypeStatus();
 
     const { user } = getUser();
 
@@ -158,6 +172,7 @@ export default {
       displayConfirmation,
       esourceList,
       user,
+      type,
     };
   },
 };
@@ -326,6 +341,57 @@ a {
   color: #02060b;
 }
 
+/* facebook typing indicator */
+
+.tiblock {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 17px;
+  background-color: #dee2e6;
+  width: 12%;
+  padding: 5px;
+  height: 30px;
+  border-radius: 50px;
+}
+
+.ticontainer .tidot {
+  background-color: #90949c;
+}
+
+.tidot {
+  -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+  border-radius: 7px;
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  // margin-right: 2px;
+  margin: 2px auto;
+}
+
+@-webkit-keyframes mercuryTypingAnimation {
+  0% {
+    -webkit-transform: translateY(0px);
+  }
+  28% {
+    -webkit-transform: translateY(-5px);
+  }
+  44% {
+    -webkit-transform: translateY(0px);
+  }
+}
+
+.tidot:nth-child(1) {
+  -webkit-animation-delay: 200ms;
+}
+.tidot:nth-child(2) {
+  -webkit-animation-delay: 300ms;
+}
+.tidot:nth-child(3) {
+  -webkit-animation-delay: 400ms;
+}
+/* end of facebook typing indicator */
+
 @media (max-width: 425px) {
   .images {
     max-width: 200px;
@@ -336,6 +402,9 @@ a {
   .messages {
     max-height: 390px;
     overflow: auto;
+  }
+  .tiblock {
+    width: 16%;
   }
 }
 /* End of Scrollbar Style */

@@ -214,8 +214,8 @@ export default {
 
 <style scoped>
 .chatbox {
-  max-width: 450px;
-  max-height: 450px;
+  width: 450px;
+  height: 412px;
   margin: 10px auto;
   margin-top: 0px;
   padding: 5px;
@@ -293,6 +293,7 @@ export default {
   .chatbox {
     max-width: 350px;
     margin: 10px auto;
+    height: 422px;
   }
 }
 </style>

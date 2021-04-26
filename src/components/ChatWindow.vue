@@ -1,7 +1,7 @@
 <template>
   <div class="chat-window">
     <div v-if="error">{{ error }}</div>
-    <div v-if="documents" class="messages" ref="messages">
+    <div v-if="documents" ref="messages" class="messages">
       <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
         <!-- self user -->
 
@@ -98,8 +98,9 @@ import getCollection from "../composable/getCollection";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
+import ScrollPanel from "primevue/scrollpanel";
 export default {
-  components: { Dialog, Button, Chip },
+  components: { Dialog, Button, Chip, ScrollPanel },
   setup() {
     const { error, documents, esourceList } = getCollection("users");
 
@@ -252,6 +253,7 @@ a {
   // background-color: #d62929;
   // background-color: #838383;
   background-color: #b6b6b6a9;
+  // background-color: #e4e4e41e;
 }
 
 .selfUser .images {

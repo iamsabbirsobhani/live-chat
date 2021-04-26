@@ -1,5 +1,5 @@
 <template>
-  <form >
+  <form>
     <div class="chatbox">
       <ChatWindow class="cwindow" />
       <div class="typeStatus">
@@ -18,7 +18,7 @@
         rows="2"
         cols="30"
         placeholder="Type a message and hit enter to send..."
-        style="margin-right: 5px; padding: 5px;"
+        style="margin-right: 5px; padding: 5px"
       />
 
       <div class="files">
@@ -143,12 +143,14 @@ export default {
         // console.log(typeStatus.value);
         var keypresss = {
           isType: true,
+          user: user.value.uid,
         };
         // console.log("Typing Start");
         await addDocType(keypresss);
       } else {
         var keypresss = {
           isType: false,
+          user: user.value.uid,
         };
         await addDocType(keypresss);
       }
@@ -157,6 +159,7 @@ export default {
     const stopTyping = () => {
       const key = {
         isType: false,
+        user: user.value.uid,
       };
       addDocType(key);
       // console.log("Typing Stopped");

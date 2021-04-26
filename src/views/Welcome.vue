@@ -22,17 +22,26 @@
       :position="position"
       :modal="false"
     >
-    <Avatar style=" font-weight: 500px; font-size:22px;width: 60px; height:60px;" label="SS" shape="circle"/>
-      <br>
-      <br>
+      <Avatar
+        style="font-weight: 500px; font-size: 22px; width: 60px; height: 60px"
+        label="SS"
+        shape="circle"
+      />
+      <br />
+      <br />
       <p class="p-m-0">Software Engineer & Web Developer</p>
-      <br>
+      <br />
       <p>Thank you for checking my project.</p>
-      <br>
-        <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
-        ><i class="pi pi-envelope ficon" style="fontSize: 2rem"></i></a>
-        <a href="https://github.com/iamsabbirsobhani" target="_blank"><i class="pi pi-github ficon" style="fontSize: 3rem"></i></a>
-        <a href="https://twitter.com/sabbirsobhani" target="_blank"><i class="pi pi-twitter ficon" style="fontSize: 2rem"></i></a>
+      <br />
+      <a href="mailto:sabbirsobhani@gmail.com?subject=Mail from Live Chat"
+        ><i class="pi pi-envelope ficon" style="fontsize: 2rem"></i
+      ></a>
+      <a href="https://github.com/iamsabbirsobhani" target="_blank"
+        ><i class="pi pi-github ficon" style="fontsize: 3rem"></i
+      ></a>
+      <a href="https://twitter.com/sabbirsobhani" target="_blank"
+        ><i class="pi pi-twitter ficon" style="fontsize: 2rem"></i
+      ></a>
       <template #footer> </template>
     </Dialog>
     <!-- End of Footer -->
@@ -40,7 +49,7 @@
 </template>
 
 <script>
-import Avatar from 'primevue/avatar';
+import Avatar from "primevue/avatar";
 import Dialog from "primevue/dialog";
 import projectFirestore from "../firebase/config.js";
 import SignupForm from "../components/SignupForm.vue";
@@ -102,7 +111,7 @@ export default {
   color: rgb(163, 163, 163);
   margin-top: 20px;
 }
-.ficon{
+.ficon {
   margin: 10px;
 }
 /* End of Footer */
@@ -168,7 +177,6 @@ export default {
 }
 .welcome button {
   margin: 20px auto;
-
 }
 
 .welcome > div:nth-child(2) > form:nth-child(1) > h1:nth-child(1) {
@@ -205,10 +213,10 @@ export default {
     color: #999;
     margin: 10px auto;
   }
-  .footer{
+  .footer {
     margin-top: 170px;
   }
-  .dialog{
+  .dialog {
     width: 300px !important;
     /* text-align: left; */
     overflow-x: hidden;

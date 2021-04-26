@@ -1,6 +1,8 @@
 <template>
   <div class="typingContainer">
-    <p class="typing" v-if="type">Buddy is typing...</p>
+    <p class="typing" v-if="type.user !== user.uid && type.isType">
+      Buddy is typing...
+    </p>
   </div>
 </template>
 
@@ -8,11 +10,13 @@
 import { onUpdated, watch } from "vue";
 import { ref } from "vue";
 import getTypeStatus from "../composable/getTypeStatus";
+import getUser from "../composable/getUser";
 export default {
   setup() {
     const { type } = getTypeStatus();
+    const { user } = getUser();
 
-    return { type };
+    return { type, user };
   },
 };
 </script>
@@ -22,8 +26,8 @@ export default {
   font-size: 15px;
   text-align: center;
 }
-.typingContainer{
-    margin: 5px auto;
+.typingContainer {
+  margin: 5px auto;
 }
 /* Animated Typing Style */
 .typing {
@@ -48,12 +52,11 @@ export default {
   50% {
     width: 18ch;
   }
-  70%{
-      width: 10ch;
+  70% {
+    width: 10ch;
   }
-  90%{
-      width: 13ch;
-
+  90% {
+    width: 13ch;
   }
   100% {
     width: 13ch;

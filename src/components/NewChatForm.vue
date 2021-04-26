@@ -2,9 +2,6 @@
   <form>
     <div class="chatbox">
       <ChatWindow class="cwindow" />
-      <div class="typeStatus">
-        <Typing />
-      </div>
     </div>
 
     <div class="type">

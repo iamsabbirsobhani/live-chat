@@ -1,16 +1,16 @@
 <template>
-  <div class="typingContainer">
-    <!-- <p class="typing" v-if="type.user !== user.uid && type.isType">
+  <!-- <div class="typingContainer"> -->
+  <!-- <p class="typing" v-if="type.user !== user.uid && type.isType">
       Buddy is typing...
     </p> -->
-    <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
-  <!-- <div class="tiblock">
-    <div class="tidot"></div>
-    <div class="tidot"></div>
-    <div class="tidot"></div>
-  </div> -->
-</div>
+  <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
+    <div class="tiblock">
+      <div class="tidot"></div>
+      <div class="tidot"></div>
+      <div class="tidot"></div>
+    </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -29,48 +29,54 @@ export default {
 </script>
 
 <style scoped>
-
 /* facebook typing indicator */
 
 .tiblock {
-    align-items: center;
-    display: flex;
-    height: 17px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 17px;
+  background-color: #dee2e6;
+  width: 12%;
+  padding: 5px;
+  height: 30px;
+  border-radius: 50px;
 }
 
 .ticontainer .tidot {
-    background-color: #90949c;
+  background-color: #90949c;
 }
 
 .tidot {
-    -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
-    border-radius: 2px;
-    display: inline-block;
-    height: 4px;
-    margin-right: 2px;
-    width: 4px;
+  -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+  border-radius: 7px;
+  display: inline-block;
+  height: 6px;
+  width: 6px;
+  /* // margin-right: 2px; */
+  margin: 2px auto;
 }
 
-@-webkit-keyframes mercuryTypingAnimation{
-0%{
-  -webkit-transform:translateY(0px)
-}
-28%{
-  -webkit-transform:translateY(-5px)
-}
-44%{
-  -webkit-transform:translateY(0px)
-}
+@-webkit-keyframes mercuryTypingAnimation {
+  0% {
+    -webkit-transform: translateY(0px);
+  }
+  28% {
+    -webkit-transform: translateY(-5px);
+  }
+  44% {
+    -webkit-transform: translateY(0px);
+  }
 }
 
-.tidot:nth-child(1){
--webkit-animation-delay:200ms;
+.tidot:nth-child(1) {
+  -webkit-animation-delay: 200ms;
 }
-.tidot:nth-child(2){
--webkit-animation-delay:300ms;
+.tidot:nth-child(2) {
+  -webkit-animation-delay: 300ms;
 }
-.tidot:nth-child(3){
--webkit-animation-delay:400ms;
+.tidot:nth-child(3) {
+  -webkit-animation-delay: 400ms;
 }
 /* end of facebook typing indicator */
 .typing {
@@ -111,6 +117,12 @@ export default {
   }
   100% {
     width: 13ch;
+  }
+}
+
+@media (max-width: 425px) {
+  .tiblock {
+    width: 16%;
   }
 }
 /* End of Animated Typing Style */

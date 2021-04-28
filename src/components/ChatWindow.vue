@@ -114,7 +114,7 @@ import getTypeStatus from "../composable/getTypeStatus";
 export default {
   components: { Dialog, Button, Chip, ScrollPanel },
   setup() {
-    const { error, documents, esourceList } = getCollection("users");
+    const { error, documents, esourceList } = getCollection("messages");
 
     const displayConfirmation = ref(false);
 

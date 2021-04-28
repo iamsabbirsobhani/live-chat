@@ -29,41 +29,70 @@ const getCollection = (collection) => {
         // experimental code
 
         const nextCollection = async () => {
-            const next = await collectionRef.get()
+            var res = []
+            var newres = []
+            const snapshot = await collectionRef.get()
 
-            let lastVisible = next.docs[next.docs.length-1]
+            let last = snapshot.docs[snapshot.docs.length - 1]
 
-            lastVisible.onSnapshot((snap) => {
-                let res = []
+            // next.onSnapshot((snap) => {
+            //     let res = []
 
-                snap.docs.forEach(doc => {
-                    doc.data().createdAt && res.push({
-                        ...doc.data(),
-                        id: doc.id
+            //     snap.docs.forEach(doc => {
+            //         doc.data().createdAt && res.push({
+            //             ...doc.data(),
+            //             id: doc.id
+            //         })
+            //     })
+            // })
+
+            const next = projectFirestore
+                .collection('users').doc('chat').collection('chat')
+                .orderBy('createdAt', 'desc')
+                .startAfter(last.data().createdAt)
+                .limit(5);
+
+                next.onSnapshot((snap) => {
+
+                    snap.docs.forEach(doc => {
+                        doc.data().createdAt && res.push({
+                            ...doc.data(),
+                            id: doc.id
+                        })
                     })
+
+
+                    res.reverse()
+
+                    newres = res.concat(res, results)
+
+                    console.log('last', newres)
+                    documents.value = newres
+
                 })
-            })
 
-
-            console.log('last', res)
-        }
-        nextCollection()
+            }
+        // nextCollection()
+        // nextCollection()
 
         // end of  experimental code
+
 
         results.reverse()
 
         documents.value = results
+
+
         error.value = null
         // console.log(documents.value[1].imgUrl)
 
 
         // element-plus Image Preview
 
-        const sourceList = results.filter((img) =>{
+        const sourceList = results.filter((img) => {
             return img.imgUrl;
         });
-        const newSourceList = sourceList.map((img) =>{
+        const newSourceList = sourceList.map((img) => {
             return img.imgUrl;
         });
         esourceList.value = newSourceList

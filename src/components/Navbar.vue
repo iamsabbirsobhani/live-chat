@@ -10,7 +10,9 @@
     <div>
       <p>
         <!-- <span class="dname">{{ user.displayName }} </span> -->
-        <Chip :label="user.displayName" icon="pi pi-user" />
+        <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: { id: user.uid}}">
+        <Chip :label="user.displayName" icon="pi pi-user"/>
+        </router-link>
       </p>
       <p >Currently logged in as <span class="email"> {{ user.email }} </span></p>
     </div>
@@ -115,6 +117,7 @@ import Menu from "primevue/menu";
 import useLogout from "../composable/useLogout";
 import getUser from "../composable/getUser";
 import deleteCollection from "@/composable/delChat.js";
+import getProfile from "@/composable/getProfile.js";
 import Chip from 'primevue/chip';
 
 export default {
@@ -127,6 +130,7 @@ export default {
     const chatDelConfirmation = ref(false);
     const toast = useToast();
     const menu = ref();
+
     const items = ref([
       {
         label: "Options",

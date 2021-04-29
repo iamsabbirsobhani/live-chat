@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Welcome from '../views/Welcome.vue'
 import Chatroom from '../views/Chatroom.vue'
 import Profile from '../components/Profile.vue'
+import UserList from '../components/UserList.vue'
+import EditProfile from '../components/EditProfile.vue'
+import Home from '../components/Home.vue'
 import { projectAuth } from '../firebase/config'
 
 
@@ -27,7 +30,7 @@ const requiredNoAuth = (to, from, next) => {
   let user = projectAuth.currentUser
 
   if(user){
-    next({ name: 'Chatroom' })
+    next({ name: 'Home' })
   } else {
     next()
   }
@@ -52,7 +55,29 @@ const routes = [
   {
     path: '/profile/:id',
     name: "Profile",
-    component: Profile
+    component: Profile,
+    props: true
+  },
+  {
+    path: '/profile/:id/editprofile',
+    name: "EditProfile",
+    component: EditProfile,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/userlist',
+    name: "UserList",
+    component: UserList,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/home',
+    name: "Home",
+    component: Home,
+    beforeEnter: requiredAuth,
+    props: true
   }
 ]
 

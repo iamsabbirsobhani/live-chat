@@ -1,6 +1,7 @@
 <template>
   <div class="chat-window">
     <div v-if="error">{{ error }}</div>
+    <el-skeleton :rows="9" animated  v-if="!documents"/>
     <div v-if="documents" ref="messages" class="messages">
       <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
         <!-- self user -->

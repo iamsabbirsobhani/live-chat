@@ -76,7 +76,7 @@ export default {
     };
 
     const chatroom = () => {
-      router.push({ name: "Chatroom" });
+      router.push({ name: "Home" });
     };
 
     return {

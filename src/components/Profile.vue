@@ -55,7 +55,7 @@
       <div class="info">
         <el-skeleton :rows="1" v-if="!info.userName" animated />
         <h3 v-else>{{ info.userName }}</h3>
-        <p style="line-height: 1.2;">{{ info.bio }}</p>
+        <p style="line-height: 1.2">{{ info.bio }}</p>
         <!-- <p>id is: {{ id }}</p> -->
       </div>
     </div>
@@ -82,9 +82,7 @@
       placeholder="Express your mind?"
       v-model="input"
     ></el-input>
-    <el-button v-if="isLoading" type="primary" :loading="true"
-      ></el-button
-    >
+    <el-button v-if="isLoading" type="primary" :loading="true"></el-button>
     <el-button
       v-else
       @click="post"
@@ -147,7 +145,17 @@ export default {
       router.push({ name: "Home" });
     };
 
-    return { info, chatroom, editProfile, user, UserList, input, post, isLoading, home };
+    return {
+      info,
+      chatroom,
+      editProfile,
+      user,
+      UserList,
+      input,
+      post,
+      isLoading,
+      home,
+    };
   },
 };
 </script>
@@ -199,8 +207,8 @@ export default {
 }
 .add-info {
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: space-around;
+  // align-items: center;
   max-width: 600px;
   margin: auto;
 }
@@ -230,5 +238,33 @@ export default {
   max-width: 300px;
   max-height: 200px;
   margin: 10px auto;
+}
+
+@media (max-width: 425px) {
+  .place {
+    max-width: 150px;
+    word-wrap: break-word;
+    padding: 5px;
+  }
+
+  .profession {
+    max-width: 150px;
+    word-wrap: break-word;
+    padding: 5px;
+
+  }
+
+  .interest {
+    max-width: 150px;
+    word-wrap: break-word;
+    padding: 5px;
+
+  }
+  .add-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    max-width: 320px;
+  }
 }
 </style>>

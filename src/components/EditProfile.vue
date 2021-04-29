@@ -3,14 +3,14 @@
   <h4 style="text-align: center;">Input All the fields</h4>
   <form @submit.prevent="submitForm">
     <label for="bio" >Bio:</label>
-    <el-input maxlength="100" show-word-limit placeholder="Please input bio" v-model="bio" type="text" name="bio" required></el-input>
+    <el-input maxlength="100" show-word-limit placeholder="Please enter a short bio" v-model="bio" type="text" name="bio" required></el-input>
     <!-- <input v-model="bio" type="text" name="bio" required/> -->
     <label for="location">Location:</label>
-    <el-input placeholder="Please enter location" v-model="location" type="text" name="location" required></el-input>
+    <el-input  maxlength="17" show-word-limit placeholder="Please enter location" v-model="location" type="text" name="location" required></el-input>
     <label for="profession">Profession:</label>
-    <el-input placeholder="Please enter your profession" v-model="profession" type="text" name="profession" required></el-input>
+    <el-input maxlength="18" show-word-limit placeholder="Please enter your profession" v-model="profession" type="text" name="profession" required></el-input>
     <label for="interest">Currently hacking on?</label>
-    <el-input placeholder="Please enter currently what are you on" v-model="interest" type="text" name="interest" required></el-input>
+    <el-input maxlength="15" show-word-limit placeholder="Please enter currently what are you on" v-model="interest" type="text" name="interest" required></el-input>
     <label for="coverphoto">Cover Photo:</label>
 
     <div class="coverfiles">

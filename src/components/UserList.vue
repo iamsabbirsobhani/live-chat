@@ -58,7 +58,7 @@ export default {
 }
 .title {
     font-size: 12px;
-    margin: 10px;
+    /* margin: 10px; */
 }
 
   .name {
@@ -68,6 +68,10 @@ export default {
 }
 .name h4{
     margin-left: 10px;
+}
+p{
+  margin: 0px;
+  padding: 0px;
 }
 
 @media (max-width: 425px) {

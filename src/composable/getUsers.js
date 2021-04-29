@@ -13,7 +13,7 @@ const getUsers = () => {
     const documents = ref(null)
     const error = ref(null)
 
-    console.log(user.value.uid)
+    // console.log(user.value.uid)
 
     let collectionRef = projectFirestore.collection('profiles')
     // we can only add "custom id" documents under a "collection"
@@ -30,7 +30,7 @@ const getUsers = () => {
 
         documents.value = results
 
-        console.log(document.value)
+        // console.log(documents.value)
         error.value = null
 
     }, (err) => {

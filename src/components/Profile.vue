@@ -34,6 +34,12 @@
                 icon="el-icon-edit-outline"
                 >Edit Profile</el-dropdown-item
               >
+              <el-dropdown-item
+                v-if="id == user.uid"
+                @click="photos"
+                icon="el-icon-picture-outline"
+                >Cover & Profile Photos</el-dropdown-item
+              >
               <el-dropdown-item @click="UserList" icon="el-icon-user"
                 >User List</el-dropdown-item
               >
@@ -92,26 +98,59 @@
     ></el-button>
   </div>
 
-  <div v-if="info.post" class="post">
-    <el-card shadow="always">
-      <p>{{ info.post }}</p>
+  <!-- status -->
+  <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
+    <el-card v-if="doc.post" shadow="always">
+      <div class="name">
+        <el-avatar :size="40">
+          <img :src="doc.dp" />
+        </el-avatar>
+        <div class="nameDate">
+          <h3>{{ doc.userName }}</h3>
+          <p class="date">{{ doc.createdAt }}</p>
+        </div>
+        <div class="delbtn">
+          <Button
+            v-if="user.uid == doc.userId"
+            icon="pi pi pi-times"
+            @click="deleteDoc(doc.id)"
+            style="color: red"
+            class="p-button-rounded p-button-danger p-button-outlined"
+          />
+        </div>
+      </div>
+      <p class="post">{{ doc.post }}</p>
     </el-card>
+    <h3 v-else>Nothing</h3>
   </div>
+  <!-- status -->
 </template>
 
 <script>
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { format } from "date-fns";
+
+import Button from "primevue/button";
+
 import getUser from "@/composable/getUser.js";
-import userStatus from "@/composable/userStatus.js";
+import userPost from "@/composable/userPost.js";
+import getPosts from "@/composable/getPosts.js";
+import { timestamp } from "../firebase/config";
+
+import delPost from "@/composable/delPost.js";
+
 export default {
   props: ["id"],
+  components: { Button },
   setup(props) {
     const { user } = getUser();
     const { info } = getProfile("profiles", props.id);
-    const { addDoc } = userStatus();
+    const { addPost } = userPost(props.id);
+    const { status } = getPosts("posts", props.id);
     const router = useRouter();
+    const { docDel } = delPost();
 
     const isLoading = ref(false);
 
@@ -120,8 +159,14 @@ export default {
     const post = async () => {
       isLoading.value = true;
       if (input.value) {
-        await addDoc(props.id, {
+        await addPost({
+          userName: user.value.displayName,
+          dp: info.value.phofilePhoto,
+          userId: props.id,
           post: input.value,
+          like: 0,
+          likeId: [],
+          createdAt: timestamp(),
         });
       } else {
         console.log("Empty");
@@ -129,6 +174,15 @@ export default {
       input.value = null;
       isLoading.value = false;
     };
+
+    const formattedDocuments = computed(() => {
+      if (status.value) {
+        return status.value.map((doc) => {
+          let time = format(doc.createdAt.toDate(), "PPPPp");
+          return { ...doc, createdAt: time };
+        });
+      }
+    });
 
     const chatroom = () => {
       router.push({ name: "Chatroom" });
@@ -144,6 +198,14 @@ export default {
     const home = () => {
       router.push({ name: "Home" });
     };
+    const photos = () => {
+      router.push({ name: "UpdateCoverAndDP" });
+    };
+
+    const deleteDoc = async (id) => {
+      console.log(id);
+      await docDel(id);
+    };
 
     return {
       info,
@@ -155,6 +217,10 @@ export default {
       post,
       isLoading,
       home,
+      status,
+      formattedDocuments,
+      deleteDoc,
+      photos,
     };
   },
 };
@@ -226,7 +292,6 @@ export default {
 
 .status {
   display: flex;
-  /* margin-top: 300px; */
   max-width: 300px;
   margin: 5px auto;
   .el-button {
@@ -234,11 +299,41 @@ export default {
     height: 25px;
   }
 }
+
+// status card
+.postcard {
+  max-width: 500px;
+  margin: 20px auto;
+}
+
 .post {
   max-width: 300px;
   max-height: 200px;
-  margin: 10px auto;
 }
+
+.nameDate {
+  line-height: 0.5;
+  align-self: center;
+  color: #004f89;
+}
+.nameDate h3 {
+  margin: 10px;
+}
+
+.date {
+  font-size: 10px;
+  margin: 10px;
+}
+.name {
+  display: flex;
+  align-items: center;
+}
+/* New Tricks: On display flex, if its item(child) set margin-left: auto;
+it will be positioned auto left */
+.delbtn {
+  margin-left: auto;
+}
+// status card
 
 @media (max-width: 425px) {
   .place {
@@ -251,19 +346,20 @@ export default {
     max-width: 150px;
     word-wrap: break-word;
     padding: 5px;
-
   }
 
   .interest {
     max-width: 150px;
     word-wrap: break-word;
     padding: 5px;
-
   }
   .add-info {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
+    max-width: 320px;
+  }
+  .postcard {
     max-width: 320px;
   }
 }

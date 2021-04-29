@@ -8,9 +8,7 @@ import {
 
 const getPosts = (collection, id) => {
     const status = ref('')
-    const statusHome = ref('')
 
-    // let collectionRef = projectFirestore.collection(collection).doc(id).collection('posts')
     let collectionRef = projectFirestore.collection(collection).orderBy('createdAt', 'desc')
 
 
@@ -24,21 +22,12 @@ const getPosts = (collection, id) => {
                     })
                 })
 
-                const newUser = results.filter((user) => {
-                    return user.userId == id
-                })
-
-                status.value = newUser
-
-                statusHome.value = results
-
-                // console.log(results)
-                // console.log(statusHome.value)
+                status.value = results
+                console.log(results)
             })
 
     return {
         status,
-        statusHome
     }
 }
 export default getPosts

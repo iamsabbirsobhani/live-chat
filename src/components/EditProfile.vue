@@ -11,57 +11,6 @@
     <el-input maxlength="18" show-word-limit placeholder="Please enter your profession" v-model="profession" type="text" name="profession" required></el-input>
     <label for="interest">Currently hacking on?</label>
     <el-input maxlength="15" show-word-limit placeholder="Please enter currently what are you on" v-model="interest" type="text" name="interest" required></el-input>
-    <label for="coverphoto">Cover Photo:</label>
-
-    <div class="coverfiles">
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="handleAvatarSuccess"
-          accept="image/*"
-          :auto-upload="false"
-          :limit="1"
-        >
-          <el-button
-            class="upbutton"
-            icon="el-icon-plus"
-            size="small"
-            type="primary"
-          ></el-button>
-          <!-- <template #tip>
-            <div class="el-upload__tip">
-              jpg/png files with a size less than 500kb
-            </div>
-          </template> -->
-        </el-upload>
-      </div>
-
-
-
-    <!-- <input accept="image/*" type="file" @change="handleChangeCover" name="coverphoto" required/> -->
-    <label  for="profilephoto">Profile Photo:</label>
-    <div class="coverfiles">
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="handleChangeProfile"
-          accept="image/*"
-          :auto-upload="false"
-          :limit="1"
-        >
-          <el-button
-            class="upbutton"
-            icon="el-icon-plus"
-            size="small"
-            type="primary"
-          ></el-button>
-          <!-- <template #tip>
-            <div class="el-upload__tip">
-              jpg/png files with a size less than 500kb
-            </div>
-          </template> -->
-        </el-upload>
-      </div>
 
     <el-button class="button" v-if="isLoading" type="primary" :loading="isLoading">Loading</el-button>
     <el-button class="button" v-else type="primary" native-type="submit">Change Edit</el-button>
@@ -71,7 +20,6 @@
 
 <script>
 import { ref } from "vue";
-import userProfileStorage from "@/composable/userProfileStorage.js";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import getUser from "@/composable/getUser.js";
@@ -82,8 +30,6 @@ export default {
   setup(props) {
     const { user } = getUser();
 
-    const { urlCover, urlProfile, error, uploadImage } = userProfileStorage();
-
     const { addDoc } = userEditProfileInfo();
 
     const router = useRouter();
@@ -92,8 +38,6 @@ export default {
     const location = ref(null);
     const profession = ref(null);
     const interest = ref(null);
-    const coverUrl = ref(null);
-    const profileUrl = ref(null);
     const fileError = ref("");
 
     const isLoading = ref(false);
@@ -101,11 +45,7 @@ export default {
     const submitForm = async () => {
       isLoading.value = true;
 
-      await uploadImage(coverUrl.value, profileUrl.value);
-
       await addDoc(props.id, {
-        coverPhoto: urlCover.value,
-        phofilePhoto: urlProfile.value,
         bio: bio.value,
         location: location.value,
         profession: profession.value,
@@ -118,12 +58,6 @@ export default {
       // console.log(bio.value, location.value, profession.value, interest.value)
     };
 
-    const handleAvatarSuccess = (file) => {
-      coverUrl.value = file.raw
-    };
-    const handleChangeProfile = (file) => {
-      profileUrl.value = file.raw
-    };
 
     const goBack = () => {
       router.push({ name: 'Profile' })
@@ -135,10 +69,8 @@ export default {
       profession,
       interest,
       submitForm,
-      handleChangeProfile,
       isLoading,
       goBack,
-      handleAvatarSuccess
     };
   },
 };

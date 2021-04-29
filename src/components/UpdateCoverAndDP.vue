@@ -1,0 +1,159 @@
+<template>
+  <el-page-header
+    style="margin: 10px"
+    class="pghd"
+    @back="goBack"
+    content="Profile"
+  >
+  </el-page-header>
+
+  <el-card shadow="always" class="card">
+      <h3 style="text-align: center;">Add Cover And Profile Photos</h3>
+    <form @submit.prevent="submitForm">
+      <label for="coverphoto">Cover Photo:</label>
+      <div class="coverfiles">
+        <el-upload
+          class="upload-demo"
+          action="#"
+          :on-change="handleAvatarSuccess"
+          accept="image/*"
+          :auto-upload="false"
+          :limit="1"
+        >
+          <el-button
+            class="upbutton"
+            icon="el-icon-plus"
+            size="small"
+            type="primary"
+          ></el-button>
+          <!-- <template #tip>
+            <div class="el-upload__tip">
+              jpg/png files with a size less than 500kb
+            </div>
+          </template> -->
+        </el-upload>
+      </div>
+
+      <!-- <input accept="image/*" type="file" @change="handleChangeCover" name="coverphoto" required/> -->
+      <label for="profilephoto">Profile Photo:</label>
+      <div class="coverfiles">
+        <el-upload
+          class="upload-demo"
+          action="#"
+          :on-change="handleChangeProfile"
+          accept="image/*"
+          :auto-upload="false"
+          :limit="1"
+        >
+          <el-button
+            class="upbutton"
+            icon="el-icon-plus"
+            size="small"
+            type="primary"
+          ></el-button>
+          <!-- <template #tip>
+            <div class="el-upload__tip">
+              jpg/png files with a size less than 500kb
+            </div>
+          </template> -->
+        </el-upload>
+      </div>
+      <div class="buttonwrapper">
+      <el-button
+        class="button"
+        v-if="isLoading"
+        type="primary"
+        :loading="isLoading"
+        >Loading</el-button
+      >
+      <el-button class="button" v-else type="primary" native-type="submit"
+        >Upload</el-button
+      >
+      </div>
+    </form>
+  </el-card>
+</template>
+
+<script>
+import { ref } from "vue";
+import userProfileStorage from "@/composable/userProfileStorage.js";
+import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
+import { useRouter } from "vue-router";
+export default {
+  props: ["id"],
+  setup(props) {
+    const coverUrl = ref(null);
+    const profileUrl = ref(null);
+    const isLoading = ref(false);
+
+    const { urlCover, urlProfile, error, uploadImage } = userProfileStorage();
+    const { addDoc } = userEditProfileInfo();
+    const router = useRouter();
+
+    const submitForm = async () => {
+      if (coverUrl.value && profileUrl.value) {
+        isLoading.value = true;
+
+        await uploadImage(coverUrl.value, profileUrl.value);
+
+        await addDoc(props.id, {
+          coverPhoto: urlCover.value,
+          phofilePhoto: urlProfile.value,
+        });
+      router.push({ name: "Profile" });
+      }
+      isLoading.value = false;
+
+
+      // console.log(bio.value, location.value, profession.value, interest.value)
+    };
+
+    const handleAvatarSuccess = (file) => {
+      coverUrl.value = file.raw;
+    };
+    const handleChangeProfile = (file) => {
+      profileUrl.value = file.raw;
+    };
+
+    const goBack = () => {
+      router.push({ name: "Profile" });
+    };
+
+    return {
+      handleAvatarSuccess,
+      handleChangeProfile,
+      submitForm,
+      isLoading,
+      goBack,
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.card {
+  margin: 20px auto;
+  max-width: 400px;
+}
+label{
+    display: block;
+    margin: 10px;
+    margin-left: 0px;
+}
+.upbutton {
+    width: 100px;
+}
+.button {
+    margin: 50px;
+    margin-bottom: 10px;
+}
+.buttonwrapper{
+    text-align: center;
+}
+@media (max-width: 425px) {
+  .card {
+    margin: 20px auto;
+    max-width: 320px;
+  }
+}
+</style>

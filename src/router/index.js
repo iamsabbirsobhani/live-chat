@@ -4,6 +4,7 @@ import Chatroom from '../views/Chatroom.vue'
 import Profile from '../components/Profile.vue'
 import UserList from '../components/UserList.vue'
 import EditProfile from '../components/EditProfile.vue'
+import UpdateCoverAndDP from '../components/UpdateCoverAndDP.vue'
 import Home from '../components/Home.vue'
 import { projectAuth } from '../firebase/config'
 
@@ -76,6 +77,13 @@ const routes = [
     path: '/home',
     name: "Home",
     component: Home,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/profile/:id/updatecoveranddp',
+    name: "UpdateCoverAndDP",
+    component: UpdateCoverAndDP,
     beforeEnter: requiredAuth,
     props: true
   }

@@ -3,14 +3,7 @@
     <div class="profile-card">
       <div class="cover">
         <el-empty v-if="!info.coverPhoto" description=" "></el-empty>
-
         <img v-else class="cover-photo" :src="info.coverPhoto" alt="cover" />
-        <!-- <el-image
-                class="cover-photo"
-      style=" width: 100%; height: 100%"
-      :src="srcTwo"
-      :fit="fit">
-      </el-image> -->
       </div>
       <div class="button-group">
         <el-dropdown trigger="click">
@@ -48,9 +41,6 @@
         </el-dropdown>
       </div>
       <div class="profile-photo-container">
-        <!-- <img class="profile-photo" src="../assets/profile2.jpg" alt="cover"> -->
-        <!-- <el-empty v-if="!info.phofilePhoto" description="empty"></el-empty> -->
-
         <el-avatar
           shape="square"
           :size="100"
@@ -62,7 +52,6 @@
         <el-skeleton :rows="1" v-if="!info.userName" animated />
         <h3 v-else>{{ info.userName }}</h3>
         <p style="line-height: 1.2">{{ info.bio }}</p>
-        <!-- <p>id is: {{ id }}</p> -->
       </div>
     </div>
   </div>
@@ -120,7 +109,9 @@
         </div>
       </div>
       <p class="post">{{ doc.post }}</p>
+
       <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
+
       <p class="postReact" v-if="doc.dislike > 0">Disliked by {{ doc.dislike }}</p>
     </el-card>
     <h3 v-else>Nothing</h3>

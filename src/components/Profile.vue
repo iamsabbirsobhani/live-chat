@@ -120,6 +120,7 @@
         </div>
       </div>
       <p class="post">{{ doc.post }}</p>
+      <p class="postReact" v-if="doc.like > 0">loved by {{ doc.like }}</p>
     </el-card>
     <h3 v-else>Nothing</h3>
   </div>
@@ -340,6 +341,11 @@ it will be positioned auto left */
 .delbtn {
   margin-left: auto;
 }
+
+.postReact{
+  color: rgb(121, 121, 121);
+  font-size: 13px;
+}
 // status card
 
 @media (max-width: 425px) {
@@ -369,5 +375,9 @@ it will be positioned auto left */
   .postcard {
     max-width: 320px;
   }
+  .postReact{
+  color: rgb(121, 121, 121);
+  font-size: 14px;
+}
 }
 </style>>

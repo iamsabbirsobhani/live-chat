@@ -1,7 +1,7 @@
 <template>
   <el-page-header style="margin: 10px" @back="goBack" content="Profile">
   </el-page-header>
-  <h1 style="text-align: center">Home</h1>
+  <h1 style="text-align: center; font-size: 25px;">Home</h1>
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
     <el-card v-if="doc.post" shadow="always">
       <router-link
@@ -22,8 +22,8 @@
       <div class="feeling">
       <Button
         @click="like(doc.id, user.uid)"
-        icon="pi pi-thumbs-up"
-        class="p-button-rounded p-button-text"
+        icon="pi pi-heart" style="color: red"
+        class="p-button-rounded p-button-danger p-button-text"
       />
       <p>{{ doc.like }}</p>
       <!-- <Button

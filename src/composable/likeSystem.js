@@ -47,25 +47,38 @@ const likeSystem = () => {
                             likeId: thisLikeId
                         }
                         await projectFirestore.collection('posts').doc(id).update(doc);
-                    } else if (newDislikeID[0] && thisDislike > 0) {
-                        thisLike += 1;
-                        thisDislike += -1;
+                    }
 
-                        thisLikeId.push(reacterId)
+                    // ⚠
+                    // This block was written in order to check if the user
+                    // has already given a dislike to that post, and to remove that
+                    // dislike, remove that dislike id and add like, likeid to the post
+                    // but it is faulty need to be checked deeply
 
-                        let index = thisDislikeId.indexOf(newDislikeID[0], 0)
+                    // else if (newDislikeID[0] && thisDislike > 0) {
+                    //     thisLike += 1;
+                    //     thisDislike += -1;
 
-                        thisDislikeId.splice(index, 1)
+                    //     thisLikeId.push(reacterId)
 
-                        const docs = {
-                            like: thisLike,
-                            dislike: thisDislike,
-                            likeId: thisLikeId,
-                            dislikeId: thisDislikeId
-                        }
-                        await projectFirestore.collection('posts').doc(id).update(docs);
-                    } else {
+                    //     let index = thisDislikeId.indexOf(newDislikeID[0], 0)
+
+                    //     thisDislikeId.splice(index, 1)
+
+                    //     const docs = {
+                    //         like: thisLike,
+                    //         dislike: thisDislike,
+                    //         likeId: thisLikeId,
+                    //         dislikeId: thisDislikeId
+                    //     }
+                    //     await projectFirestore.collection('posts').doc(id).update(docs);
+                    // }
+                    else {
                         console.log('Already Liked 👍')
+
+                        // ⚠
+                        // abnormal behaviour, this block is firing even
+                        // for the first like of an user!
                     }
                 } catch (err) {
                     console.log(err)
@@ -73,9 +86,6 @@ const likeSystem = () => {
                 }
             }
             updateReact()
-
-        // return updateReact
-        // console.log(react.value)
     });
     }
     return {

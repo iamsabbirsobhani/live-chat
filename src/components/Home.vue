@@ -21,13 +21,13 @@
       <p class="post">{{ doc.post }}</p>
       <div class="feeling">
       <Button
-        @click="like(doc.id, user.uid)"
+        @click.stop="like(doc.id, user.uid)"
         icon="pi pi-heart" style="color: red"
         class="p-button-rounded p-button-danger p-button-text"
       />
       <p>{{ doc.like }}</p>
       <!-- <Button
-        @click="dislike(doc.id, user.uid)"
+        @click.stop="dislike(doc.id, user.uid)"
         style="color: red"
         icon="pi pi-thumbs-down"
         class="p-button-rounded p-button-text"

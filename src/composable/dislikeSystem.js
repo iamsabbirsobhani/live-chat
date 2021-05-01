@@ -1,3 +1,9 @@
+
+
+// ⚠
+// imperfect code or logic or not working specifically on firebase,
+// its need to be deeply recheked before implement for production.
+
 import {
     projectFirestore
 } from '@/firebase/config.js'
@@ -85,5 +91,3 @@ const dislikeSystem = () => {
 }
 
 export default dislikeSystem
-
-// need toggle swith/butto to like and remove like features simultineously

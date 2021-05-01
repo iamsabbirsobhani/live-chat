@@ -165,7 +165,9 @@ export default {
           userId: props.id,
           post: input.value,
           like: 0,
+          dislike: 0,
           likeId: [],
+          dislikeId: [],
           createdAt: timestamp(),
         });
       } else {
@@ -230,7 +232,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 .profile {
-  /* font-family: 'Roboto', sans-serif; */
+  //  font-family: 'Roboto', sans-serif;
   font-family: "Montserrat", sans-serif;
   margin-bottom: 180px;
 }
@@ -304,6 +306,9 @@ export default {
 .postcard {
   max-width: 500px;
   margin: 20px auto;
+   font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+
 }
 
 .post {

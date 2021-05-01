@@ -100,7 +100,8 @@ export default {
   margin: 10px auto;
 }
 .post {
-  font-size: 15px;
+    font-size: 16px;
+
   // font-family: "Montserrat", sans-serif;
   font-family: 'Roboto', sans-serif;
 
@@ -123,6 +124,7 @@ export default {
 .date {
   font-size: 10px;
   margin: 10px;
+  color: rgba(0, 80, 137, 0.829);
 }
 
 .feeling {

@@ -314,6 +314,7 @@ export default {
 .post {
   max-width: 300px;
   max-height: 200px;
+  font-size: 16px;
 }
 
 .nameDate {
@@ -328,6 +329,7 @@ export default {
 .date {
   font-size: 10px;
   margin: 10px;
+    color: rgba(0, 80, 137, 0.829);
 }
 .name {
   display: flex;

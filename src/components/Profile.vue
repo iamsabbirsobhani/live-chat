@@ -317,7 +317,7 @@ export default {
 }
 
 .nameDate {
-  line-height: 0.5;
+  line-height: 0.7;
   align-self: center;
   color: #004f89;
 }

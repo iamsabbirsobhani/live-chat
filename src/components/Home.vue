@@ -22,17 +22,18 @@
       <div class="feeling">
       <Button
         @click.stop="like(doc.id, user.uid)"
-        icon="pi pi-heart" style="color: red"
-        class="p-button-rounded p-button-danger p-button-text"
+        icon="pi pi-thumbs-up"
+        class="p-button-rounded p-button-text"
       />
       <p>{{ doc.like }}</p>
-      <!-- <Button
+      <Button
         @click.stop="dislike(doc.id, user.uid)"
         style="color: red"
         icon="pi pi-thumbs-down"
-        class="p-button-rounded p-button-text"
+
+        class="p-button-rounded p-button-danger p-button-text"
       />
-      <p style="display: inline;">{{ doc.dislike }}</p> -->
+      <p style="display: inline;">{{ doc.dislike }}</p>
       </div>
     </el-card>
   </div>

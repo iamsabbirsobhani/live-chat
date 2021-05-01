@@ -8,17 +8,18 @@ import {
 const likeSystem = () => {
 
     const likePost = (id, reacterId) => {
-        const react = ref('')
         const error = ref(null)
         const collectionRef = projectFirestore.collection('posts').doc(id)
 
-        collectionRef.onSnapshot((doc) => {
-            if (doc.data()) {
-                react.value = {
-                    ...doc.data()
-                }
+        const updateReact = async () => {
+            const react = ref('')
+
+            const doc = await collectionRef.get()
+
+            if (!doc.exists) {
+                console.log('No such document!');
             } else {
-                react.value = null
+                react.value = doc.data()
             }
 
             let thisLike = react.value.like
@@ -36,57 +37,58 @@ const likeSystem = () => {
                 return lid === reacterId
             })
 
-            const updateReact = async () => {
-                error.value = null
-                try {
-                     if (!newLikeID[0] && !newDislikeID[0]) {
-                        thisLike += 1;
-                        thisLikeId.push(reacterId)
+            error.value = null
+            try {
+                if (!newLikeID[0] && !newDislikeID[0]) {
+                    thisLike += 1;
+                    thisLikeId.push(reacterId)
+                    const doc = {
+                        like: thisLike,
+                        likeId: thisLikeId
+                    }
+
+                    await projectFirestore.collection('posts').doc(id).update(doc);
+                } else if (newDislikeID[0] && thisDislike > 0) {
+                    thisLike += 1;
+                    thisDislike += -1;
+
+                    thisLikeId.push(reacterId)
+
+                    let index = thisDislikeId.indexOf(newDislikeID[0], 0)
+
+                    thisDislikeId.splice(index, 1)
+
+                    const docs = {
+                        like: thisLike,
+                        dislike: thisDislike,
+                        likeId: thisLikeId,
+                        dislikeId: thisDislikeId
+                    }
+                    await projectFirestore.collection('posts').doc(id).update(docs);
+                } else {
+
+                    if (thisLike > 0) {
+
+                        thisLike += -1;
+
+                        let index = thisLikeId.indexOf(newLikeID[0], 0)
+
+                        thisLikeId.splice(index, 1)
                         const doc = {
                             like: thisLike,
                             likeId: thisLikeId
                         }
+
                         await projectFirestore.collection('posts').doc(id).update(doc);
                     }
-
-                    // ⚠
-                    // This block was written in order to check if the user
-                    // has already given a dislike to that post, and to remove that
-                    // dislike, remove that dislike id and add like, likeid to the post
-                    // but it is faulty need to be checked deeply
-
-                    // else if (newDislikeID[0] && thisDislike > 0) {
-                    //     thisLike += 1;
-                    //     thisDislike += -1;
-
-                    //     thisLikeId.push(reacterId)
-
-                    //     let index = thisDislikeId.indexOf(newDislikeID[0], 0)
-
-                    //     thisDislikeId.splice(index, 1)
-
-                    //     const docs = {
-                    //         like: thisLike,
-                    //         dislike: thisDislike,
-                    //         likeId: thisLikeId,
-                    //         dislikeId: thisDislikeId
-                    //     }
-                    //     await projectFirestore.collection('posts').doc(id).update(docs);
-                    // }
-                    else {
-                        console.log('Already Liked 👍')
-
-                        // ⚠
-                        // abnormal behaviour, this block is firing even
-                        // for the first like of an user!
-                    }
-                } catch (err) {
-                    console.log(err)
-                    error.value = 'Could not send the message'
                 }
+            } catch (err) {
+
+                console.log(err)
+                error.value = 'Could not send the message'
             }
-            updateReact()
-    });
+        }
+        updateReact()
     }
     return {
         likePost,

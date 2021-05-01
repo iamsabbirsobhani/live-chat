@@ -120,7 +120,8 @@
         </div>
       </div>
       <p class="post">{{ doc.post }}</p>
-      <p class="postReact" v-if="doc.like > 0">loved by {{ doc.like }}</p>
+      <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
+      <p class="postReact" v-if="doc.dislike > 0">Disliked by {{ doc.dislike }}</p>
     </el-card>
     <h3 v-else>Nothing</h3>
   </div>

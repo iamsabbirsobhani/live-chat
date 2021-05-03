@@ -1,9 +1,25 @@
 <template>
-  <el-page-header style="margin: 10px" @back="goBack" content="Profile">
-  </el-page-header>
-  <h1 style="text-align: center; font-size: 25px">Home</h1>
+  <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo"
+    mode="horizontal"
+    @select="handleSelect"
+    style="font-family: Roboto, sans-serif; "
+  >
+    <el-tooltip class="item" effect="dark" content="Click on name to go profile" placement="right">
+    <el-menu-item index="1">
+      <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
+        {{ user.displayName }}
+      </router-link>
+    </el-menu-item>
+        </el-tooltip>
+  </el-menu>
+
+  <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
+  </el-page-header> -->
+  <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
-    <el-card v-if="doc.post" shadow="always">
+    <el-card v-if="doc.post" shadow="always" style="border-radius: 10px">
       <router-link
         style="text-decoration: none; margin: 0px"
         :to="{ name: 'Profile', params: { id: doc.userId } }"
@@ -47,14 +63,20 @@
           >
             Close
           </p>
+           <el-tooltip class="item" effect="dark" content="To see comments please close the other comment section" placement="top">
+          <div>
           <p
             style="cursor: text"
             v-if="closeComments && !(doc.id === seeCommentsDocId)"
           >
-            Close previous comment
+            See comments
           </p>
+          </div>
+            </el-tooltip>
         </div>
       </div>
+
+       <transition name="fade">
       <div
         class="comment-section"
         v-if="!seeComments && doc.id === seeCommentsDocId"
@@ -69,6 +91,8 @@
             <p class="commentDate" v-if="cmt.docId === doc.id">
               {{ cmt.createdAt }}
             </p>
+            <el-tooltip class="item" effect="dark" content="Delete Comment" placement="left">
+            <div style="margin-left: auto">
             <Button
               v-if="cmt.docId === doc.id && user.uid === cmt.userId"
               icon="pi pi pi-times"
@@ -76,6 +100,8 @@
               @click="deleteCmt(cmt.id)"
               class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
             />
+            </div>
+                </el-tooltip>
           </div>
           <p class="commentComment" v-if="cmt.docId === doc.id">
             {{ cmt.comment }}
@@ -84,14 +110,21 @@
 
         <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
         <div style="display: flex; flex-direction: column">
-          <InputText placeholder="Please enter comment" type="text" v-model.trim="comment" />
+          <InputText
+            placeholder="Please enter comment"
+            type="text"
+            v-model.trim="comment"
+          />
+           <el-button style="margin-top: 10px" class="button" v-if="isLoading" :loading="isLoading">Loading</el-button>
           <el-button
+          v-else
             @click="postComment(doc.id, user.displayName, user.uid)"
             style="margin-top: 10px"
             >Comment</el-button
           >
         </div>
       </div>
+        </transition>
       <!-- comments -->
     </el-card>
   </div>
@@ -120,6 +153,7 @@ export default {
     const { error, documents } = getUsers();
     const { statusHome } = getPosts("posts");
     const router = useRouter();
+    const isLoading = ref(false)
 
     // comment section
     const seeComments = ref(true);
@@ -167,6 +201,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
+      isLoading.value = true
       docsid.value = docId;
       const docs = {
         docId,
@@ -180,6 +215,7 @@ export default {
         await postComments(docs);
       }
       comment.value = null;
+      isLoading.value = false
     };
 
     const deleteCmt = async (id) => {
@@ -215,6 +251,7 @@ export default {
 
       deleteCmt,
       formattedComments,
+      isLoading
     };
   },
 };
@@ -223,6 +260,13 @@ export default {
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+.el-menu-demo{
+  a{
+  text-decoration: none;
+  font-size: 18px;
+  }
+}
+
 .postcard {
   max-width: 550px;
   margin: 10px auto;
@@ -310,6 +354,15 @@ export default {
     color: gray;
   }
 }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
 
 @media (max-width: 425px) {
   .postcard {

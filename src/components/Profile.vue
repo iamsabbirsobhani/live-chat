@@ -36,6 +36,9 @@
               <el-dropdown-item @click="UserList" icon="el-icon-user"
                 >User List</el-dropdown-item
               >
+              <el-dropdown-item @click="signout" icon="pi pi-sign-out"
+                >Log out</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -77,7 +80,7 @@
       placeholder="Express your mind?"
       v-model="input"
     ></el-input>
-    <el-button v-if="isLoading" type="primary" :loading="true"></el-button>
+    <el-button v-if="isLoadingStatus" type="primary" :loading="true"></el-button>
     <el-button
       v-else
       @click="post"
@@ -89,7 +92,7 @@
 
   <!-- status -->
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
-    <el-card v-if="doc.post" shadow="always">
+    <el-card v-if="doc.post" shadow="always" style="border-radius: 10px">
       <div class="name">
         <el-avatar :size="40">
           <img :src="doc.dp" />
@@ -98,15 +101,22 @@
           <h3>{{ doc.userName }}</h3>
           <p class="date">{{ doc.createdAt }}</p>
         </div>
-        <div class="delbtn">
-          <Button
-            v-if="user.uid == doc.userId"
-            icon="pi pi pi-times"
-            @click="deleteDoc(doc.id)"
-            style="color: red"
-            class="p-button-rounded p-button-danger p-button-outlined"
-          />
-        </div>
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="Delete Post"
+          placement="left"
+        >
+          <div class="delbtn">
+            <Button
+              v-if="user.uid == doc.userId"
+              icon="pi pi pi-times"
+              @click="deleteDoc(doc.id)"
+              style="color: red"
+              class="p-button-rounded p-button-danger p-button-outlined"
+            />
+          </div>
+        </el-tooltip>
       </div>
       <p class="post">{{ doc.post }}</p>
 
@@ -137,51 +147,78 @@
           >
             Close
           </p>
+      <el-tooltip class="item" effect="dark" content="To see comments please close the other comment section" placement="top">
+          <div>
           <p
             style="cursor: text"
             v-if="closeComments && !(doc.id === seeCommentsDocId)"
           >
-            Close previous comment
+            See comments
           </p>
-        </div>
-      </div>
-      <div
-        class="comment-section"
-        v-if="!seeComments && doc.id === seeCommentsDocId"
-      >
-        <p style="font-family: Roboto, sans-serif">Comments:</p>
-
-        <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
-          <div class="commentDes">
-            <p class="commentName" v-if="cmt.docId === doc.id">
-              {{ cmt.name }}
-            </p>
-            <p class="commentDate" v-if="cmt.docId === doc.id">
-              {{ cmt.createdAt }}
-            </p>
-            <Button
-              v-if="cmt.docId === doc.id && user.uid === cmt.userId"
-              icon="pi pi pi-times"
-              style="color: red; margin-left: auto"
-              @click="deleteCmt(cmt.id)"
-              class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
-            />
           </div>
-          <p class="commentComment" v-if="cmt.docId === doc.id">
-            {{ cmt.comment }}
-          </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column;">
-        <InputText placeholder="Please enter comment" type="text" v-model.trim="comment" />
-        <el-button
-          @click="postComment(doc.id, user.displayName, user.uid)"
-          style="margin-top: 10px"
-          >Comment</el-button
-        >
+      </el-tooltip>
         </div>
       </div>
-      <!-- end of comment section -->
+      <transition name="fade">
+        <div
+          class="comment-section"
+          v-if="!seeComments && doc.id === seeCommentsDocId"
+        >
+          <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+          <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+            <div class="commentDes">
+              <p class="commentName" v-if="cmt.docId === doc.id">
+                {{ cmt.name }}
+              </p>
+              <p class="commentDate" v-if="cmt.docId === doc.id">
+                {{ cmt.createdAt }}
+              </p>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Delete Comment"
+                placement="left"
+              >
+                <div style="margin-left: auto">
+                  <Button
+                    v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+                    icon="pi pi pi-times"
+                    style="color: red; margin-left: auto"
+                    @click="deleteCmt(cmt.id)"
+                    class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+                  />
+                </div>
+              </el-tooltip>
+            </div>
+            <p class="commentComment" v-if="cmt.docId === doc.id">
+              {{ cmt.comment }}
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column">
+            <InputText
+              placeholder="Please enter comment"
+              type="text"
+              v-model.trim="comment"
+            />
+            <el-button
+              style="margin-top: 10px"
+              class="button"
+              v-if="isLoadingCmt"
+              :loading="isLoading"
+              >Loading</el-button
+            >
+            <el-button
+              v-else
+              @click="postComment(doc.id, user.displayName, user.uid)"
+              style="margin-top: 10px"
+              >Comment</el-button
+            >
+          </div>
+        </div>
+        <!-- end of comment section -->
+      </transition>
     </el-card>
     <h3 v-else>Nothing</h3>
   </div>
@@ -202,7 +239,8 @@ import useComments from "@/composable/useComments.js";
 import getComments from "@/composable/getComments.js";
 import commentDelete from "@/composable/commentDelete.js";
 import delPost from "@/composable/delPost.js";
-import InputText from 'primevue/inputtext';
+import InputText from "primevue/inputtext";
+import useLogout from "../composable/useLogout";
 
 export default {
   props: ["id"],
@@ -214,6 +252,8 @@ export default {
     const { status } = getPosts("posts", props.id);
     const router = useRouter();
     const { docDel } = delPost();
+    const { logout, error } = useLogout();
+    const isLoadingCmt = ref(false)
 
     // comment section
     const seeComments = ref(true);
@@ -226,12 +266,12 @@ export default {
     const { commentDel } = commentDelete();
     // comment section
 
-    const isLoading = ref(false);
+    const isLoadingStatus = ref(false);
 
     const input = ref(null);
 
     const post = async () => {
-      isLoading.value = true;
+      isLoadingStatus.value = true;
       if (input.value) {
         await addPost({
           userName: user.value.displayName,
@@ -248,7 +288,7 @@ export default {
         console.log("Empty");
       }
       input.value = null;
-      isLoading.value = false;
+      isLoadingStatus.value = false;
     };
 
     const formattedDocuments = computed(() => {
@@ -283,6 +323,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
+      isLoadingCmt.value = true
       docsid.value = docId;
       const docs = {
         docId,
@@ -295,6 +336,7 @@ export default {
         await postComments(docs);
       }
       comment.value = null;
+      isLoadingCmt.value = false
     };
     // end of comment section
 
@@ -325,6 +367,14 @@ export default {
       await docDel(id);
     };
 
+    const signout = async () => {
+      await logout();
+      if (!error.value) {
+        console.log("Logged Out");
+      }
+      router.push({ name: "Welcome" });
+    };
+
     return {
       info,
       chatroom,
@@ -333,7 +383,7 @@ export default {
       UserList,
       input,
       post,
-      isLoading,
+      isLoadingStatus,
       home,
       status,
       formattedDocuments,
@@ -347,9 +397,11 @@ export default {
       closeComment,
       closeComments,
       postComment,
-
       deleteCmt,
       formattedComments,
+
+      signout,
+      isLoadingCmt
     };
   },
 };
@@ -491,9 +543,6 @@ it will be positioned auto left */
   color: #ff191f;
 }
 
-.comment-section {
-  font-family: "Roboto", sans-serif;
-}
 .commentDes {
   display: flex;
   align-items: center;
@@ -520,6 +569,16 @@ it will be positioned auto left */
   }
 }
 // end comments
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
 @media (max-width: 425px) {
   .place {

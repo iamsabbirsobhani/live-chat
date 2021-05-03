@@ -13,6 +13,7 @@
 html {
   /* background: white; */
   color: rgb(63, 63, 63);
+  /* color: rgb(255, 255, 255); */
   margin: 0px;
   /* background-color: #fd6e6e; */
   /* background: linear-gradient(90deg, rgba(33,144,255,0.8491771708683473) 0%, rgba(255,255,255,1) 100%); */
@@ -33,6 +34,7 @@ body {
   margin: 0;
   padding: 0;
   background: #fff;
+  /* background: rgb(48, 48, 48); */
 }
 
 </style>

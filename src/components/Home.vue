@@ -20,20 +20,79 @@
       </router-link>
       <p class="post">{{ doc.post }}</p>
       <div class="feeling">
-        <Button
-          @click.stop="like(doc.id, user.uid)"
-          icon="pi pi-thumbs-up"
-          class="p-button-rounded p-button-text"
-        />
-        <p>{{ doc.like }}</p>
-        <Button
-          @click.stop="dislike(doc.id, user.uid)"
-          style="color: red"
-          icon="pi pi-thumbs-down"
-          class="p-button-rounded p-button-danger p-button-text"
-        />
-        <p style="display: inline">{{ doc.dislike }}</p>
+        <div class="feelinglikedislike">
+          <Button
+            @click.stop="like(doc.id, user.uid)"
+            icon="pi pi-thumbs-up"
+            class="p-button-rounded p-button-text"
+          />
+          <p>{{ doc.like }}</p>
+          <Button
+            @click.stop="dislike(doc.id, user.uid)"
+            style="color: red"
+            icon="pi pi-thumbs-down"
+            class="p-button-rounded p-button-danger p-button-text"
+          />
+          <p style="display: inline">{{ doc.dislike }}</p>
+        </div>
+        <!-- comments -->
+        <div style="cursor: pointer; font-family: Roboto, sans-serif">
+          <p v-if="seeComments" class="seeComment" @click="seeComment(doc.id)">
+            See Comments
+          </p>
+          <p
+            v-if="closeComments && doc.id === seeCommentsDocId"
+            class="closeComment"
+            @click="closeComment(doc.id)"
+          >
+            Close
+          </p>
+          <p
+            style="cursor: text"
+            v-if="closeComments && !(doc.id === seeCommentsDocId)"
+          >
+            Close previous comment
+          </p>
+        </div>
       </div>
+      <div
+        class="comment-section"
+        v-if="!seeComments && doc.id === seeCommentsDocId"
+      >
+        <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+        <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+          <div class="commentDes">
+            <p class="commentName" v-if="cmt.docId === doc.id">
+              {{ cmt.name }}
+            </p>
+            <p class="commentDate" v-if="cmt.docId === doc.id">
+              {{ cmt.createdAt }}
+            </p>
+            <Button
+              v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+              icon="pi pi pi-times"
+              style="color: red; margin-left: auto"
+              @click="deleteCmt(cmt.id)"
+              class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+            />
+          </div>
+          <p class="commentComment" v-if="cmt.docId === doc.id">
+            {{ cmt.comment }}
+          </p>
+        </div>
+
+        <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
+        <div style="display: flex; flex-direction: column">
+          <InputText placeholder="Please enter comment" type="text" v-model.trim="comment" />
+          <el-button
+            @click="postComment(doc.id, user.displayName, user.uid)"
+            style="margin-top: 10px"
+            >Comment</el-button
+          >
+        </div>
+      </div>
+      <!-- comments -->
     </el-card>
   </div>
 </template>
@@ -44,18 +103,34 @@ import getPosts from "@/composable/getPosts.js";
 import getUsers from "@/composable/getUsers.js";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
-import { computed } from "vue";
-import { format } from "date-fns";
+import { computed, ref } from "vue";
+import { format, formatDistanceToNow } from "date-fns";
 import likeSystem from "@/composable/likeSystem.js";
 import dislikeSystem from "@/composable/dislikeSystem.js";
+import useComments from "@/composable/useComments.js";
+import getComments from "@/composable/getComments.js";
+import commentDelete from "@/composable/commentDelete.js";
+import { timestamp } from "../firebase/config";
+import InputText from "primevue/inputtext";
 
 export default {
-  components: { Button },
+  components: { Button, InputText },
   setup() {
     const { user } = getUser();
     const { error, documents } = getUsers();
     const { statusHome } = getPosts("posts");
     const router = useRouter();
+
+    // comment section
+    const seeComments = ref(true);
+    const closeComments = ref(false);
+    const seeCommentsDocId = ref(null);
+    const comment = ref("");
+    const docsid = ref(null);
+    const { postComments } = useComments("comments");
+    const { comments } = getComments(docsid);
+    const { commentDel } = commentDelete();
+    // end of comment section
 
     const { likePost } = likeSystem();
     const { dislikePost } = dislikeSystem();
@@ -69,6 +144,49 @@ export default {
       }
     });
 
+    // comment section
+    const formattedComments = computed(() => {
+      if (comments.value) {
+        return comments.value.map((doc) => {
+          let time = formatDistanceToNow(doc.createdAt.toDate());
+          return { ...doc, createdAt: time };
+        });
+      }
+    });
+
+    const seeComment = (id) => {
+      seeCommentsDocId.value = id;
+      seeComments.value = false;
+      closeComments.value = true;
+      // commentPost(id)
+    };
+    const closeComment = (id) => {
+      seeCommentsDocId.value = id;
+      seeComments.value = true;
+      closeComments.value = false;
+    };
+
+    const postComment = async (docId, name, userId) => {
+      docsid.value = docId;
+      const docs = {
+        docId,
+        name,
+        userId,
+        createdAt: timestamp(),
+        comment: comment.value,
+      };
+
+      if (comment.value) {
+        await postComments(docs);
+      }
+      comment.value = null;
+    };
+
+    const deleteCmt = async (id) => {
+      await commentDel(id);
+    };
+    // end of comment section
+
     const goBack = () => {
       router.push({ name: "Profile", params: { id: user.value.uid } });
     };
@@ -81,7 +199,23 @@ export default {
       dislikePost(postIdt, reactert);
     };
 
-    return { goBack, user, formattedDocuments, like, dislike };
+    return {
+      goBack,
+      user,
+      formattedDocuments,
+      like,
+      dislike,
+      seeComment,
+      seeComments,
+      seeCommentsDocId,
+      comment,
+      closeComment,
+      closeComments,
+      postComment,
+
+      deleteCmt,
+      formattedComments,
+    };
   },
 };
 </script>
@@ -90,7 +224,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 .postcard {
-  max-width: 500px;
+  max-width: 550px;
   margin: 10px auto;
 }
 .post {
@@ -112,7 +246,7 @@ export default {
 }
 
 .date {
-  font-size: 10px;
+  font-size: 12px;
   margin: 10px;
   color: rgba(0, 80, 137, 0.829);
 }
@@ -120,12 +254,61 @@ export default {
 .feeling {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.feelinglikedislike {
+  display: flex;
 }
 
 .feeling p {
   margin: 10px;
   color: gray;
   font-family: "Roboto", sans-serif;
+}
+
+.seeComment {
+  color: black;
+  transition: color 0.2s;
+}
+.seeComment:hover {
+  color: #15b3f3;
+}
+.closeComment {
+  color: black;
+  transition: color 0.2s;
+}
+.closeComment:hover {
+  color: #ff191f;
+}
+
+.comment-section {
+  font-family: "Roboto", sans-serif;
+}
+.commentDes {
+  display: flex;
+  align-items: center;
+  // flex-direction: column;
+  line-height: 0;
+}
+.comment {
+  margin: 10px;
+  margin-left: 20px;
+  word-wrap: break-all;
+  .commentName {
+    color: #004f89;
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .commentComment {
+    margin: 5px;
+    margin-left: 10px;
+  }
+  .commentDate {
+    margin-left: 10px;
+    font-size: 12px;
+    color: gray;
+  }
 }
 
 @media (max-width: 425px) {

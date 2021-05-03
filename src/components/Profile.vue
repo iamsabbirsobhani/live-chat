@@ -110,9 +110,78 @@
       </div>
       <p class="post">{{ doc.post }}</p>
 
-      <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
+      <div style="display: flex">
+        <div>
+          <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
 
-      <p class="postReact" v-if="doc.dislike > 0">Disliked by {{ doc.dislike }}</p>
+          <p class="postReact" v-if="doc.dislike > 0">
+            Disliked by {{ doc.dislike }}
+          </p>
+        </div>
+
+        <!-- comment section -->
+        <div
+          style="
+            cursor: pointer;
+            font-family: Roboto, sans-serif;
+            margin-left: auto;
+          "
+        >
+          <p v-if="seeComments" class="seeComment" @click="seeComment(doc.id)">
+            See Comments
+          </p>
+          <p
+            v-if="closeComments && doc.id === seeCommentsDocId"
+            class="closeComment"
+            @click="closeComment(doc.id)"
+          >
+            Close
+          </p>
+          <p
+            style="cursor: text"
+            v-if="closeComments && !(doc.id === seeCommentsDocId)"
+          >
+            Close previous comment
+          </p>
+        </div>
+      </div>
+      <div
+        class="comment-section"
+        v-if="!seeComments && doc.id === seeCommentsDocId"
+      >
+        <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+        <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+          <div class="commentDes">
+            <p class="commentName" v-if="cmt.docId === doc.id">
+              {{ cmt.name }}
+            </p>
+            <p class="commentDate" v-if="cmt.docId === doc.id">
+              {{ cmt.createdAt }}
+            </p>
+            <Button
+              v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+              icon="pi pi pi-times"
+              style="color: red; margin-left: auto"
+              @click="deleteCmt(cmt.id)"
+              class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+            />
+          </div>
+          <p class="commentComment" v-if="cmt.docId === doc.id">
+            {{ cmt.comment }}
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column;">
+        <InputText placeholder="Please enter comment" type="text" v-model.trim="comment" />
+        <el-button
+          @click="postComment(doc.id, user.displayName, user.uid)"
+          style="margin-top: 10px"
+          >Comment</el-button
+        >
+        </div>
+      </div>
+      <!-- end of comment section -->
     </el-card>
     <h3 v-else>Nothing</h3>
   </div>
@@ -123,20 +192,21 @@
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
-import { format } from "date-fns";
-
+import { format, formatDistanceToNow } from "date-fns";
 import Button from "primevue/button";
-
 import getUser from "@/composable/getUser.js";
 import userPost from "@/composable/userPost.js";
 import getPosts from "@/composable/getPosts.js";
 import { timestamp } from "../firebase/config";
-
+import useComments from "@/composable/useComments.js";
+import getComments from "@/composable/getComments.js";
+import commentDelete from "@/composable/commentDelete.js";
 import delPost from "@/composable/delPost.js";
+import InputText from 'primevue/inputtext';
 
 export default {
   props: ["id"],
-  components: { Button },
+  components: { Button, InputText },
   setup(props) {
     const { user } = getUser();
     const { info } = getProfile("profiles", props.id);
@@ -144,6 +214,17 @@ export default {
     const { status } = getPosts("posts", props.id);
     const router = useRouter();
     const { docDel } = delPost();
+
+    // comment section
+    const seeComments = ref(true);
+    const closeComments = ref(false);
+    const seeCommentsDocId = ref(null);
+    const comment = ref(null);
+    const docsid = ref(null);
+    const { postComments } = useComments("comments");
+    const { comments } = getComments(docsid);
+    const { commentDel } = commentDelete();
+    // comment section
 
     const isLoading = ref(false);
 
@@ -178,6 +259,48 @@ export default {
         });
       }
     });
+
+    // comment section
+    const formattedComments = computed(() => {
+      if (comments.value) {
+        return comments.value.map((doc) => {
+          let time = formatDistanceToNow(doc.createdAt.toDate());
+          return { ...doc, createdAt: time };
+        });
+      }
+    });
+
+    const seeComment = (id) => {
+      seeCommentsDocId.value = id;
+      seeComments.value = false;
+      closeComments.value = true;
+      // commentPost(id)
+    };
+    const closeComment = (id) => {
+      seeCommentsDocId.value = id;
+      seeComments.value = true;
+      closeComments.value = false;
+    };
+
+    const postComment = async (docId, name, userId) => {
+      docsid.value = docId;
+      const docs = {
+        docId,
+        name,
+        userId,
+        createdAt: timestamp(),
+        comment: comment.value,
+      };
+      if (comment.value) {
+        await postComments(docs);
+      }
+      comment.value = null;
+    };
+    // end of comment section
+
+    const deleteCmt = async (id) => {
+      await commentDel(id);
+    };
 
     const chatroom = () => {
       router.push({ name: "Chatroom" });
@@ -216,6 +339,17 @@ export default {
       formattedDocuments,
       deleteDoc,
       photos,
+
+      seeComment,
+      seeComments,
+      seeCommentsDocId,
+      comment,
+      closeComment,
+      closeComments,
+      postComment,
+
+      deleteCmt,
+      formattedComments,
     };
   },
 };
@@ -224,6 +358,8 @@ export default {
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+
 .profile {
   //  font-family: 'Roboto', sans-serif;
   font-family: "Montserrat", sans-serif;
@@ -299,9 +435,8 @@ export default {
 .postcard {
   max-width: 500px;
   margin: 20px auto;
-   font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
-
 }
 
 .post {
@@ -322,7 +457,7 @@ export default {
 .date {
   font-size: 10px;
   margin: 10px;
-    color: rgba(0, 80, 137, 0.829);
+  color: rgba(0, 80, 137, 0.829);
 }
 .name {
   display: flex;
@@ -334,11 +469,57 @@ it will be positioned auto left */
   margin-left: auto;
 }
 
-.postReact{
+.postReact {
   color: rgb(121, 121, 121);
   font-size: 13px;
 }
 // status card
+
+// comments
+.seeComment {
+  color: gray;
+  transition: color 0.2s;
+}
+.seeComment:hover {
+  color: #15b3f3;
+}
+.closeComment {
+  color: gray;
+  transition: color 0.2s;
+}
+.closeComment:hover {
+  color: #ff191f;
+}
+
+.comment-section {
+  font-family: "Roboto", sans-serif;
+}
+.commentDes {
+  display: flex;
+  align-items: center;
+  // flex-direction: column;
+  line-height: 0;
+}
+.comment {
+  margin: 10px;
+  margin-left: 20px;
+  word-wrap: break-all;
+  .commentName {
+    color: #004f89;
+    font-weight: 900;
+    font-size: 14px;
+  }
+  .commentComment {
+    margin: 5px;
+    margin-left: 10px;
+  }
+  .commentDate {
+    margin-left: 10px;
+    font-size: 12px;
+    color: gray;
+  }
+}
+// end comments
 
 @media (max-width: 425px) {
   .place {
@@ -367,9 +548,9 @@ it will be positioned auto left */
   .postcard {
     max-width: 320px;
   }
-  .postReact{
-  color: rgb(121, 121, 121);
-  font-size: 14px;
-}
+  .postReact {
+    color: rgb(121, 121, 121);
+    font-size: 14px;
+  }
 }
 </style>>

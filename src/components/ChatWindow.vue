@@ -12,18 +12,14 @@
           class="selfUser"
         >
           <div class="name-wraper" style="width: 100%; text-align: end">
-            <!-- <span class="name">{{ doc.name }}</span> -->
           </div>
-          <!-- <div v-if="doc.message" class="message-wraper"> -->
           <div style="max-width: 100%; text-align: end">
-            <!-- <p  class="message">{{ doc.message }}</p> -->
             <Chip
               style="text-align: start"
               v-if="doc.message"
               :label="doc.message"
               class="p-mr-2 p-mb-2 custom-chip"
             />
-            <!-- </div> -->
           </div>
           <!-- element-plus Image Preview -->
           <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
@@ -44,10 +40,9 @@
 
         <!-- other user -->
 
-        <div style="max-width: 90%" v-else class="otherUser">
-
-          <Chip v-if="doc.message" :label="doc.message" />
-          <!-- </div> -->
+        <div style="max-width: 90%; " v-else class="otherUser">
+<!-- overflow-x: hidden; -->
+          <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
 
           <!-- element-plus Image Preview -->
           <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
@@ -281,6 +276,7 @@ a {
   margin-right: 5px;
 }
 
+
 .otherUser .images {
   max-width: 200px;
   max-height: 400px;
@@ -304,12 +300,17 @@ a {
   padding: 1px;
   background-color: #0086f9;
   margin-right: 5px;
+
 }
 .otherUser .message-wraper {
   max-width: 180px;
   border-radius: 25px;
   padding: 5px;
   background-color: #e4e6eb;
+}
+
+.otherUser{
+      word-wrap: break-word !important;
 }
 
 .selfUser .message {

@@ -206,7 +206,7 @@
               style="margin-top: 10px"
               class="button"
               v-if="isLoadingCmt"
-              :loading="isLoading"
+              :loading="isLoadingCmt"
               >Loading</el-button
             >
             <el-button

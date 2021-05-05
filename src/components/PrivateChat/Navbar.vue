@@ -3,14 +3,14 @@
     <img
       style="margin: 20px; margin-right: 30px"
       alt="logo"
-      src="../assets/favicon.svg"
+      src="@/assets/favicon.svg"
       height="40"
       class="p-mr-2"
     />
     <div>
       <p>
         <!-- <span class="dname">{{ user.displayName }} </span> -->
-        <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: { id: user.uid}}">
+        <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: { id: userTo}}">
         <Chip :label="user.displayName" icon="pi pi-user"/>
         </router-link>
       </p>
@@ -114,13 +114,14 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Menubar from "primevue/menubar";
 import Menu from "primevue/menu";
-import useLogout from "../composable/useLogout";
+import useLogout from "@/composable/useLogout";
 import getUser from "@/composable/getUser";
 import deleteCollection from "@/composable/delChat.js";
 import getProfile from "@/composable/getProfile.js";
 import Chip from 'primevue/chip';
 
 export default {
+    props: ['userTo', 'documents'],
   components: { Menubar, Button, Menu, Dialog, Chip },
   setup(props, context) {
     const { logout, error } = useLogout();
@@ -196,7 +197,7 @@ export default {
     };
 
     const chatDelYes = async () => {
-      if (user.value.uid === `1v1TBpu4tYWBDRnoiXGonJtXf192`) {
+      if (user.value.uid === `oEAnFxiIF1R01gfng8l18SmuNKt2`) {
         await delChat();
         toast.add({
           severity: "success",

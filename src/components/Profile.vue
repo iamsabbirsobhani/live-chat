@@ -33,8 +33,14 @@
                 icon="el-icon-picture-outline"
                 >Cover & Profile Photos</el-dropdown-item
               >
-              <el-dropdown-item @click="UserList" icon="el-icon-user"
+              <el-dropdown-item @click="UserList" icon="pi pi-users"
                 >User List</el-dropdown-item
+              >
+              <el-dropdown-item v-if="id == user.uid" @click="frList" icon="pi pi-user"
+                >Friend List</el-dropdown-item
+              >
+              <el-dropdown-item v-if="id == user.uid" @click="frReq" icon="pi pi-user-plus"
+                >Friend Request</el-dropdown-item
               >
               <el-dropdown-item @click="signout" icon="pi pi-sign-out"
                 >Log out</el-dropdown-item
@@ -153,7 +159,7 @@
             style="cursor: text"
             v-if="closeComments && !(doc.id === seeCommentsDocId)"
           >
-            See comments
+            See Comments
           </p>
           </div>
       </el-tooltip>
@@ -361,6 +367,12 @@ export default {
     const photos = () => {
       router.push({ name: "UpdateCoverAndDP" });
     };
+    const frReq = () => {
+      router.push({ name: "FriendRequest" });
+    };
+    const frList = () => {
+      router.push({ name: "FriendList" });
+    };
 
     const deleteDoc = async (id) => {
       console.log(id);
@@ -389,6 +401,8 @@ export default {
       formattedDocuments,
       deleteDoc,
       photos,
+      frReq,
+      frList,
 
       seeComment,
       seeComments,

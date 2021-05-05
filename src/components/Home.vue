@@ -4,22 +4,33 @@
     class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
-    style="font-family: Roboto, sans-serif; "
+    style="font-family: Roboto, sans-serif"
   >
-    <el-tooltip class="item" effect="dark" content="Click on name to go profile" placement="right">
-    <el-menu-item index="1">
-      <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
-        {{ user.displayName }}
-      </router-link>
-    </el-menu-item>
-        </el-tooltip>
+    <el-tooltip
+      class="item"
+      effect="dark"
+      content="Click on name to go profile"
+      placement="right"
+    >
+      <el-menu-item index="1">
+        <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
+          {{ user.displayName }}
+        </router-link>
+      </el-menu-item>
+    </el-tooltip>
   </el-menu>
 
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
-    <el-card v-if="doc.post" shadow="always" style="border-radius: 10px">
+    <!-- :class="{ borderCard: !seeComments  && doc.id === seeCommentsDocId}" -->
+    <el-card
+      v-if="doc.post"
+      :style="doc.id === seeCommentsDocId ? styleBorder : ''"
+      shadow="always"
+      style="border-radius: 10px"
+    >
       <router-link
         style="text-decoration: none; margin: 0px"
         :to="{ name: 'Profile', params: { id: doc.userId } }"
@@ -53,7 +64,11 @@
         </div>
         <!-- comments -->
         <div style="cursor: pointer; font-family: Roboto, sans-serif">
-          <p v-if="seeComments" class="seeComment" @click="seeComment(doc.id)">
+          <p
+            v-if="seeComments"
+            class="seeComment"
+            @click="seeComment(doc.id, seeCommentsDocId)"
+          >
             See Comments
           </p>
           <p
@@ -63,68 +78,85 @@
           >
             Close
           </p>
-           <el-tooltip class="item" effect="dark" content="To see comments please close the other comment section" placement="top">
-          <div>
-          <p
-            style="cursor: text"
-            v-if="closeComments && !(doc.id === seeCommentsDocId)"
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="To see comments please close the other comment section"
+            placement="top"
           >
-            See comments
-          </p>
-          </div>
-            </el-tooltip>
-        </div>
-      </div>
-
-       <transition name="fade">
-      <div
-        class="comment-section"
-        v-if="!seeComments && doc.id === seeCommentsDocId"
-      >
-        <p style="font-family: Roboto, sans-serif">Comments:</p>
-
-        <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
-          <div class="commentDes">
-            <p class="commentName" v-if="cmt.docId === doc.id">
-              {{ cmt.name }}
-            </p>
-            <p class="commentDate" v-if="cmt.docId === doc.id">
-              {{ cmt.createdAt }}
-            </p>
-            <el-tooltip class="item" effect="dark" content="Delete Comment" placement="left">
-            <div style="margin-left: auto">
-            <Button
-              v-if="cmt.docId === doc.id && user.uid === cmt.userId"
-              icon="pi pi pi-times"
-              style="color: red; margin-left: auto"
-              @click="deleteCmt(cmt.id)"
-              class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
-            />
+            <div>
+              <p
+                style="cursor: text"
+                v-if="closeComments && !(doc.id === seeCommentsDocId)"
+              >
+                See Comments
+              </p>
             </div>
-                </el-tooltip>
-          </div>
-          <p class="commentComment" v-if="cmt.docId === doc.id">
-            {{ cmt.comment }}
-          </p>
-        </div>
-
-        <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
-        <div style="display: flex; flex-direction: column">
-          <InputText
-            placeholder="Please enter comment"
-            type="text"
-            v-model.trim="comment"
-          />
-           <el-button style="margin-top: 10px" class="button" v-if="isLoading" :loading="isLoading">Loading</el-button>
-          <el-button
-          v-else
-            @click="postComment(doc.id, user.displayName, user.uid)"
-            style="margin-top: 10px"
-            >Comment</el-button
-          >
+          </el-tooltip>
         </div>
       </div>
-        </transition>
+
+      <transition name="fade">
+        <div
+          class="comment-section"
+          v-if="!seeComments && doc.id === seeCommentsDocId"
+        >
+          <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+          <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+            <div class="commentDes">
+              <p class="commentName" v-if="cmt.docId === doc.id">
+                {{ cmt.name }}
+              </p>
+              <p class="commentDate" v-if="cmt.docId === doc.id">
+                {{ cmt.createdAt }}
+              </p>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="Delete Comment"
+                placement="left"
+              >
+                <div style="margin-left: auto">
+                  <Button
+                    v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+                    icon="pi pi pi-times"
+                    style="color: red; margin-left: auto;"
+                    @click="deleteCmt(cmt.id)"
+                    class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+                  />
+                </div>
+              </el-tooltip>
+            </div>
+            <p class="commentComment" v-if="cmt.docId === doc.id">
+              {{ cmt.comment }}
+            </p>
+          </div>
+
+          <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
+          <div style="display: flex; flex-direction: column">
+            <InputText
+              style="border-radius: 10px;"
+              placeholder="Please enter comment"
+              type="text"
+              v-model.trim="comment"
+            />
+            <el-button
+              style="margin-top: 10px; border-radius: 10px;"
+              class="button"
+              v-if="isLoading"
+              :loading="isLoading"
+              >Loading</el-button
+            >
+            <el-button
+              v-else
+              @click="postComment(doc.id, user.displayName, user.uid)"
+              style="margin-top: 10px; border-radius: 10px;"
+              >Comment</el-button
+            >
+          </div>
+        </div>
+      </transition>
       <!-- comments -->
     </el-card>
   </div>
@@ -143,6 +175,7 @@ import dislikeSystem from "@/composable/dislikeSystem.js";
 import useComments from "@/composable/useComments.js";
 import getComments from "@/composable/getComments.js";
 import commentDelete from "@/composable/commentDelete.js";
+import colors from "@/composable/colors.js";
 import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 
@@ -153,7 +186,7 @@ export default {
     const { error, documents } = getUsers();
     const { statusHome } = getPosts("posts");
     const router = useRouter();
-    const isLoading = ref(false)
+    const isLoading = ref(false);
 
     // comment section
     const seeComments = ref(true);
@@ -187,21 +220,37 @@ export default {
         });
       }
     });
-
-    const seeComment = (id) => {
+    const styleBorder = ref(null);
+    const seeComment = (id, cmtId) => {
       seeCommentsDocId.value = id;
+      const random = Math.random();
+      const index = Math.round(random * 280);
+      // if ( id === cmtId) {
+      // const color = ['blue', '#15b3f3', '#15f67b']
+      styleBorder.value = {
+        // border: "2x solid black"
+        borderStyle: "solid",
+        borderWidth: "3px",
+        // boxShadow: `0 2.8px 2.2px ${colors[index]}`,
+        // borderColor: colors[index]
+      };
+      // }
       seeComments.value = false;
       closeComments.value = true;
       // commentPost(id)
     };
     const closeComment = (id) => {
       seeCommentsDocId.value = id;
+      styleBorder.value = {
+        // border: "2x solid black"
+        borderStyle: "none",
+      };
       seeComments.value = true;
       closeComments.value = false;
     };
 
     const postComment = async (docId, name, userId) => {
-      isLoading.value = true
+      isLoading.value = true;
       docsid.value = docId;
       const docs = {
         docId,
@@ -215,7 +264,7 @@ export default {
         await postComments(docs);
       }
       comment.value = null;
-      isLoading.value = false
+      isLoading.value = false;
     };
 
     const deleteCmt = async (id) => {
@@ -251,7 +300,8 @@ export default {
 
       deleteCmt,
       formattedComments,
-      isLoading
+      isLoading,
+      styleBorder,
     };
   },
 };
@@ -260,10 +310,10 @@ export default {
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
-.el-menu-demo{
-  a{
-  text-decoration: none;
-  font-size: 18px;
+.el-menu-demo {
+  a {
+    text-decoration: none;
+    font-size: 18px;
   }
 }
 
@@ -355,14 +405,20 @@ export default {
   }
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s ease;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
+.borderCard {
+  // border: 3px solid rgba(0, 0, 255, 0.712);
+  border: 3px solid #15b3f3;
+}
 
 @media (max-width: 425px) {
   .postcard {

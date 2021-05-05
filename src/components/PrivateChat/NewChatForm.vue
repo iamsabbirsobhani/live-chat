@@ -1,7 +1,7 @@
 <template>
   <form>
     <div class="chatbox">
-      <ChatWindow class="cwindow" />
+      <ChatWindow :userTo="userTo" class="cwindow" />
       <div class="typeStatus">
         <Typing />
       </div>
@@ -78,19 +78,20 @@
 <script>
 import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
-import Typing from "../components/Typing.vue";
+import Typing from "@/components/Typing.vue";
 import Card from "primevue/card";
-import ChatWindow from "../components/ChatWindow.vue";
+import ChatWindow from "@/components/PrivateChat/ChatWindow.vue";
 import Textarea from "primevue/textarea";
 import { onMounted, onUpdated, ref, watch } from "vue";
 import getUser from "@/composable/getUser";
-import { timestamp } from "../firebase/config";
-import useCollection from "../composable/useCollection";
-import userTypingSetFlag from "../composable/userTypingSetFlagValue";
+import { timestamp } from "@/firebase/config";
+import useCollection from "@/composable/PrivateChat/useCollection";
+import userTypingSetFlag from "@/composable/userTypingSetFlagValue";
 import Button from "primevue/button";
 import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
 export default {
+  props: ["userTo"],
   components: {
     Textarea,
     Card,
@@ -100,12 +101,12 @@ export default {
     Dialog,
     FileUpload,
   },
-  setup() {
+  setup(props) {
     const message = ref("");
     const toast = useToast();
     const typeStatus = ref(null);
     const { user } = getUser();
-    const { addDoc, error } = useCollection("messages");
+    const { addDoc, error } = useCollection("privateChat");
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);
@@ -122,6 +123,7 @@ export default {
           name: user.value.displayName,
           message: message.value,
           userId: user.value.uid,
+          to: props.userTo,
           createdAt: timestamp(),
         };
         await addDoc(chat);
@@ -178,6 +180,7 @@ export default {
       const chat = {
         name: user.value.displayName,
         userId: user.value.uid,
+        to: props.userTo,
         createdAt: timestamp(),
         imgUrl: url.value,
       };

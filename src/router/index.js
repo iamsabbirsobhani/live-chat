@@ -5,6 +5,9 @@ import Profile from '../components/Profile.vue'
 import UserList from '../components/UserList.vue'
 import EditProfile from '../components/EditProfile.vue'
 import UpdateCoverAndDP from '../components/UpdateCoverAndDP.vue'
+import FriendRequest from '@/components/FriendRequest.vue'
+import FriendList from '@/components/FriendList.vue'
+import PrivateChat from '@/views/PrivateChat/PrivateChat.vue'
 import Home from '../components/Home.vue'
 import { projectAuth } from '../firebase/config'
 
@@ -63,6 +66,27 @@ const routes = [
     path: '/profile/:id/editprofile',
     name: "EditProfile",
     component: EditProfile,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/profile/:id/friendrequest',
+    name: "FriendRequest",
+    component: FriendRequest,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/profile/:id/friendlist',
+    name: "FriendList",
+    component: FriendList,
+    beforeEnter: requiredAuth,
+    props: true
+  },
+  {
+    path: '/profile/:id/privatechat',
+    name: "PrivateChat",
+    component: PrivateChat,
     beforeEnter: requiredAuth,
     props: true
   },

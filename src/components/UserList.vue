@@ -3,39 +3,50 @@
 </el-page-header>
   <h2 style="text-align: center">All the users</h2>
   <div v-for="doc in documents" :key="doc.userUid">
-    <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: {id: doc.userUid}}">
     <div class="users">
+    <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: {id: doc.userUid}}">
       <div class="name">
       <el-avatar :size="60" src="https://empty" @error="errorHandler">
         <img :src="doc.phofilePhoto" />
       </el-avatar>
       <h4>{{ doc.userName }}</h4>
       </div>
+    </router-link>
       <div class="title">
         <p>{{ doc.profession }}</p>
         <p>{{ doc.location }}</p>
       </div>
+      <div class="addFriend">
+        <Button v-if="!(doc.userUid === user.uid )" @click="addFriends(doc.userUid, user.uid)" icon="pi pi-user-plus" class="p-button-rounded p-button-success" />
+      </div>
     </div>
-    </router-link>
   </div>
 </template>
 
 <script>
 import getUsers from "@/composable/getUsers.js";
 import getUser from "../composable/getUser";
+import friendRequest from "../composable/friendRequest";
 import { useRouter } from "vue-router"
+import Button from 'primevue/button';
 export default {
   props: ["id"],
+  components: { Button },
   setup(props) {
     const { error, documents } = getUsers();
     const { user } = getUser()
     const router = useRouter()
+    const { addFriend } = friendRequest()
 
     const goBack = () => {
       router.push({ name: "Profile", params: {id: user.value.uid}})
     }
+    const addFriends = (fid, uid) => {
+      console.log("Add user id:", fid, 'Current user id:', uid)
+      addFriend(fid, uid)
+    }
 
-    return { documents, goBack };
+    return { documents, goBack, addFriends, user };
   },
 };
 </script>
@@ -76,7 +87,7 @@ p{
 
 @media (max-width: 425px) {
   .users {
-    max-width: 300px;
+    max-width: 330px;
   }
 }
 </style>

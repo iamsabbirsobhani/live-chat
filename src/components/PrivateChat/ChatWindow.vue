@@ -1,68 +1,75 @@
 <template>
-  <div class="chat-window">
+  <div class="chat-window messages" ref="messages">
     <div v-if="error">{{ error }}</div>
-    <el-skeleton :rows="9" animated  v-if="!documents"/>
-    <div v-if="documents" ref="messages" class="messages">
-      <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
-        <!-- self user -->
-
-        <div
-          style="max-width: 90%"
-          v-if="user.uid == doc.userId && !doc.to"
-          class="selfUser"
-        >
-          <div class="name-wraper" style="width: 100%; text-align: end">
-          </div>
-          <div style="max-width: 100%; text-align: end">
-              <!-- v-if="doc.message && !doc.to" -->
-            <Chip
-              style="text-align: start"
-              v-if="doc.message"
-              :label="doc.message"
-              class="p-mr-2 p-mb-2 custom-chip"
-            />
-          </div>
-          <!-- element-plus Image Preview -->
-          <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
-            <el-image
-              class="images"
-              :src="doc.imgUrl"
-              :preview-src-list="esourceList"
-            >
-            </el-image>
-          </div>
-          <!-- end of element-plus Image Preview -->
-          <span  style="margin-left: 5px; margin-right: 5px" class="created-at"
-            >{{ doc.createdAt }} ago by you</span
+    <el-skeleton :rows="9" animated v-if="!documents" />
+    <div v-if="documents">
+      <!-- self user -->
+      <div v-for="doc in formattedDocuments" :key="doc.id">
+        <div  v-if="doc.to == userTo && doc.userId == user.uid">
+          <div class="single">
+          <div
+            v-if="doc.to == userTo && doc.userId == user.uid"
+            class="selfUser"
+            style="max-width: 90%"
           >
+            <!-- <div
+                class="name-wraper"
+                style="width: 100%; text-align: end"
+              ></div> -->
+            <div style="max-width: 100%; text-align: end">
+              <Chip
+                style="text-align: start"
+                v-if="doc.message"
+                :label="doc.message"
+                class="p-mr-2 p-mb-2 custom-chip"
+              />
+            </div>
+            <!-- element-plus Image Preview -->
+            <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+              <el-image
+                class="images"
+                :src="doc.imgUrl"
+                :preview-src-list="esourceList"
+              >
+              </el-image>
+            </div>
+            <!-- end of element-plus Image Preview -->
+            <span style="margin-left: 5px; margin-right: 5px" class="created-at"
+              >{{ doc.createdAt }} ago by you</span
+            >
+          </div>
+          </div>
+          </div>
+
+          <!-- end of self user -->
+
+          <!-- other user -->
+
+          <div style="margin-bottom: 20px;" v-if="doc.to == user.uid && doc.userId == userTo">
+            <!-- overflow-x: hidden; -->
+            <div style="max-width: 90%" class="otherUser">
+              <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
+
+              <!-- element-plus Image Preview -->
+              <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+                <el-image
+                  class="images"
+                  :src="doc.imgUrl"
+                  :preview-src-list="esourceList"
+                >
+                </el-image>
+              </div>
+              <!-- end of element-plus Image Preview -->
+
+              <span style="margin-right: 5px" class="created-at"
+                >{{ doc.createdAt }} ago by {{ doc.name }}</span
+              >
+            </div>
+          </div>
+
+          <!-- end of other user -->
         </div>
 
-        <!-- end of self user -->
-
-        <!-- other user -->
-
-        <div style="max-width: 90%; " v-else class="otherUser">
-<!-- overflow-x: hidden; -->
-          <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
-
-          <!-- element-plus Image Preview -->
-          <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
-            <el-image
-              class="images"
-              :src="doc.imgUrl"
-              :preview-src-list="esourceList"
-            >
-            </el-image>
-          </div>
-          <!-- end of element-plus Image Preview -->
-
-          <span  style="margin-right: 5px" class="created-at"
-            >{{ doc.createdAt }} ago by {{ doc.name }}</span
-          >
-        </div>
-
-        <!-- end of other user -->
-      </div>
 
       <!-- facebook typing indicator -->
       <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
@@ -101,17 +108,18 @@
 import Chip from "primevue/chip";
 import { computed, onUpdated, ref, watch } from "vue";
 import { formatDistanceToNow } from "date-fns";
-import getCollection from "../composable/getCollection";
+import getCollection from "@/composable/PrivateChat/getCollection";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
 
-import getTypeStatus from "../composable/getTypeStatus";
+import getTypeStatus from "@/composable/getTypeStatus";
 export default {
+  props: ["userTo"],
   components: { Dialog, Button, Chip, ScrollPanel },
   setup() {
-    const { error, documents, esourceList } = getCollection("messages");
+    const { error, documents, esourceList } = getCollection("privateChat");
 
     const displayConfirmation = ref(false);
 
@@ -175,7 +183,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .p-chip.custom-chip {
   background: var(--primary-color);
   color: var(--primary-color-text);
@@ -277,7 +285,6 @@ a {
   margin-right: 5px;
 }
 
-
 .otherUser .images {
   max-width: 200px;
   max-height: 400px;
@@ -301,7 +308,6 @@ a {
   padding: 1px;
   background-color: #0086f9;
   margin-right: 5px;
-
 }
 .otherUser .message-wraper {
   max-width: 180px;
@@ -310,8 +316,8 @@ a {
   background-color: #e4e6eb;
 }
 
-.otherUser{
-      word-wrap: break-word !important;
+.otherUser {
+  word-wrap: break-word !important;
 }
 
 .selfUser .message {

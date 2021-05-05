@@ -34,6 +34,8 @@ const signup = async (email, password, displayname) => {
         const profession = 'Dreamer'
         const location = 'Mars'
         const interest = 'Infinity'
+        const friendList = []
+        const friendRequest = []
 
         const account = {
             userUid,
@@ -45,7 +47,9 @@ const signup = async (email, password, displayname) => {
             bio,
             profession,
             location,
-            interest
+            interest,
+            friendList,
+            friendRequest
         }
 
         projectFirestore.collection('profiles').doc(userUid).set(account)

@@ -12,7 +12,7 @@ const userPost = (id) => {
         error.value = null
 
         try {
-            await projectFirestore.collection('profiles').doc(id).collection("posts").add(doc)
+            // await projectFirestore.collection('profiles').doc(id).collection("posts").add(doc)
             await projectFirestore.collection('posts').add(doc)
             // we can only add "custom id" documents under a "collection"
             // we can not add "custom id" documents inside a "document"

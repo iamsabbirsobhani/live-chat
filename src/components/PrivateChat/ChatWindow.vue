@@ -70,9 +70,11 @@
           <!-- end of other user -->
         </div>
 
-
       <!-- facebook typing indicator -->
-      <div v-if="type.user !== user.uid && type.isType" class="ticontainer">
+
+      <!-- below inside the commented, div  logic works as well -->
+      <!-- <div v-if="(type.userUid == userTo)  && type.isType" class="ticontainer"> -->
+      <div v-if="(type.userUid !== user.uid)  && type.isType" class="ticontainer">
         <div class="tiblock">
           <div class="tidot"></div>
           <div class="tidot"></div>
@@ -114,16 +116,16 @@ import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
 
-import getTypeStatus from "@/composable/getTypeStatus";
+import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 export default {
   props: ["userTo"],
   components: { Dialog, Button, Chip, ScrollPanel },
-  setup() {
+  setup(props) {
     const { error, documents, esourceList } = getCollection("privateChat");
 
     const displayConfirmation = ref(false);
 
-    const { type } = getTypeStatus();
+    const { type } = getTypeStatus(props.userTo);
 
     const { user } = getUser();
 

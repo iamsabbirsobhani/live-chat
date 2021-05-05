@@ -86,7 +86,7 @@ import { onMounted, onUpdated, ref, watch } from "vue";
 import getUser from "@/composable/getUser";
 import { timestamp } from "@/firebase/config";
 import useCollection from "@/composable/PrivateChat/useCollection";
-import userTypingSetFlag from "@/composable/userTypingSetFlagValue";
+import userTypingSetFlag from "@/composable/PrivateChat/userTypingSetFlagValue";
 import Button from "primevue/button";
 import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
@@ -145,16 +145,14 @@ export default {
         // console.log(typeStatus.value);
         var keypresss = {
           isType: true,
-          user: user.value.uid,
         };
         // console.log("Typing Start");
-        await addDocType(keypresss);
+        await addDocType(keypresss, user.value.uid);
       } else {
         var keypresss = {
           isType: false,
-          user: user.value.uid,
         };
-        await addDocType(keypresss);
+        await addDocType(keypresss,user.value.uid);
       }
     };
 
@@ -163,7 +161,7 @@ export default {
         isType: false,
         user: user.value.uid,
       };
-      addDocType(key);
+      addDocType(key, user.value.uid);
       // console.log("Typing Stopped");
     };
     // End of Type Status Check

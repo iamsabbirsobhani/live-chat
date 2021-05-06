@@ -512,7 +512,7 @@ export default {
 }
 
 .nameDate {
-  line-height: 0.7;
+  line-height: 1;
   align-self: center;
   color: #004f89;
 }

@@ -3,7 +3,6 @@
     <div v-if="error">{{ error }}</div>
     <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
-
       <!-- self user -->
 
       <div v-for="doc in formattedDocuments" :key="doc.id">
@@ -14,7 +13,7 @@
               class="selfUser"
               style="max-width: 90%"
             >
-                  <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
+              <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
               <div style="max-width: 100%; text-align: end">
                 <Chip
                   style="text-align: start"
@@ -44,7 +43,6 @@
 
         <!-- end of self user -->
 
-
         <!-- other user -->
 
         <div
@@ -53,12 +51,8 @@
         >
           <!-- overflow-x: hidden; -->
           <div style="max-width: 90%" class="otherUser">
-              <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
-            <Chip
-              class="othermsg"
-              v-if="doc.message"
-              :label="doc.message"
-            />
+            <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
+            <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
 
             <!-- element-plus Image Preview -->
             <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
@@ -162,7 +156,6 @@ export default {
       }
     });
 
-
     //Auto Scrolling
     const messages = ref(null);
 
@@ -205,7 +198,13 @@ export default {
 <style lang="scss" scoped>
 .p-chip.custom-chip {
   // background: var(--primary-color);
-  background-color: linear-gradient(90deg, rgba(16,145,255,1) 0%, rgba(0,138,255,1) 29%, rgba(0,121,255,1) 56%, rgba(0,97,249,1) 100%);
+  background-color: linear-gradient(
+    90deg,
+    rgba(16, 145, 255, 1) 0%,
+    rgba(0, 138, 255, 1) 29%,
+    rgba(0, 121, 255, 1) 56%,
+    rgba(0, 97, 249, 1) 100%
+  );
   color: var(--primary-color-text);
   margin-right: 5px;
   margin-bottom: 3px;
@@ -352,7 +351,12 @@ a {
   //   -webkit-text-fill-color: white;
   //   -webkit-text-stroke-width: .1px;
   //   -webkit-text-stroke-color: black;
-  background-color: linear-gradient(90deg, rgba(255,49,198,1) 0%, rgba(213,0,101,1) 52%, rgba(173,0,0,1) 100%);
+  background-color: linear-gradient(
+    90deg,
+    rgba(255, 49, 198, 1) 0%,
+    rgba(213, 0, 101, 1) 52%,
+    rgba(173, 0, 0, 1) 100%
+  );
 }
 
 /* End of Scrollbar Style */
@@ -409,6 +413,12 @@ a {
 
 @media (max-width: 425px) {
   .images {
+    max-width: 200px;
+    max-height: 250px;
+    overflow: hidden;
+    display: block;
+  }
+  .selfUser .images {
     max-width: 200px;
     max-height: 250px;
     overflow: hidden;

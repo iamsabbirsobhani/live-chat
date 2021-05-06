@@ -1,55 +1,28 @@
-<template>
+<template >
   <div class="chat-window messages" ref="messages">
     <div v-if="error">{{ error }}</div>
-    <el-skeleton :rows="9" animated v-if="!documents" />
+    <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
+
       <!-- self user -->
+
       <div v-for="doc in formattedDocuments" :key="doc.id">
-        <div  v-if="doc.to == userTo && doc.userId == user.uid">
+        <div v-if="doc.to == userTo && doc.userId == user.uid">
           <div class="single">
-          <div
-            v-if="doc.to == userTo && doc.userId == user.uid"
-            class="selfUser"
-            style="max-width: 90%"
-          >
-            <!-- <div
-                class="name-wraper"
-                style="width: 100%; text-align: end"
-              ></div> -->
-            <div style="max-width: 100%; text-align: end">
-              <Chip
-                style="text-align: start"
-                v-if="doc.message"
-                :label="doc.message"
-                class="p-mr-2 p-mb-2 custom-chip"
-              />
-            </div>
-            <!-- element-plus Image Preview -->
-            <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
-              <el-image
-                class="images"
-                :src="doc.imgUrl"
-                :preview-src-list="esourceList"
-              >
-              </el-image>
-            </div>
-            <!-- end of element-plus Image Preview -->
-            <span style="margin-left: 5px; margin-right: 5px" class="created-at"
-              >{{ doc.createdAt }} ago by you</span
+            <div
+              v-if="doc.to == userTo && doc.userId == user.uid"
+              class="selfUser"
+              style="max-width: 90%"
             >
-          </div>
-          </div>
-          </div>
-
-          <!-- end of self user -->
-
-          <!-- other user -->
-
-          <div style="margin-bottom: 20px;" v-if="doc.to == user.uid && doc.userId == userTo">
-            <!-- overflow-x: hidden; -->
-            <div style="max-width: 90%" class="otherUser">
-              <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
-
+              <div style="max-width: 100%; text-align: end">
+                <Chip
+                  :style="{ backgroundColor: doc.backgroundColor }"
+                  style="text-align: start"
+                  v-if="doc.message"
+                  :label="doc.message"
+                  class="p-mr-2 p-mb-2 custom-chip"
+                />
+              </div>
               <!-- element-plus Image Preview -->
               <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
                 <el-image
@@ -60,21 +33,58 @@
                 </el-image>
               </div>
               <!-- end of element-plus Image Preview -->
-
-              <span style="margin-right: 5px" class="created-at"
-                >{{ doc.createdAt }} ago by {{ doc.name }}</span
+              <span
+                style="margin-left: 5px; margin-right: 5px"
+                class="created-at"
+                >{{ doc.createdAt }} ago by you</span
               >
             </div>
           </div>
-
-          <!-- end of other user -->
         </div>
+
+        <!-- end of self user -->
+
+
+        <!-- other user -->
+
+        <div
+          style="margin-bottom: 20px"
+          v-if="doc.to == user.uid && doc.userId == userTo"
+        >
+          <!-- overflow-x: hidden; -->
+          <div style="max-width: 90%" class="otherUser">
+            <Chip
+              :style="{ backgroundColor: doc.backgroundColor }"
+              class="othermsg"
+              v-if="doc.message"
+              :label="doc.message"
+            />
+
+            <!-- element-plus Image Preview -->
+            <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+              <el-image
+                class="images"
+                :src="doc.imgUrl"
+                :preview-src-list="esourceList"
+              >
+              </el-image>
+            </div>
+            <!-- end of element-plus Image Preview -->
+
+            <span style="margin-right: 5px" class="created-at"
+              >{{ doc.createdAt }} ago by {{ doc.name }}</span
+            >
+          </div>
+        </div>
+
+        <!-- end of other user -->
+      </div>
 
       <!-- facebook typing indicator -->
 
       <!-- below inside the commented, div  logic works as well -->
       <!-- <div v-if="(type.userUid == userTo)  && type.isType" class="ticontainer"> -->
-      <div v-if="(type.userUid !== user.uid)  && type.isType" class="ticontainer">
+      <div v-if="type.userUid !== user.uid && type.isType" class="ticontainer">
         <div class="tiblock">
           <div class="tidot"></div>
           <div class="tidot"></div>
@@ -152,16 +162,19 @@ export default {
       }
     });
 
+
     //Auto Scrolling
     const messages = ref(null);
 
     onUpdated(() => {
       const time = setInterval(() => {
         messages.value.scrollTop = messages.value.scrollHeight;
+        // messages.value.scrollHeight;
       }, 10);
       setTimeout(() => {
         clearInterval(time);
       }, 5000);
+      console.log("hi");
       //for getting scrollTop
       //the container should have css properties,
       //height: whatever;
@@ -170,6 +183,10 @@ export default {
       //overflow-y: auto;
     });
     //End of Auto Scrolling
+
+    const colors = ref({
+      backgroundColor: "red",
+    });
 
     return {
       error,
@@ -180,6 +197,7 @@ export default {
       esourceList,
       user,
       type,
+      colors,
     };
   },
 };
@@ -194,8 +212,6 @@ export default {
 }
 
 .chat-window {
-  /* background: #fafafa; */
-  // padding: 30px 20px;
   padding: 10px 10px;
 }
 .single {
@@ -214,6 +230,10 @@ export default {
   margin-right: 6px;
 }
 .messages {
+  max-height: 485px;
+  overflow: auto;
+}
+.messages2 {
   max-height: 380px;
   overflow: auto;
 }
@@ -238,45 +258,45 @@ a {
   color: #074e8c;
 }
 
-.scrollbar {
-  margin-left: 30px;
-  float: left;
-  height: 300px;
-  width: 65px;
-  background: #f5f5f5;
-  overflow-y: scroll;
-  margin-bottom: 25px;
-}
+// .scrollbar {
+//   margin-left: 30px;
+//   float: left;
+//   height: 300px;
+//   width: 65px;
+//   background: #f5f5f5;
+//   overflow-y: scroll;
+//   margin-bottom: 25px;
+// }
 
-.force-overflow {
-  min-height: 450px;
-}
+// .force-overflow {
+//   min-height: 450px;
+// }
 
-#wrapper {
-  text-align: center;
-  width: 500px;
-  margin: auto;
-}
+// #wrapper {
+//   text-align: center;
+//   width: 500px;
+//   margin: auto;
+// }
 
-.messages::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  background-color: #f5f5f5;
-}
+// .messages::-webkit-scrollbar-track {
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   border-radius: 10px;
+//   background-color: #f5f5f5;
+// }
 
-.messages::-webkit-scrollbar {
-  width: 12px;
-  background-color: #f5f5f5;
-}
+// .messages::-webkit-scrollbar {
+//   width: 12px;
+//   background-color: #f5f5f5;
+// }
 
-.messages::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  // background-color: #d62929;
-  // background-color: #838383;
-  background-color: #b6b6b6a9;
-  // background-color: #e4e4e41e;
-}
+// .messages::-webkit-scrollbar-thumb {
+//   border-radius: 10px;
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   // background-color: #d62929;
+//   // background-color: #838383;
+//   background-color: #b6b6b6a9;
+//   // background-color: #e4e4e41e;
+// }
 
 .selfUser .images {
   max-width: 200px;
@@ -330,6 +350,7 @@ a {
 
 .otherUser .message {
   color: rgb(63, 63, 63);
+  // color: rgb(255, 255, 255);
   font-weight: bold;
 }
 
@@ -352,6 +373,24 @@ a {
   color: #02060b;
 }
 
+.othermsg {
+  color: white;
+  // color: black;
+  // color: black;
+  //   -webkit-text-fill-color: white;
+  //   -webkit-text-stroke-width: .1px;
+  //   -webkit-text-stroke-color: black;
+}
+
+.p-mr-2 {
+  // color: black;
+  //   -webkit-text-fill-color: white;
+  //   -webkit-text-stroke-width: .1px;
+  //   -webkit-text-stroke-color: black;
+}
+
+/* End of Scrollbar Style */
+
 /* facebook typing indicator */
 
 .tiblock {
@@ -360,7 +399,7 @@ a {
   display: flex;
   height: 17px;
   background-color: #dee2e6;
-  width: 12%;
+  width: 9%;
   padding: 5px;
   height: 30px;
   border-radius: 50px;
@@ -376,7 +415,6 @@ a {
   display: inline-block;
   height: 6px;
   width: 6px;
-  // margin-right: 2px;
   margin: 2px auto;
 }
 
@@ -411,12 +449,12 @@ a {
     display: block;
   }
   .messages {
-    max-height: 390px;
+    // max-height: 390px;
+    max-height: 520px;
     overflow: auto;
   }
   .tiblock {
     width: 16%;
   }
 }
-/* End of Scrollbar Style */
 </style>

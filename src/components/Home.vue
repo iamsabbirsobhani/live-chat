@@ -229,8 +229,8 @@ export default {
       // const color = ['blue', '#15b3f3', '#15f67b']
       styleBorder.value = {
         // border: "2x solid black"
-        borderStyle: "solid",
-        borderWidth: "3px",
+        // borderStyle: "solid",
+        // borderWidth: "3px",
         // boxShadow: `0 2.8px 2.2px ${colors[index]}`,
         // borderColor: colors[index]
       };

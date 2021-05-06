@@ -1,6 +1,5 @@
 <template>
-  <Navbar  @delete="deletes" :userTo="id" :documents="documents" />
-  <h3 style="text-align: center; margin: 0px; padding: 0px; position: relative;">Chatroom</h3>
+  <Navbar @delete="deletes" :userTo="id" :documents="documents" :name="name" :picture="picture" />
   <NewChatForm :userTo="id"/>
   <ConfirmPopup></ConfirmPopup>
   <div class="card">
@@ -20,7 +19,7 @@ import getUsers from "@/composable/getUsers";
 import { useRouter } from "vue-router";
 import { watch } from "vue";
 export default {
-    props: ['id'],
+    props: ['id', 'name', 'picture'],
   components: { Navbar, NewChatForm, Button },
   setup() {
     const { user } = getUser();

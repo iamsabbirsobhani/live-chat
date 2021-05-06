@@ -17,7 +17,7 @@ const getCollection = (collection) => {
     // we can not add "custom id" documents inside a "document"
     const unsub = collectionRef.onSnapshot((snap) => {
         let results = []
-        console.log('snapshot')
+        // console.log('snapshot')
         snap.docs.forEach(doc => {
             doc.data().createdAt && results.push({
                 ...doc.data(),

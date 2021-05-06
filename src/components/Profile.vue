@@ -521,7 +521,7 @@ export default {
 }
 
 .date {
-  font-size: 10px;
+  font-size: 12px;
   margin: 10px;
   color: rgba(0, 80, 137, 0.829);
 }

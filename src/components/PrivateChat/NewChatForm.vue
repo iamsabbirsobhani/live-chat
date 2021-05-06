@@ -6,21 +6,14 @@
         <Typing />
       </div>
     </div>
-
     <div class="type">
-      <Textarea
-        v-model.trim="message"
+      <el-input
+        placeholder="Hit enter to send message..."
+        v-model.msg="newModel.msg"
         v-debounce:610ms.cancelonempty="stopTyping"
-        v-model="typeStatus"
+        v-model.typest="newModel.typest"
         @keypress.enter.prevent="handleSumbit"
-        class="textarea"
-        :autoResize="true"
-        rows="2"
-        cols="30"
-        placeholder="Type a message and hit enter to send..."
-        style="margin-right: 5px; padding: 5px"
-      />
-
+      ></el-input>
       <div class="files">
         <el-upload
           class="upload-demo"
@@ -36,11 +29,6 @@
             size="small"
             type="primary"
           ></el-button>
-          <!-- <template #tip>
-            <div class="el-upload__tip">
-              jpg/png files with a size less than 500kb
-            </div>
-          </template> -->
         </el-upload>
       </div>
     </div>
@@ -82,7 +70,7 @@ import Typing from "@/components/Typing.vue";
 import Card from "primevue/card";
 import ChatWindow from "@/components/PrivateChat/ChatWindow.vue";
 import Textarea from "primevue/textarea";
-import { onMounted, onUpdated, ref, watch } from "vue";
+import { onMounted, onUpdated, reactive, ref, watch } from "vue";
 import getUser from "@/composable/getUser";
 import { timestamp } from "@/firebase/config";
 import useCollection from "@/composable/PrivateChat/useCollection";
@@ -90,6 +78,8 @@ import userTypingSetFlag from "@/composable/PrivateChat/userTypingSetFlagValue";
 import Button from "primevue/button";
 import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
+import colors from "@/composable/colors.js";
+
 export default {
   props: ["userTo"],
   components: {
@@ -102,14 +92,20 @@ export default {
     FileUpload,
   },
   setup(props) {
-    const message = ref("");
     const toast = useToast();
-    const typeStatus = ref(null);
     const { user } = getUser();
     const { addDoc, error } = useCollection("privateChat");
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);
+
+    // binding multiple "v-model" within one html element
+    const newModel = ref({
+      msg: null,
+      typest: null,
+    });
+    // end of binding multiple "v-model" within one html element
+
 
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
@@ -118,31 +114,47 @@ export default {
     });
 
     const handleSumbit = async () => {
-      if (message.value) {
+      const random = Math.random();
+      const index = Math.round(random * 279);
+
+      let backgroundColor = `${colors[index]}`;
+
+      console.log(newModel.value.msg);
+
+      // checking if the "newModel.value.msg" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      // end of checking if the "newModel.value.msg" has any value
+
+      if (!isEmptyOrSpaces(newModel.value.msg)) {
         const chat = {
           name: user.value.displayName,
-          message: message.value,
+          message: newModel.value.msg,
           userId: user.value.uid,
           to: props.userTo,
           createdAt: timestamp(),
+          backgroundColor,
         };
         await addDoc(chat);
-
+        newModel.value.msg = null;
         if (!error.value) {
-          message.value = "";
+          newModel.value.msg = "";
         }
       }
     };
 
+
+
     // Type Status Check
-    watch(typeStatus, () => {
-      // console.log(typeStatus.value);
+    watch(newModel.value, () => {
+      // console.log(newModel.value);
       keypressF();
     });
 
     const keypressF = async () => {
-      if (typeStatus.value) {
-        // console.log(typeStatus.value);
+      if (newModel.value.msg) {
+        // console.log(newModel.value.typest);
         var keypresss = {
           isType: true,
         };
@@ -152,7 +164,7 @@ export default {
         var keypresss = {
           isType: false,
         };
-        await addDocType(keypresss,user.value.uid);
+        await addDocType(keypresss, user.value.uid);
       }
     };
 
@@ -165,6 +177,8 @@ export default {
       // console.log("Typing Stopped");
     };
     // End of Type Status Check
+
+
 
     const closeConfirmation = () => {
       displayConfirmation.value = false;
@@ -198,15 +212,14 @@ export default {
     };
 
     return {
-      message,
       handleSumbit,
       error,
-      typeStatus,
       stopTyping,
       displayConfirmation,
       closeConfirmation,
       handleAvatarSuccess,
       url,
+      newModel,
     };
   },
 };
@@ -215,22 +228,17 @@ export default {
 
 <style scoped>
 .chatbox {
-  width: 450px;
-  height: 412px;
-  margin: 10px auto;
+  max-width: 580px;
+  height: 480px;
+  margin: auto;
   margin-top: 0px;
-  padding: 5px;
   position: relative;
-  /* box-sizing: border-box; */
 }
 
 .typeStatus {
   z-index: 2;
   z-index: 2;
-  /* margin: 111px !important; */
-  /* top: 35px; */
   position: absolute;
-  /* top: 314px; */
   bottom: -5px;
   margin-left: 20px;
 }
@@ -252,7 +260,6 @@ export default {
 }
 .card {
   position: relative;
-  /* height: 300px; */
   padding: 0px;
 }
 #app > form > div.p-card.p-component.card {
@@ -262,12 +269,14 @@ export default {
 .type {
   display: flex;
   justify-content: space-around;
+  flex-direction: row-reverse;
   align-items: center;
   max-width: 400px;
   margin: 20px auto;
 }
 .files {
   width: 130px;
+  margin-right: 10px;
 }
 .upbutton {
   width: 90px;
@@ -293,8 +302,9 @@ export default {
   }
   .chatbox {
     max-width: 350px;
-    margin: 10px auto;
-    height: 422px;
+    margin: auto;
+    /* height: 422px; */
+    height: 520px;
   }
 }
 </style>

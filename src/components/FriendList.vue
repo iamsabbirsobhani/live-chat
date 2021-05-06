@@ -23,10 +23,6 @@
               <h4>{{ doc.userName }}</h4>
             </div>
           </router-link>
-          <div class="title">
-            <p>{{ doc.profession }}</p>
-            <p>{{ doc.location }}</p>
-          </div>
           <div class="friend">
             <Button
               style="margin-left: 10px"
@@ -35,13 +31,13 @@
               icon="pi pi-user-minus"
               class="p-button-rounded p-button-danger p-button-outlined"
             />
-            <!-- <Button
+            <Button
               style="margin-left: 10px"
               v-if="!(doc.userUid === user.uid)"
-              @click="privateChat(doc.userUid, user.uid)"
+              @click="privateChat(doc.userUid, doc.userName, doc.phofilePhoto, user.uid)"
               icon="pi pi-comments"
               class="p-button-rounded"
-            /> -->
+            />
           </div>
         </div>
       </div>
@@ -53,7 +49,6 @@
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
 import getUsers from "@/composable/getUsers.js";
-// import acceptReq from "@/composable/acceptReq.js";
 import getUser from "@/composable/getUser.js";
 
 export default {
@@ -63,21 +58,20 @@ export default {
     const router = useRouter();
     const { error, documents } = getUsers();
     const { user } = getUser();
-    // const { accept } = acceptReq();
 
     const goBack = () => {
       router.push({ name: "Profile" });
     };
-    // const privateChat = (frId) => {
-    //   router.push({ name: "PrivateChat", params: { id: frId } });
-    // };
+    const privateChat = (frId, userName, dp) => {
+      router.push({ name: "PrivateChat", params: { id: frId, name: userName, picture: dp } });
+    };
 
     const unfriend = (userId, reqId) => {
       console.log("User ID ", userId, "Req Id ", reqId);
       console.log("Rejected");
     };
 
-    return { info, goBack, documents, unfriend, user };
+    return { info, goBack, documents, unfriend, user, privateChat };
   },
 };
 </script>
@@ -100,7 +94,6 @@ export default {
 }
 .title {
   font-size: 12px;
-  /* margin: 10px; */
 }
 
 .name {

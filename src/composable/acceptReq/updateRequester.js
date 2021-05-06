@@ -26,7 +26,6 @@ const updateRequester = () => {
 
             // requester
             thisReqFriendList = req.value.friendList
-            console.log(thisReqFriendList)
 
             let newReqFriendList = thisReqFriendList.filter((lid) => {
                 return lid === id
@@ -38,20 +37,11 @@ const updateRequester = () => {
 
                     thisReqFriendList.push(id)
 
-                    console.log("1st",thisReqFriendList)
-                    console.log("requester",requester)
-
                     const doc = {
                         friendList: thisReqFriendList,
                     }
 
-                    console.log("2nt",thisReqFriendList)
-
-
-
                     await projectFirestore.collection('profiles').doc(requester).update(doc);
-                    console.log("after await",thisReqFriendList)
-
 
                 }
 

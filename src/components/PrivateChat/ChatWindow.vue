@@ -14,9 +14,9 @@
               class="selfUser"
               style="max-width: 90%"
             >
+                  <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
               <div style="max-width: 100%; text-align: end">
                 <Chip
-                  :style="{ backgroundColor: doc.backgroundColor }"
                   style="text-align: start"
                   v-if="doc.message"
                   :label="doc.message"
@@ -53,8 +53,8 @@
         >
           <!-- overflow-x: hidden; -->
           <div style="max-width: 90%" class="otherUser">
+              <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
             <Chip
-              :style="{ backgroundColor: doc.backgroundColor }"
               class="othermsg"
               v-if="doc.message"
               :label="doc.message"
@@ -174,7 +174,6 @@ export default {
       setTimeout(() => {
         clearInterval(time);
       }, 5000);
-      console.log("hi");
       //for getting scrollTop
       //the container should have css properties,
       //height: whatever;
@@ -205,7 +204,8 @@ export default {
 
 <style lang="scss" scoped>
 .p-chip.custom-chip {
-  background: var(--primary-color);
+  // background: var(--primary-color);
+  background-color: linear-gradient(90deg, rgba(16,145,255,1) 0%, rgba(0,138,255,1) 29%, rgba(0,121,255,1) 56%, rgba(0,97,249,1) 100%);
   color: var(--primary-color-text);
   margin-right: 5px;
   margin-bottom: 3px;
@@ -213,6 +213,15 @@ export default {
 
 .chat-window {
   padding: 10px 10px;
+}
+.chat-window .messages .cwindow {
+  padding: 3px;
+}
+.messages {
+  padding: 3px;
+}
+.cwindow {
+  padding: 3px;
 }
 .single {
   margin: 18px 0;
@@ -233,10 +242,7 @@ export default {
   max-height: 485px;
   overflow: auto;
 }
-.messages2 {
-  max-height: 380px;
-  overflow: auto;
-}
+
 .message {
   word-wrap: break-word;
 }
@@ -258,48 +264,8 @@ a {
   color: #074e8c;
 }
 
-// .scrollbar {
-//   margin-left: 30px;
-//   float: left;
-//   height: 300px;
-//   width: 65px;
-//   background: #f5f5f5;
-//   overflow-y: scroll;
-//   margin-bottom: 25px;
-// }
-
-// .force-overflow {
-//   min-height: 450px;
-// }
-
-// #wrapper {
-//   text-align: center;
-//   width: 500px;
-//   margin: auto;
-// }
-
-// .messages::-webkit-scrollbar-track {
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   border-radius: 10px;
-//   background-color: #f5f5f5;
-// }
-
-// .messages::-webkit-scrollbar {
-//   width: 12px;
-//   background-color: #f5f5f5;
-// }
-
-// .messages::-webkit-scrollbar-thumb {
-//   border-radius: 10px;
-//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-//   // background-color: #d62929;
-//   // background-color: #838383;
-//   background-color: #b6b6b6a9;
-//   // background-color: #e4e4e41e;
-// }
-
 .selfUser .images {
-  max-width: 200px;
+  max-width: 300px;
   max-height: 400px;
   overflow: hidden;
   display: block;
@@ -308,7 +274,7 @@ a {
 }
 
 .otherUser .images {
-  max-width: 200px;
+  max-width: 300px;
   max-height: 400px;
   overflow: hidden;
   display: block;
@@ -328,7 +294,6 @@ a {
   max-width: 180px;
   border-radius: 25px;
   padding: 1px;
-  background-color: #0086f9;
   margin-right: 5px;
 }
 .otherUser .message-wraper {
@@ -374,7 +339,7 @@ a {
 }
 
 .othermsg {
-  color: white;
+  color: black;
   // color: black;
   // color: black;
   //   -webkit-text-fill-color: white;
@@ -387,6 +352,7 @@ a {
   //   -webkit-text-fill-color: white;
   //   -webkit-text-stroke-width: .1px;
   //   -webkit-text-stroke-color: black;
+  background-color: linear-gradient(90deg, rgba(255,49,198,1) 0%, rgba(213,0,101,1) 52%, rgba(173,0,0,1) 100%);
 }
 
 /* End of Scrollbar Style */

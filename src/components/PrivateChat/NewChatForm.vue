@@ -114,12 +114,10 @@ export default {
     });
 
     const handleSumbit = async () => {
-      const random = Math.random();
-      const index = Math.round(random * 279);
+      // const random = Math.random();
+      // const index = Math.round(random * 279);
 
-      let backgroundColor = `${colors[index]}`;
-
-      console.log(newModel.value.msg);
+      // let backgroundColor = `${colors[index]}`;
 
       // checking if the "newModel.value.msg" has any value
       function isEmptyOrSpaces(str) {
@@ -134,7 +132,7 @@ export default {
           userId: user.value.uid,
           to: props.userTo,
           createdAt: timestamp(),
-          backgroundColor,
+          // backgroundColor,
         };
         await addDoc(chat);
         newModel.value.msg = null;

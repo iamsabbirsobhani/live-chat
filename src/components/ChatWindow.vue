@@ -175,7 +175,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .p-chip.custom-chip {
   background: var(--primary-color);
   color: var(--primary-color-text);
@@ -184,8 +184,6 @@ export default {
 }
 
 .chat-window {
-  /* background: #fafafa; */
-  // padding: 30px 20px;
   padding: 10px 10px;
 }
 .single {

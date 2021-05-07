@@ -1,7 +1,7 @@
 <template>
   <form>
-    <div class="chatbox">
-      <ChatWindow :userTo="userTo" class="cwindow" />
+    <div class="pvtChatbox">
+      <ChatWindow :userTo="userTo" class="cwindows" />
       <div class="typeStatus">
         <Typing />
       </div>
@@ -106,7 +106,6 @@ export default {
     });
     // end of binding multiple "v-model" within one html element
 
-
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
         displayConfirmation.value = true;
@@ -118,6 +117,8 @@ export default {
       // const index = Math.round(random * 279);
 
       // let backgroundColor = `${colors[index]}`;
+
+      // console.log(newModel.value.msg);
 
       // checking if the "newModel.value.msg" has any value
       function isEmptyOrSpaces(str) {
@@ -132,7 +133,6 @@ export default {
           userId: user.value.uid,
           to: props.userTo,
           createdAt: timestamp(),
-          // backgroundColor,
         };
         await addDoc(chat);
         newModel.value.msg = null;
@@ -141,8 +141,6 @@ export default {
         }
       }
     };
-
-
 
     // Type Status Check
     watch(newModel.value, () => {
@@ -155,28 +153,28 @@ export default {
         // console.log(newModel.value.typest);
         var keypresss = {
           isType: true,
+          typeTo: props.userTo,
         };
         // console.log("Typing Start");
         await addDocType(keypresss, user.value.uid);
       } else {
         var keypresss = {
           isType: false,
+          typeTo: props.userTo,
         };
         await addDocType(keypresss, user.value.uid);
+        // await addDocType(keypresss, props.userTo);
       }
     };
 
     const stopTyping = () => {
       const key = {
         isType: false,
-        user: user.value.uid,
       };
       addDocType(key, user.value.uid);
       // console.log("Typing Stopped");
     };
     // End of Type Status Check
-
-
 
     const closeConfirmation = () => {
       displayConfirmation.value = false;
@@ -225,7 +223,7 @@ export default {
 
 
 <style scoped>
-.chatbox {
+.pvtChatbox {
   max-width: 580px;
   height: 480px;
   margin: auto;
@@ -298,7 +296,7 @@ export default {
   .upbutton {
     width: 70px;
   }
-  .chatbox {
+  .pvtChatbox {
     max-width: 350px;
     margin: auto;
     /* height: 422px; */

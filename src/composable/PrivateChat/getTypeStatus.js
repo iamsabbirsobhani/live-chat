@@ -15,7 +15,7 @@ const getTypeStatus = (id) => {
             // console.log('snapshot typing')
             // console.log("Current data: ", doc.data().isType);
             if (doc.data().isType || doc.data().user) {
-                type.value = { ...doc.data() }
+                type.value = { ...doc.data(), id: doc.id }
             }
             else {
                 type.value = null

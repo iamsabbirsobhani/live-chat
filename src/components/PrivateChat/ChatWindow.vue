@@ -1,9 +1,8 @@
 <template >
-  <div class="chat-window messages" ref="messages">
+  <div class="chat-windows chatMessages" ref="messages">
     <div v-if="error">{{ error }}</div>
     <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
-
       <!-- self user -->
 
       <div v-for="doc in formattedDocuments" :key="doc.id">
@@ -11,10 +10,9 @@
           <div class="single">
             <div
               v-if="doc.to == userTo && doc.userId == user.uid"
-              class="selfUser"
+              class="pvtSelfUser"
               style="max-width: 90%"
             >
-                  <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
               <div style="max-width: 100%; text-align: end">
                 <Chip
                   style="text-align: start"
@@ -24,7 +22,7 @@
                 />
               </div>
               <!-- element-plus Image Preview -->
-              <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+              <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
                 <el-image
                   class="images"
                   :src="doc.imgUrl"
@@ -44,7 +42,6 @@
 
         <!-- end of self user -->
 
-
         <!-- other user -->
 
         <div
@@ -52,16 +49,11 @@
           v-if="doc.to == user.uid && doc.userId == userTo"
         >
           <!-- overflow-x: hidden; -->
-          <div style="max-width: 90%" class="otherUser">
-              <!-- :style="{ backgroundColor: doc.backgroundColor }" -->
-            <Chip
-              class="othermsg"
-              v-if="doc.message"
-              :label="doc.message"
-            />
+          <div style="max-width: 90%" class="pvtOtherUser">
+            <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
 
             <!-- element-plus Image Preview -->
-            <div v-if="doc.imgUrl" class="selfUser demo-image__preview">
+            <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
               <el-image
                 class="images"
                 :src="doc.imgUrl"
@@ -81,14 +73,13 @@
       </div>
 
       <!-- facebook typing indicator -->
-
-      <!-- below inside the commented, div  logic works as well -->
-      <!-- <div v-if="(type.userUid == userTo)  && type.isType" class="ticontainer"> -->
-      <div v-if="type.userUid !== user.uid && type.isType" class="ticontainer">
-        <div class="tiblock">
-          <div class="tidot"></div>
-          <div class="tidot"></div>
-          <div class="tidot"></div>
+      <div v-if="type">
+        <div v-if="type.typeTo == user.uid && type.isType" class="ticontainer">
+          <div class="tiblock">
+            <div class="tidot"></div>
+            <div class="tidot"></div>
+            <div class="tidot"></div>
+          </div>
         </div>
       </div>
       <!-- end of facebook typing indicator -->
@@ -153,7 +144,6 @@ export default {
     //functionality each time something changes, or respond to a particular
     //change, we could watch a property and apply some logic.
 
-
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
@@ -162,7 +152,6 @@ export default {
         });
       }
     });
-
 
     //Auto Scrolling
     const messages = ref(null);
@@ -184,10 +173,6 @@ export default {
     });
     //End of Auto Scrolling
 
-    const colors = ref({
-      backgroundColor: "red",
-    });
-
     return {
       error,
       documents,
@@ -197,7 +182,6 @@ export default {
       esourceList,
       user,
       type,
-      colors,
     };
   },
 };
@@ -206,23 +190,20 @@ export default {
 <style lang="scss" scoped>
 .p-chip.custom-chip {
   // background: var(--primary-color);
-  background-color: linear-gradient(90deg, rgba(16,145,255,1) 0%, rgba(0,138,255,1) 29%, rgba(0,121,255,1) 56%, rgba(0,97,249,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(16, 145, 255, 1) 0%,
+    rgba(0, 138, 255, 1) 29%,
+    rgba(0, 121, 255, 1) 56%,
+    rgba(0, 97, 249, 1) 100%
+  );
   color: var(--primary-color-text);
   margin-right: 5px;
   margin-bottom: 3px;
 }
 
-.chat-window {
+.chat-windows {
   padding: 10px 10px;
-}
-.chat-window .messages .cwindow {
-  padding: 3px;
-}
-.messages {
-  padding: 3px;
-}
-.cwindow {
-  padding: 3px;
 }
 .single {
   margin: 18px 0;
@@ -239,11 +220,10 @@ export default {
   font-weight: bold;
   margin-right: 6px;
 }
-.messages {
+.chatMessages {
   max-height: 485px;
   overflow: auto;
 }
-
 .message {
   word-wrap: break-word;
 }
@@ -265,7 +245,47 @@ a {
   color: #074e8c;
 }
 
-.selfUser .images {
+.scrollbar {
+  margin-left: 30px;
+  float: left;
+  height: 300px;
+  width: 65px;
+  background: #f5f5f5;
+  overflow-y: scroll;
+  margin-bottom: 25px;
+}
+
+.force-overflow {
+  min-height: 450px;
+}
+
+#wrapper {
+  text-align: center;
+  width: 500px;
+  margin: auto;
+}
+
+.chatMessages::-webkit-scrollbar-track {
+  // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+.chatMessages::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
+}
+
+.chatMessages::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  // background-color: #d62929;
+  // background-color: #838383;
+  // background-color: #b6b6b6a9;
+  // background-color: #e4e4e41e;
+}
+
+.pvtSelfUser .images {
   max-width: 300px;
   max-height: 400px;
   overflow: hidden;
@@ -274,7 +294,7 @@ a {
   margin-right: 5px;
 }
 
-.otherUser .images {
+.pvtOtherUser .images {
   max-width: 300px;
   max-height: 400px;
   overflow: hidden;
@@ -287,34 +307,35 @@ a {
   flex-direction: column;
 }
 
-.selfUser {
+.pvtSelfUser {
   align-self: flex-end;
 }
 
-.selfUser .message-wraper {
+.pvtSelfUser .message-wraper {
   max-width: 180px;
   border-radius: 25px;
   padding: 1px;
+  background-color: #0086f9;
   margin-right: 5px;
 }
-.otherUser .message-wraper {
+.pvtOtherUser .message-wraper {
   max-width: 180px;
   border-radius: 25px;
   padding: 5px;
   background-color: #e4e6eb;
 }
 
-.otherUser {
+.pvtOtherUser {
   word-wrap: break-word !important;
 }
 
-.selfUser .message {
+.pvtSelfUser .message {
   color: white;
   font-weight: bold;
   margin-left: 20px;
 }
 
-.otherUser .message {
+.pvtOtherUser .message {
   color: rgb(63, 63, 63);
   // color: rgb(255, 255, 255);
   font-weight: bold;
@@ -324,24 +345,31 @@ a {
   margin-left: 10px;
 }
 
-.selfUser p {
+.pvtSelfUser p {
   margin: 8px;
 }
 
-.selfUser span {
+.pvtSelfUser span {
 }
 
-.otherUser p {
+.pvtOtherUser p {
   margin: 8px;
 }
 
-.otherUser .name {
+.pvtOtherUser .name {
   color: #02060b;
 }
 
 .othermsg {
   color: black;
-  // color: black;
+  background: linear-gradient(
+    280deg,
+    rgba(219, 219, 219, 1) 0%,
+    rgba(217, 217, 217, 1) 29%,
+    rgba(205, 205, 205, 1) 65%,
+    rgba(203, 203, 203, 1) 100%
+  );
+  // background-color:;
   // color: black;
   //   -webkit-text-fill-color: white;
   //   -webkit-text-stroke-width: .1px;
@@ -353,7 +381,6 @@ a {
   //   -webkit-text-fill-color: white;
   //   -webkit-text-stroke-width: .1px;
   //   -webkit-text-stroke-color: black;
-  background-color: linear-gradient(90deg, rgba(255,49,198,1) 0%, rgba(213,0,101,1) 52%, rgba(173,0,0,1) 100%);
 }
 
 /* End of Scrollbar Style */
@@ -408,6 +435,15 @@ a {
 }
 /* end of facebook typing indicator */
 
+.chat-windows   {
+  padding: 3px;
+}
+.chatMessages {
+  padding: 3px;
+}
+.cwindows {
+  padding: 3px;
+}
 @media (max-width: 425px) {
   .images {
     max-width: 200px;
@@ -415,13 +451,16 @@ a {
     overflow: hidden;
     display: block;
   }
-  .messages {
+  .chatMessages {
     // max-height: 390px;
     max-height: 520px;
     overflow: auto;
   }
   .tiblock {
-    width: 16%;
+    width: 14%;
+  }
+  .pvtOtherUser .images {
+    max-width: 200px;
   }
 }
 </style>

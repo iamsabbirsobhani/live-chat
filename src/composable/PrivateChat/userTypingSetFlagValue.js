@@ -11,6 +11,7 @@ const userTypingSetFlag = () => {
     const addDocType = async (doc, userTo) => {
         error.value = null
         try {
+            // await projectFirestore.collection('profiles').doc(userTo).update(doc);
             await projectFirestore.collection('profiles').doc(userTo).update(doc);
             // console.log('Hey I am in Update')
         } catch (err) {

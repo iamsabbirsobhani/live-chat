@@ -36,16 +36,10 @@
               <el-dropdown-item @click="UserList" icon="pi pi-users"
                 >User List</el-dropdown-item
               >
-              <el-dropdown-item
-                v-if="id == user.uid"
-                @click="frList"
-                icon="pi pi-user"
+              <el-dropdown-item v-if="id == user.uid" @click="frList" icon="pi pi-user"
                 >Friend List</el-dropdown-item
               >
-              <el-dropdown-item
-                v-if="id == user.uid"
-                @click="frReq"
-                icon="pi pi-user-plus"
+              <el-dropdown-item v-if="id == user.uid" @click="frReq" icon="pi pi-user-plus"
                 >Friend Request</el-dropdown-item
               >
               <el-dropdown-item @click="signout" icon="pi pi-sign-out"
@@ -92,11 +86,7 @@
       placeholder="Express your mind?"
       v-model="input"
     ></el-input>
-    <el-button
-      v-if="isLoadingStatus"
-      type="primary"
-      :loading="true"
-    ></el-button>
+    <el-button v-if="isLoadingStatus" type="primary" :loading="true"></el-button>
     <el-button
       v-else
       @click="post"
@@ -163,21 +153,16 @@
           >
             Close
           </p>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="To see comments please close the other comment section"
-            placement="top"
+      <el-tooltip class="item" effect="dark" content="To see comments please close the other comment section" placement="top">
+          <div>
+          <p
+            style="cursor: text"
+            v-if="closeComments && !(doc.id === seeCommentsDocId)"
           >
-            <div>
-              <p
-                style="cursor: text"
-                v-if="closeComments && !(doc.id === seeCommentsDocId)"
-              >
-                See Comments
-              </p>
-            </div>
-          </el-tooltip>
+            See Comments
+          </p>
+          </div>
+      </el-tooltip>
         </div>
       </div>
       <transition name="fade">
@@ -218,15 +203,14 @@
           </div>
 
           <div style="display: flex; flex-direction: column">
-            <!-- <InputText
+            <InputText
+              style="border-radius: 10px;"
               placeholder="Please enter comment"
               type="text"
               v-model.trim="comment"
-              style="border-radius: 10px"
-            /> -->
-            <el-input class="inputComment" placeholder="Please enter comment" v-model="comment"></el-input>
+            />
             <el-button
-              style="margin-top: 10px; border-radius: 10px"
+              style="margin-top: 10px; border-radius: 10px;"
               class="button"
               v-if="isLoadingCmt"
               :loading="isLoadingCmt"
@@ -235,7 +219,7 @@
             <el-button
               v-else
               @click="postComment(doc.id, user.displayName, user.uid)"
-              style="margin-top: 10px; border-radius: 10px"
+              style="margin-top: 10px; border-radius: 10px;"
               >Comment</el-button
             >
           </div>
@@ -276,7 +260,7 @@ export default {
     const router = useRouter();
     const { docDel } = delPost();
     const { logout, error } = useLogout();
-    const isLoadingCmt = ref(false);
+    const isLoadingCmt = ref(false)
 
     // comment section
     const seeComments = ref(true);
@@ -346,7 +330,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
-      isLoadingCmt.value = true;
+      isLoadingCmt.value = true
       docsid.value = docId;
       const docs = {
         docId,
@@ -359,7 +343,7 @@ export default {
         await postComments(docs);
       }
       comment.value = null;
-      isLoadingCmt.value = false;
+      isLoadingCmt.value = false
     };
     // end of comment section
 
@@ -432,7 +416,7 @@ export default {
       formattedComments,
 
       signout,
-      isLoadingCmt,
+      isLoadingCmt
     };
   },
 };
@@ -609,9 +593,6 @@ it will be positioned auto left */
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-.inputComment {
-  border-radius: 10px;
 }
 
 @media (max-width: 425px) {

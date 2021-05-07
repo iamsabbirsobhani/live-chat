@@ -465,5 +465,8 @@ a {
   .pvtOtherUser .images {
     max-width: 200px;
   }
+  .pvtSelfUser .images {
+    max-width: 200px;
+  }
 }
 </style>

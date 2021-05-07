@@ -43,7 +43,6 @@
         <!-- end of self user -->
 
         <!-- other user -->
-
         <div
           style="margin-bottom: 20px"
           v-if="doc.to == user.uid && doc.userId == userTo"
@@ -122,13 +121,17 @@ export default {
   props: ["userTo"],
   components: { Dialog, Button, Chip, ScrollPanel },
   setup(props) {
-    const { error, documents, esourceList } = getCollection("privateChat");
+    const { user } = getUser();
+
+    const { error, documents, esourceList } = getCollection(
+      "privateChat",
+      props.userTo,
+      user.value.uid
+    );
 
     const displayConfirmation = ref(false);
 
     const { type } = getTypeStatus(props.userTo);
-
-    const { user } = getUser();
 
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
@@ -435,7 +438,7 @@ a {
 }
 /* end of facebook typing indicator */
 
-.chat-windows   {
+.chat-windows {
   padding: 3px;
 }
 .chatMessages {

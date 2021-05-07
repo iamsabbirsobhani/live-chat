@@ -6,13 +6,16 @@ import {
     projectFirestore
 } from '@/firebase/config'
 
-const getCollection = (collection) => {
+const getCollection = (collection, userTo, crUser) => {
     const documents = ref(null)
     const esourceList = ref(null)
     const error = ref(null)
 
+    // let collectionRef = projectFirestore.collection(collection).doc('chat').collection('chat')
+    // .where('to', '==', crUser).where('to', '==', userTo).orderBy('createdAt', 'desc')
     let collectionRef = projectFirestore.collection(collection).doc('chat').collection('chat')
-        .orderBy('createdAt', 'desc').limit(40)
+    .where('to', 'in', [crUser, userTo]).orderBy('createdAt', 'desc').limit(50)
+
     // we can only add "custom id" documents under a "collection"
     // we can not add "custom id" documents inside a "document"
     const unsub = collectionRef.onSnapshot((snap) => {

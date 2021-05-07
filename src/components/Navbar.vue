@@ -196,7 +196,7 @@ export default {
     };
 
     const chatDelYes = async () => {
-      if (user.value.uid === `1v1TBpu4tYWBDRnoiXGonJtXf192`) {
+      if (user.value.uid === `QDvqKBiDoKdUJ5DfhvaqJm2kANI3`) {
         await delChat();
         toast.add({
           severity: "success",

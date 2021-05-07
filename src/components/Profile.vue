@@ -36,10 +36,16 @@
               <el-dropdown-item @click="UserList" icon="pi pi-users"
                 >User List</el-dropdown-item
               >
-              <el-dropdown-item v-if="id == user.uid" @click="frList" icon="pi pi-user"
+              <el-dropdown-item
+                v-if="id == user.uid"
+                @click="frList"
+                icon="pi pi-user"
                 >Friend List</el-dropdown-item
               >
-              <el-dropdown-item v-if="id == user.uid" @click="frReq" icon="pi pi-user-plus"
+              <el-dropdown-item
+                v-if="id == user.uid"
+                @click="frReq"
+                icon="pi pi-user-plus"
                 >Friend Request</el-dropdown-item
               >
               <el-dropdown-item @click="signout" icon="pi pi-sign-out"
@@ -86,7 +92,11 @@
       placeholder="Express your mind?"
       v-model="input"
     ></el-input>
-    <el-button v-if="isLoadingStatus" type="primary" :loading="true"></el-button>
+    <el-button
+      v-if="isLoadingStatus"
+      type="primary"
+      :loading="true"
+    ></el-button>
     <el-button
       v-else
       @click="post"
@@ -153,16 +163,21 @@
           >
             Close
           </p>
-      <el-tooltip class="item" effect="dark" content="To see comments please close the other comment section" placement="top">
-          <div>
-          <p
-            style="cursor: text"
-            v-if="closeComments && !(doc.id === seeCommentsDocId)"
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="To see comments please close the other comment section"
+            placement="top"
           >
-            See Comments
-          </p>
-          </div>
-      </el-tooltip>
+            <div>
+              <p
+                style="cursor: text"
+                v-if="closeComments && !(doc.id === seeCommentsDocId)"
+              >
+                See Comments
+              </p>
+            </div>
+          </el-tooltip>
         </div>
       </div>
       <transition name="fade">
@@ -204,13 +219,13 @@
 
           <div style="display: flex; flex-direction: column">
             <InputText
-              style="border-radius: 10px;"
+              style="border-radius: 10px"
               placeholder="Please enter comment"
               type="text"
               v-model.trim="comment"
             />
             <el-button
-              style="margin-top: 10px; border-radius: 10px;"
+              style="margin-top: 10px; border-radius: 10px"
               class="button"
               v-if="isLoadingCmt"
               :loading="isLoadingCmt"
@@ -219,7 +234,7 @@
             <el-button
               v-else
               @click="postComment(doc.id, user.displayName, user.uid)"
-              style="margin-top: 10px; border-radius: 10px;"
+              style="margin-top: 10px; border-radius: 10px"
               >Comment</el-button
             >
           </div>
@@ -260,7 +275,7 @@ export default {
     const router = useRouter();
     const { docDel } = delPost();
     const { logout, error } = useLogout();
-    const isLoadingCmt = ref(false)
+    const isLoadingCmt = ref(false);
 
     // comment section
     const seeComments = ref(true);
@@ -279,7 +294,12 @@ export default {
 
     const post = async () => {
       isLoadingStatus.value = true;
-      if (input.value) {
+      // checking if the "input.value" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      // end of checking if the "input.value" has any value
+      if (!isEmptyOrSpaces(input.value)) {
         await addPost({
           userName: user.value.displayName,
           dp: info.value.phofilePhoto,
@@ -330,7 +350,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
-      isLoadingCmt.value = true
+      isLoadingCmt.value = true;
       docsid.value = docId;
       const docs = {
         docId,
@@ -343,7 +363,7 @@ export default {
         await postComments(docs);
       }
       comment.value = null;
-      isLoadingCmt.value = false
+      isLoadingCmt.value = false;
     };
     // end of comment section
 
@@ -416,7 +436,7 @@ export default {
       formattedComments,
 
       signout,
-      isLoadingCmt
+      isLoadingCmt,
     };
   },
 };

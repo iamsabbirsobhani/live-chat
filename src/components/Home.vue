@@ -14,7 +14,14 @@
     >
       <el-menu-item index="1">
         <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
+          <div class="navPhoto">
+          <img
+            class="profilePic"
+            :src="info.phofilePhoto"
+            alt="Profile Photo"
+          />
           {{ user.displayName }}
+          </div>
         </router-link>
       </el-menu-item>
     </el-tooltip>
@@ -121,7 +128,7 @@
                   <Button
                     v-if="cmt.docId === doc.id && user.uid === cmt.userId"
                     icon="pi pi pi-times"
-                    style="color: red; margin-left: auto;"
+                    style="color: red; margin-left: auto"
                     @click="deleteCmt(cmt.id)"
                     class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
                   />
@@ -136,13 +143,13 @@
           <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
           <div style="display: flex; flex-direction: column">
             <InputText
-              style="border-radius: 10px;"
+              style="border-radius: 10px"
               placeholder="Please enter comment"
               type="text"
               v-model.trim="comment"
             />
             <el-button
-              style="margin-top: 10px; border-radius: 10px;"
+              style="margin-top: 10px; border-radius: 10px"
               class="button"
               v-if="isLoading"
               :loading="isLoading"
@@ -151,7 +158,7 @@
             <el-button
               v-else
               @click="postComment(doc.id, user.displayName, user.uid)"
-              style="margin-top: 10px; border-radius: 10px;"
+              style="margin-top: 10px; border-radius: 10px"
               >Comment</el-button
             >
           </div>
@@ -166,6 +173,7 @@
 import getUser from "@/composable/getUser.js";
 import getPosts from "@/composable/getPosts.js";
 import getUsers from "@/composable/getUsers.js";
+import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
 import { computed, ref } from "vue";
@@ -198,6 +206,8 @@ export default {
     const { comments } = getComments(docsid);
     const { commentDel } = commentDelete();
     // end of comment section
+
+    const { info } = getProfile("profiles", user.value.uid);
 
     const { likePost } = likeSystem();
     const { dislikePost } = dislikeSystem();
@@ -302,6 +312,8 @@ export default {
       formattedComments,
       isLoading,
       styleBorder,
+      documents,
+      info,
     };
   },
 };
@@ -337,6 +349,9 @@ export default {
 
 .nameDate {
   line-height: 0.5;
+  h3 {
+    color: #004f89;
+  }
 }
 
 .date {
@@ -418,6 +433,22 @@ export default {
 .borderCard {
   // border: 3px solid rgba(0, 0, 255, 0.712);
   border: 3px solid #15b3f3;
+}
+
+.profilePic {
+  width: 35px;
+  height: 35px;
+  border-radius: 500px;
+  object-fit: cover;
+  margin-right: 5px;
+}
+.navPhoto {
+  margin: 0px;
+  filter:opacity(70%);
+  transition: filter .4s;
+}
+.navPhoto:hover {
+  filter:opacity(100%);
 }
 
 @media (max-width: 425px) {

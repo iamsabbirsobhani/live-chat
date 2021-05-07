@@ -1,4 +1,10 @@
 <template>
+  <!-- unfriend confirmation dialog -->
+  <Toast />
+  <ConfirmDialog></ConfirmDialog>
+  <ConfirmDialog group="positionDialog"></ConfirmDialog>
+  <!-- end of unfriend confirmation dialog -->
+
   <el-page-header
     style="margin: 10px"
     class="pghd"
@@ -6,7 +12,9 @@
     content="Profile"
   >
   </el-page-header>
-  <h3 style="text-align: center; font-family: Roboto, sans-serif;">Friend List</h3>
+  <h3 style="text-align: center; font-family: Roboto, sans-serif">
+    Friend List
+  </h3>
 
   <div v-for="doc in documents" :key="doc.userUid">
     <div v-for="fr in info.friendList" :key="fr.id">
@@ -24,17 +32,28 @@
             </div>
           </router-link>
           <div class="friend">
+
+            <!-- unfriend process -->
             <Button
               style="margin-left: 10px"
               v-if="!(doc.userUid === user.uid)"
-              @click="unfriend(user.uid, doc.userUid)"
+              @click="confirmPosition('top', user.uid, doc.userUid)"
               icon="pi pi-user-minus"
               class="p-button-rounded p-button-danger p-button-outlined"
             />
+            <!-- end unfriend process -->
+
             <Button
               style="margin-left: 10px"
               v-if="!(doc.userUid === user.uid)"
-              @click="privateChat(doc.userUid, doc.userName, doc.phofilePhoto, user.uid)"
+              @click="
+                privateChat(
+                  doc.userUid,
+                  doc.userName,
+                  doc.phofilePhoto,
+                  user.uid
+                )
+              "
               icon="pi pi-comments"
               class="p-button-rounded"
             />
@@ -48,30 +67,90 @@
 <script>
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 import getUsers from "@/composable/getUsers.js";
 import getUser from "@/composable/getUser.js";
+import unfriendSelf from "@/composable/PrivateChat/unfriendSelf.js";
+import unfriendOther from "@/composable/PrivateChat/unfriendOther.js";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
   props: ["id"],
+  components: { ConfirmDialog },
   setup(props) {
+    const confirm = useConfirm();
+    const toast = useToast();
+
+    const centerDialogVisible = ref(false);
     const { info } = getProfile("profiles", props.id);
     const router = useRouter();
     const { error, documents } = getUsers();
     const { user } = getUser();
+    // unfriend
+    const { doUnfriendSelf } = unfriendSelf("profiles");
+    const { doUnfriendOther } = unfriendOther("profiles");
+
+    const confirmPosition = (position, useruid, docuserUid) => {
+      confirm.require({
+        key: "positionDialog",
+        message: "Do you want to unfriend?",
+        header: "Delete Confirmation",
+        icon: "pi pi-info-circle",
+        position: position,
+        accept: () => {
+          unfriend(useruid, docuserUid);
+          toast.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "Successfully Unfriend",
+            life: 3000,
+          });
+        },
+        reject: () => {
+          toast.add({
+            severity: "error",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const unfriend = (userId, reqId) => {
+      centerDialogVisible.value = false;
+      doUnfriendSelf(userId, reqId);
+      doUnfriendOther(userId, reqId);
+    };
+
+    // end unfriend
 
     const goBack = () => {
       router.push({ name: "Profile" });
     };
     const privateChat = (frId, userName, dp) => {
-      router.push({ name: "PrivateChat", params: { id: frId, name: userName, picture: dp } });
+      router.push({
+        name: "PrivateChat",
+        params: { id: frId, name: userName, picture: dp },
+      });
     };
 
-    const unfriend = (userId, reqId) => {
-      console.log("User ID ", userId, "Req Id ", reqId);
-      console.log("Rejected");
+    const unfriendPopup = () => {
+      centerDialogVisible.value = true;
     };
 
-    return { info, goBack, documents, unfriend, user, privateChat };
+    return {
+      info,
+      goBack,
+      documents,
+      user,
+      privateChat,
+      unfriendPopup,
+      centerDialogVisible,
+      confirmPosition,
+    };
   },
 };
 </script>
@@ -111,8 +190,8 @@ p {
   padding: 0px;
 }
 
-.pghd{
-    font-family: "Roboto", sans-serif;
+.pghd {
+  font-family: "Roboto", sans-serif;
 }
 
 @media (max-width: 425px) {

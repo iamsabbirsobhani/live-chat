@@ -1,7 +1,7 @@
 <template>
   <el-page-header class="pghd" @back="goBack" content="Profile">
   </el-page-header>
-  <h4 style="text-align: center">Input All the fields</h4>
+  <h4 style="text-align: center;font-family: Roboto, sans-serif;">Input All the fields</h4>
   <form @submit.prevent="submitForm">
     <label for="bio">Bio:</label>
     <el-input
@@ -121,6 +121,7 @@ h1 {
   text-align: center;
 }
 form {
+  font-family: "Roboto", sans-serif;
   display: flex;
   flex-direction: column;
   max-width: 500px;

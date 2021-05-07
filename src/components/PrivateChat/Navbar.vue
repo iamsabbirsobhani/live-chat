@@ -55,6 +55,7 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 #start {
   display: flex;
   justify-content: space-between;
@@ -76,5 +77,9 @@ export default {
 .email {
   font-weight: 700;
   color: white;
+}
+
+.pghd {
+  font-family: "Roboto", sans-serif;
 }
 </style>

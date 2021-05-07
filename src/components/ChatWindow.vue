@@ -247,13 +247,13 @@ a {
 }
 
 .messages::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   background-color: #f5f5f5;
 }
 
 .messages::-webkit-scrollbar {
-  width: 12px;
+  width: 5px;
   background-color: #f5f5f5;
 }
 
@@ -262,7 +262,7 @@ a {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   // background-color: #d62929;
   // background-color: #838383;
-  background-color: #b6b6b6a9;
+  // background-color: #b6b6b6a9;
   // background-color: #e4e4e41e;
 }
 
@@ -350,7 +350,7 @@ a {
   display: flex;
   height: 17px;
   background-color: #dee2e6;
-  width: 12%;
+  width: 9%;
   padding: 5px;
   height: 30px;
   border-radius: 50px;

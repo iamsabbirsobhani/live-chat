@@ -1,21 +1,61 @@
 <template>
-  <el-page-header class="pghd" @back="goBack" content="Profile">  </el-page-header>
-  <h4 style="text-align: center;">Input All the fields</h4>
+  <el-page-header class="pghd" @back="goBack" content="Profile">
+  </el-page-header>
+  <h4 style="text-align: center">Input All the fields</h4>
   <form @submit.prevent="submitForm">
-    <label for="bio" >Bio:</label>
-    <el-input maxlength="100" show-word-limit placeholder="Please enter a short bio" v-model="bio" type="text" name="bio" required></el-input>
+    <label for="bio">Bio:</label>
+    <el-input
+      maxlength="100"
+      show-word-limit
+      placeholder="Please enter a short bio"
+      v-model="bio"
+      type="text"
+      name="bio"
+      required
+    ></el-input>
     <!-- <input v-model="bio" type="text" name="bio" required/> -->
     <label for="location">Location:</label>
-    <el-input  maxlength="17" show-word-limit placeholder="Please enter location" v-model="location" type="text" name="location" required></el-input>
+    <el-input
+      maxlength="17"
+      show-word-limit
+      placeholder="Please enter location"
+      v-model="location"
+      type="text"
+      name="location"
+      required
+    ></el-input>
     <label for="profession">Profession:</label>
-    <el-input maxlength="18" show-word-limit placeholder="Please enter your profession" v-model="profession" type="text" name="profession" required></el-input>
+    <el-input
+      maxlength="18"
+      show-word-limit
+      placeholder="Please enter your profession"
+      v-model="profession"
+      type="text"
+      name="profession"
+      required
+    ></el-input>
     <label for="interest">Currently hacking on?</label>
-    <el-input maxlength="15" show-word-limit placeholder="Please enter currently what are you on" v-model="interest" type="text" name="interest" required></el-input>
+    <el-input
+      maxlength="15"
+      show-word-limit
+      placeholder="Please enter currently what are you on"
+      v-model="interest"
+      type="text"
+      name="interest"
+      required
+    ></el-input>
 
-    <el-button class="button" v-if="isLoading" type="primary" :loading="isLoading">Loading</el-button>
-    <el-button class="button" v-else type="primary" native-type="submit">Change Edit</el-button>
+    <el-button
+      class="button"
+      v-if="isLoading"
+      type="primary"
+      :loading="isLoading"
+      >Loading</el-button
+    >
+    <el-button class="button" v-else type="primary" native-type="submit"
+      >Change Edit</el-button
+    >
   </form>
-
 </template>
 
 <script>
@@ -58,10 +98,9 @@ export default {
       // console.log(bio.value, location.value, profession.value, interest.value)
     };
 
-
     const goBack = () => {
-      router.push({ name: 'Profile' })
-    }
+      router.push({ name: "Profile" });
+    };
 
     return {
       bio,
@@ -77,6 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 h1 {
   text-align: center;
 }
@@ -86,11 +126,12 @@ form {
   max-width: 500px;
   margin: auto;
 }
-label  {
+label {
   margin: 10px;
 }
 .pghd {
   margin: 10px;
+  font-family: "Roboto", sans-serif;
 }
 .button {
   width: 300px;

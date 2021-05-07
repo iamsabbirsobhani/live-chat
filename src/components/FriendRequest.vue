@@ -6,7 +6,7 @@
     content="Profile"
   >
   </el-page-header>
-  <h3 style="text-align: center">Friend Request</h3>
+  <h3 style="text-align: center; font-family: Roboto, sans-serif;">Friend Request</h3>
 
   <div v-for="doc in documents" :key="doc.userUid">
     <div v-for="fr in info.friendRequest" :key="fr.id">
@@ -87,7 +87,9 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 .users {
+  font-family: "Roboto", sans-serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -118,6 +120,10 @@ export default {
 p {
   margin: 0px;
   padding: 0px;
+}
+
+.pghd {
+  font-family: "Roboto", sans-serif;
 }
 
 @media (max-width: 425px) {

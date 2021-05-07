@@ -1,7 +1,7 @@
 <template>
-<el-page-header  style="margin: 10px;" @back="goBack" content="Profile">
+<el-page-header class="pghd"  style="margin: 10px;" @back="goBack" content="Profile">
 </el-page-header>
-  <h2 style="text-align: center">All the users</h2>
+  <h2 style="text-align: center;font-family: Roboto, sans-serif;">All the users</h2>
   <div v-for="doc in documents" :key="doc.userUid">
     <div class="users">
     <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: {id: doc.userUid}}">
@@ -52,7 +52,9 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 .users {
+  font-family: "Roboto", sans-serif;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,6 +87,9 @@ p{
   padding: 0px;
 }
 
+.pghd {
+  font-family: "Roboto", sans-serif;
+}
 @media (max-width: 425px) {
   .users {
     max-width: 330px;

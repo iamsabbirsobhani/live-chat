@@ -8,7 +8,7 @@
     </div>
 
     <div class="type">
-      <Textarea
+      <!-- <Textarea
         v-model.trim="message"
         v-debounce:610ms.cancelonempty="stopTyping"
         v-model="typeStatus"
@@ -19,7 +19,14 @@
         cols="30"
         placeholder="Type a message and hit enter to send..."
         style="margin-right: 5px; padding: 5px"
-      />
+      /> -->
+      <el-input
+        placeholder="Hit enter to send message..."
+        v-model.msg="newModel.msg"
+        v-debounce:610ms.cancelonempty="stopTyping"
+        v-model.typest="newModel.typest"
+        @keypress.enter.prevent="handleSumbit"
+      ></el-input>
 
       <div class="files">
         <el-upload
@@ -101,14 +108,19 @@ export default {
     FileUpload,
   },
   setup() {
-    const message = ref("");
     const toast = useToast();
-    const typeStatus = ref(null);
     const { user } = getUser();
     const { addDoc, error } = useCollection("messages");
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);
+
+    // binding multiple "v-model" within one html element
+    const newModel = ref({
+      msg: null,
+      typest: null,
+    });
+    // end of binding multiple "v-model" within one html element
 
     watch(error, (newErrorValue) => {
       if (newErrorValue) {
@@ -117,29 +129,35 @@ export default {
     });
 
     const handleSumbit = async () => {
-      if (message.value) {
+      // checking if the "newModel.value.msg" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      // end of checking if the "newModel.value.msg" has any value
+      if (!isEmptyOrSpaces(newModel.value.msg)) {
         const chat = {
           name: user.value.displayName,
-          message: message.value,
+          message: newModel.value.msg,
           userId: user.value.uid,
           createdAt: timestamp(),
         };
         await addDoc(chat);
 
+        newModel.value.msg = null;
         if (!error.value) {
-          message.value = "";
+          newModel.value.msg = "";
         }
       }
     };
 
     // Type Status Check
-    watch(typeStatus, () => {
+    watch(newModel.value, () => {
       // console.log(typeStatus.value);
       keypressF();
     });
 
     const keypressF = async () => {
-      if (typeStatus.value) {
+      if (newModel.value.msg) {
         // console.log(typeStatus.value);
         var keypresss = {
           isType: true,
@@ -197,15 +215,14 @@ export default {
     };
 
     return {
-      message,
       handleSumbit,
       error,
-      typeStatus,
       stopTyping,
       displayConfirmation,
       closeConfirmation,
       handleAvatarSuccess,
       url,
+      newModel,
     };
   },
 };
@@ -214,7 +231,7 @@ export default {
 
 <style scoped>
 .chatbox {
-  width: 450px;
+  max-width: 580px;
   height: 412px;
   margin: 10px auto;
   margin-top: 0px;
@@ -261,12 +278,14 @@ export default {
 .type {
   display: flex;
   justify-content: space-around;
+  flex-direction: row-reverse;
   align-items: center;
   max-width: 400px;
   margin: 20px auto;
 }
 .files {
   width: 130px;
+  margin-right: 10px;
 }
 .upbutton {
   width: 90px;
@@ -292,8 +311,8 @@ export default {
   }
   .chatbox {
     max-width: 350px;
-    margin: 10px auto;
-    height: 422px;
+    margin: auto;
+    height: 430px;
   }
 }
 </style>

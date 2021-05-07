@@ -8,7 +8,7 @@
   </el-page-header>
 
   <el-card shadow="always" class="card">
-      <h3 style="text-align: center;">Add Cover And Profile Photos</h3>
+    <h3 style="text-align: center">Add Cover And Profile Photos</h3>
     <form @submit.prevent="submitForm">
       <label for="coverphoto">Cover Photo:</label>
       <div class="coverfiles">
@@ -59,16 +59,16 @@
         </el-upload>
       </div>
       <div class="buttonwrapper">
-      <el-button
-        class="button"
-        v-if="isLoading"
-        type="primary"
-        :loading="isLoading"
-        >Loading</el-button
-      >
-      <el-button class="button" v-else type="primary" native-type="submit"
-        >Upload</el-button
-      >
+        <el-button
+          class="button"
+          v-if="isLoading"
+          type="primary"
+          :loading="isLoading"
+          >Loading</el-button
+        >
+        <el-button class="button" v-else type="primary" native-type="submit"
+          >Upload</el-button
+        >
       </div>
     </form>
   </el-card>
@@ -100,10 +100,9 @@ export default {
           coverPhoto: urlCover.value,
           phofilePhoto: urlProfile.value,
         });
-      router.push({ name: "Profile" });
+        router.push({ name: "Profile" });
       }
       isLoading.value = false;
-
 
       // console.log(bio.value, location.value, profession.value, interest.value)
     };
@@ -131,24 +130,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 .card {
   margin: 20px auto;
   max-width: 400px;
+  font-family: "Roboto", sans-serif;
 }
-label{
-    display: block;
-    margin: 10px;
-    margin-left: 0px;
+label {
+  display: block;
+  margin: 10px;
+  margin-left: 0px;
 }
 .upbutton {
-    width: 100px;
+  width: 100px;
 }
 .button {
-    margin: 50px;
-    margin-bottom: 10px;
+  margin: 50px;
+  margin-bottom: 10px;
 }
-.buttonwrapper{
-    text-align: center;
+.buttonwrapper {
+  text-align: center;
+}
+.pghd {
+  font-family: "Roboto", sans-serif;
 }
 @media (max-width: 425px) {
   .card {

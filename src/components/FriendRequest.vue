@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <el-page-header
     style="margin: 10px"
     class="pghd"
@@ -6,7 +7,9 @@
     content="Profile"
   >
   </el-page-header>
-  <h3 style="text-align: center; font-family: Roboto, sans-serif;">Friend Request</h3>
+  <h3 style="text-align: center; font-family: Roboto, sans-serif">
+    Friend Request
+  </h3>
 
   <div v-for="doc in documents" :key="doc.userUid">
     <div v-for="fr in info.friendRequest" :key="fr.id">
@@ -29,18 +32,18 @@
           </div>
           <div class="addFriend">
             <Button
-          v-if="!(doc.userUid === user.uid)"
-          @click="accepts(user.uid, doc.userUid)"
-          icon="pi pi-check"
-          class="p-button-rounded p-button-success"
-        />
+              v-if="!(doc.userUid === user.uid)"
+              @click="accepts(user.uid, doc.userUid)"
+              icon="pi pi-check"
+              class="p-button-rounded p-button-success"
+            />
             <Button
-            style="margin-left: 10px;"
-          v-if="!(doc.userUid === user.uid)"
-          @click="rejects(user.uid, doc.userUid)"
-          icon="pi pi-times"
-          class="p-button-rounded p-button-danger p-button-outlined"
-        />
+              style="margin-left: 10px"
+              v-if="!(doc.userUid === user.uid)"
+              @click="rejects(user.uid, doc.userUid)"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger p-button-outlined"
+            />
           </div>
         </div>
       </div>
@@ -55,31 +58,40 @@ import getUsers from "@/composable/getUsers.js";
 import acceptReq from "@/composable/acceptReq/acceptReq.js";
 import updateRequester from "@/composable/acceptReq/updateRequester.js";
 import getUser from "@/composable/getUser.js";
+import cancelFreq from "@/composable/cancelFreq.js";
+import { useToast } from "primevue/usetoast";
 
 export default {
   props: ["id"],
   setup(props) {
+    const toast = useToast();
+
     const { info } = getProfile("profiles", props.id);
     const router = useRouter();
     const { error, documents } = getUsers();
-    const { user } = getUser()
-    const { accept } = acceptReq()
-    const { update } = updateRequester()
+    const { user } = getUser();
+    const { accept } = acceptReq();
+    const { update } = updateRequester();
+
+    const { doCancelFreq } = cancelFreq('profiles');
 
     const goBack = () => {
       router.push({ name: "Profile" });
     };
 
     const accepts = (userId, reqId) => {
-      console.log('User ID ', userId, 'Req Id ', reqId)
-      console.log('Accepted')
-      accept(userId, reqId)
-      update(userId, reqId)
-    }
+      accept(userId, reqId);
+      update(userId, reqId);
+    };
     const rejects = (userId, reqId) => {
-      console.log('User ID ', userId, 'Req Id ', reqId)
-      console.log('Rejected')
-    }
+      doCancelFreq(userId, reqId);
+      toast.add({
+        severity: "info",
+        summary: "Confirmed",
+        detail: "Friend Request has been cancelled",
+        life: 3000,
+      });
+    };
 
     return { info, goBack, documents, accepts, rejects, user };
   },

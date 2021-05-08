@@ -9,12 +9,13 @@
     </el-page-header>
     <div>
       <p style="margin: 10px">
-        <!-- <router-link
+        <router-link
         style="text-decoration: none"
-        :to="{ name: 'Profile', params: { id: userTo } }"
-      > -->
-        <Chip :label="name" icon="pi pi-user" :image="picture" />
-        <!-- </router-link> -->
+        :to="{ name: 'Profile', params: { id: info.userUid } }"
+      >
+        <!-- <Chip :label="name" icon="pi pi-user" :image="picture" /> -->
+        <Chip :label="info.userName" icon="pi pi-user" :image="info.phofilePhoto" />
+        </router-link>
       </p>
     </div>
   </div>
@@ -37,8 +38,10 @@ import { useRouter } from "vue-router";
 export default {
   props: ["userTo", "documents", "name", "picture"],
   components: { Menubar, Button, Menu, Dialog, Chip },
-  setup() {
+  setup(props) {
     const { user } = getUser();
+
+    const { info } = getProfile("profiles", props.userTo)
 
     const router = useRouter();
 
@@ -49,6 +52,7 @@ export default {
     return {
       user,
       goBack,
+      info
     };
   },
 };

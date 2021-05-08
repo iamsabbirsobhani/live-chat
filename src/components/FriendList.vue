@@ -95,8 +95,8 @@ export default {
     const confirmPosition = (position, useruid, docuserUid) => {
       confirm.require({
         key: "positionDialog",
-        message: "Do you want to unfriend?",
-        header: "Delete Confirmation",
+        message: "Do you really want to unfriend?",
+        header: "Unfriend Confirmation!",
         icon: "pi pi-info-circle",
         position: position,
         accept: () => {

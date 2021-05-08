@@ -10,11 +10,19 @@
     <div>
       <p>
         <!-- <span class="dname">{{ user.displayName }} </span> -->
-        <router-link style="text-decoration: none;" :to="{ name: 'Profile', params: { id: user.uid}}">
-        <Chip :label="user.displayName" icon="pi pi-user"/>
+        <router-link
+          style="text-decoration: none"
+          :to="{ name: 'Profile', params: { id: user.uid } }"
+        >
+          <Chip
+            :label="user.displayName"
+            :image="info.phofilePhoto"
+          />
         </router-link>
       </p>
-      <p >Currently logged in as <span class="email"> {{ user.email }} </span></p>
+      <p>
+        Currently logged in as <span class="email"> {{ user.email }} </span>
+      </p>
     </div>
     <div>
       <!-- old logout -->
@@ -118,7 +126,7 @@ import useLogout from "../composable/useLogout";
 import getUser from "@/composable/getUser";
 import deleteCollection from "@/composable/delChat.js";
 import getProfile from "@/composable/getProfile.js";
-import Chip from 'primevue/chip';
+import Chip from "primevue/chip";
 
 export default {
   components: { Menubar, Button, Menu, Dialog, Chip },
@@ -130,6 +138,8 @@ export default {
     const chatDelConfirmation = ref(false);
     const toast = useToast();
     const menu = ref();
+
+    const { info } = getProfile("profiles", user.value.uid);
 
     const items = ref([
       {
@@ -264,12 +274,13 @@ export default {
       chatDel,
       chatDelYes,
       chatDelNo,
+      info,
     };
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #start {
   display: flex;
   justify-content: space-between;
@@ -281,7 +292,12 @@ export default {
   margin-bottom: 5px;
   border-bottom: 1px solid #eee;
   /* background-color: #1671cc; */
-  background: linear-gradient(-90deg, rgba(40,148,255,1) 0%, rgba(0,110,219,1) 43%, rgba(37,113,189,1) 100%);
+  background: linear-gradient(
+    -90deg,
+    rgba(40, 148, 255, 1) 0%,
+    rgba(0, 110, 219, 1) 43%,
+    rgba(37, 113, 189, 1) 100%
+  );
   color: white;
 }
 .p-button-secondary {
@@ -291,8 +307,8 @@ export default {
   font-size: 25px;
   color: rgb(88, 240, 0);
 }
-  .email {
-    font-weight: 700;
-    color: white;
-  }
+.email {
+  font-weight: 700;
+  color: white;
+}
 </style>

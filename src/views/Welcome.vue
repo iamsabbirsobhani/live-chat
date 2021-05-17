@@ -190,6 +190,22 @@ export default {
   color: #0d89ec;
 }
 
+.pi-envelope {
+  text-decoration: none;
+  color: rgb(13, 45, 102);
+  font-size: 2rem !important;
+}
+
+.pi-github {
+  color: rgb(13, 45, 102);
+  font-size: 3rem !important;
+}
+
+.pi-twitter {
+  color: rgb(0, 183, 255);
+  font-size: 2rem !important;
+}
+
 @media (max-width: 700px) {
   .welcome input {
     width: 310px;

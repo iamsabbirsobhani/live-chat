@@ -7,7 +7,7 @@
 
       <div v-for="doc in formattedDocuments" :key="doc.id">
         <div v-if="doc.to == userTo && doc.userId == user.uid">
-          <div class="single" style="margin-bottom: 2.5px; margin-top: 2.5px;">
+          <div class="single" style="margin-bottom: 4px; margin-top: 4px;">
             <div
               @click="showDateSelf(doc.id)"
               v-if="doc.to == userTo && doc.userId == user.uid"
@@ -48,7 +48,7 @@
 
         <!-- other user -->
         <div
-          style="margin-bottom: 5px"
+          style="margin-bottom: 8px"
           v-if="doc.to == user.uid && doc.userId == userTo"
           @click="showDateOther(doc.id)"
         >

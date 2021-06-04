@@ -17,7 +17,9 @@ import Button from 'primevue/button';
 import vueDebounce from 'vue-debounce'
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
-
+// import Vue from 'vue'
+import Vuex from 'vuex'
+import store from './store';
 
 import { projectAuth } from './firebase/config'
 
@@ -26,9 +28,11 @@ let app
 projectAuth.onAuthStateChanged(() => {
     if(!app){
         app = createApp(App)
+        app.use(Vuex)
         app.component('ConfirmPopup', ConfirmPopup)
         app.use(router)
         app.use(ToastService)
+        app.use(store)
         app.use(vueDebounce)
         app.use(PrimeVue, {ripple: true})
         app.component('Toast', Toast)

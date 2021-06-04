@@ -4,7 +4,7 @@
       style="margin: 10px; color: black"
       class="pghd"
       @back="goBack"
-      content="Friends"
+      :content=getBack
     >
     </el-page-header>
     <div>
@@ -34,19 +34,21 @@ import deleteCollection from "@/composable/delChat.js";
 import getProfile from "@/composable/getProfile.js";
 import Chip from "primevue/chip";
 import { useRouter } from "vue-router";
+import { mapGetters, useStore } from "vuex";
 
 export default {
   props: ["userTo", "documents", "name", "picture"],
   components: { Menubar, Button, Menu, Dialog, Chip },
   setup(props) {
     const { user } = getUser();
+    const store = useStore();
 
     const { info } = getProfile("profiles", props.userTo)
 
     const router = useRouter();
 
     const goBack = () => {
-      router.push({ name: "FriendList", params: { id: user.value.uid } });
+      router.push({ name: store.getters.getRoute, params: { id: user.value.uid } });
     };
 
     return {
@@ -54,6 +56,10 @@ export default {
       goBack,
       info
     };
+
+  },
+    computed: {
+    ...mapGetters(["getBack"]),
   },
 };
 </script>

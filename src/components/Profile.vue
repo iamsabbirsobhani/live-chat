@@ -263,6 +263,7 @@ import commentDelete from "@/composable/commentDelete.js";
 import delPost from "@/composable/delPost.js";
 import InputText from "primevue/inputtext";
 import useLogout from "../composable/useLogout";
+import { useStore } from "vuex"
 
 export default {
   props: ["id"],
@@ -276,6 +277,7 @@ export default {
     const { docDel } = delPost();
     const { logout, error } = useLogout();
     const isLoadingCmt = ref(false);
+    const store = useStore()
 
     // comment section
     const seeComments = ref(true);
@@ -392,6 +394,8 @@ export default {
       router.push({ name: "FriendRequest" });
     };
     const frList = () => {
+      let payload = { name: "FriendList", back: "Friends"}
+      store.commit("clickOn", payload);
       router.push({ name: "FriendList" });
     };
 

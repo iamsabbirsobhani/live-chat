@@ -1,6 +1,6 @@
 <template>
   <el-page-header
-    style="margin: 10px; font-family: Roboto, sans-serif;"
+    style="margin: 10px; font-family: Roboto, sans-serif"
     class="pghd"
     @back="goBack"
     content="Home"
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapGetters, useStore } from "vuex";
 import getProfile from "@/composable/getProfile.js";
 import { ref } from "vue";
 import getUsers from "@/composable/getUsers.js";
@@ -62,6 +63,7 @@ export default {
     const { info } = getProfile("profiles", props.id);
     const { error, documents } = getUsers();
     const { user } = getUser();
+    const store = useStore();
 
     const router = useRouter();
 
@@ -73,10 +75,13 @@ export default {
     };
 
     const goBack = () => {
-      router.push({ name: "Home" });
+        router.push({ name: "Home" });
     };
 
     return { goBack, documents, info, privateChat, user };
+  },
+  computed: {
+    ...mapGetters(["getRoute"]),
   },
 };
 </script>

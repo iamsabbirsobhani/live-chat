@@ -31,9 +31,13 @@
       content="Click Messages to check inbox"
       placement="left"
     >
-    <el-menu-item index="2">
-      <Button @click="messages(user.uid)" label="Messages" class="p-button-raised p-button-secondary p-button-text" />
-    </el-menu-item>
+      <el-menu-item index="2">
+        <Button
+          @click="messages(user.uid)"
+          label="Messages"
+          class="p-button-raised p-button-secondary p-button-text"
+        />
+      </el-menu-item>
     </el-tooltip>
   </el-menu>
 
@@ -196,6 +200,7 @@ import commentDelete from "@/composable/commentDelete.js";
 import colors from "@/composable/colors.js";
 import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
+import { useStore } from "vuex";
 
 export default {
   components: { Button, InputText },
@@ -205,6 +210,7 @@ export default {
     const { statusHome } = getPosts("posts");
     const router = useRouter();
     const isLoading = ref(false);
+    const store = useStore();
 
     // comment section
     const seeComments = ref(true);
@@ -305,8 +311,10 @@ export default {
     };
 
     const messages = (uid) => {
-      router.push({name: "Messages", params:{id: uid}})
-    }
+      let payload = { name: "Messages", back: "Messages" };
+      store.commit("clickOn", payload);
+      router.push({ name: "Messages", params: { id: uid } });
+    };
 
     return {
       goBack,
@@ -328,7 +336,7 @@ export default {
       styleBorder,
       documents,
       info,
-      messages
+      messages,
     };
   },
 };

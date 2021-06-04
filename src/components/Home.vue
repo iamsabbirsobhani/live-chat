@@ -15,15 +15,25 @@
       <el-menu-item index="1">
         <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
           <div class="navPhoto">
-          <img
-            class="profilePic"
-            :src="info.phofilePhoto"
-            alt="Profile Photo"
-          />
-          {{ user.displayName }}
+            <img
+              class="profilePic"
+              :src="info.phofilePhoto"
+              alt="Profile Photo"
+            />
+            {{ user.displayName }}
           </div>
         </router-link>
       </el-menu-item>
+    </el-tooltip>
+    <el-tooltip
+      class="item"
+      effect="dark"
+      content="Click Messages to check inbox"
+      placement="left"
+    >
+    <el-menu-item index="2">
+      <Button @click="messages(user.uid)" label="Messages" class="p-button-raised p-button-secondary p-button-text" />
+    </el-menu-item>
     </el-tooltip>
   </el-menu>
 
@@ -294,6 +304,10 @@ export default {
       dislikePost(postIdt, reactert);
     };
 
+    const messages = (uid) => {
+      router.push({name: "Messages", params:{id: uid}})
+    }
+
     return {
       goBack,
       user,
@@ -314,6 +328,7 @@ export default {
       styleBorder,
       documents,
       info,
+      messages
     };
   },
 };
@@ -323,6 +338,8 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400&family=Roboto:wght@100&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
 .el-menu-demo {
+  display: flex;
+  justify-content: space-between;
   a {
     text-decoration: none;
     font-size: 18px;
@@ -444,11 +461,11 @@ export default {
 }
 .navPhoto {
   margin: 0px;
-  filter:opacity(70%);
-  transition: filter .4s;
+  filter: opacity(70%);
+  transition: filter 0.4s;
 }
 .navPhoto:hover {
-  filter:opacity(100%);
+  filter: opacity(100%);
 }
 
 @media (max-width: 425px) {

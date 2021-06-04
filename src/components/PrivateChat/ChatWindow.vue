@@ -7,7 +7,7 @@
 
       <div v-for="doc in formattedDocuments" :key="doc.id">
         <div v-if="doc.to == userTo && doc.userId == user.uid">
-          <div class="single">
+          <div class="single" style="margin-bottom: 2.5px; margin-top: 2.5px;">
             <div
               @click="showDateSelf(doc.id)"
               v-if="doc.to == userTo && doc.userId == user.uid"
@@ -48,7 +48,7 @@
 
         <!-- other user -->
         <div
-          style="margin-bottom: 20px"
+          style="margin-bottom: 5px"
           v-if="doc.to == user.uid && doc.userId == userTo"
           @click="showDateOther(doc.id)"
         >
@@ -414,6 +414,7 @@ a {
 .othermsg {
   color: #050505;
   background: #e4e6eb;
+  margin-bottom: 3px;
   word-break: break-word;
   word-wrap: break-word;
   white-space: pre-wrap;

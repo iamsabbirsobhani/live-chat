@@ -19,7 +19,7 @@ import getUsers from "@/composable/getUsers";
 import { useRouter } from "vue-router";
 import { watch } from "vue";
 export default {
-    props: ['id', 'name', 'picture'],
+  props: ['id', 'name', 'picture'],
   components: { Navbar, NewChatForm, Button },
   setup() {
     const { user } = getUser();

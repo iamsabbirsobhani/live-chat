@@ -4,17 +4,21 @@
       style="margin: 10px; color: black"
       class="pghd"
       @back="goBack"
-      :content=getBack
+      :content="getBack"
     >
     </el-page-header>
     <div>
       <p style="margin: 10px">
         <router-link
-        style="text-decoration: none"
-        :to="{ name: 'Profile', params: { id: info.userUid } }"
-      >
-        <!-- <Chip :label="name" icon="pi pi-user" :image="picture" /> -->
-        <Chip :label="info.userName" icon="pi pi-user" :image="info.phofilePhoto" />
+          style="text-decoration: none"
+          :to="{ name: 'Profile', params: { id: info.userUid } }"
+        >
+          <!-- <Chip :label="name" icon="pi pi-user" :image="picture" /> -->
+          <Chip
+            :label="info.userName"
+            icon="pi pi-user"
+            :image="info.phofilePhoto"
+          />
         </router-link>
       </p>
     </div>
@@ -22,7 +26,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -43,22 +47,25 @@ export default {
     const { user } = getUser();
     const store = useStore();
 
-    const { info } = getProfile("profiles", props.userTo)
+    const { info } = getProfile("profiles", props.userTo);
 
     const router = useRouter();
 
+
     const goBack = () => {
-      router.push({ name: store.getters.getRoute, params: { id: user.value.uid } });
+      router.push({
+        name: store.getters.getRoute,
+        params: { id: user.value.uid },
+      });
     };
 
     return {
       user,
       goBack,
-      info
+      info,
     };
-
   },
-    computed: {
+  computed: {
     ...mapGetters(["getBack"]),
   },
 };

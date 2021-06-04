@@ -7,7 +7,7 @@
 
       <div v-for="doc in formattedDocuments" :key="doc.id">
         <div v-if="doc.to == userTo && doc.userId == user.uid">
-          <div class="single" style="margin-bottom: 4px; margin-top: 4px;">
+          <div class="single" style="margin-bottom: 4px; margin-top: 4px">
             <div
               @click="showDateSelf(doc.id)"
               v-if="doc.to == userTo && doc.userId == user.uid"
@@ -246,7 +246,6 @@ export default {
 }
 // end transition for msg time
 
-
 .p-chip.custom-chip {
   // background: var(--primary-color);
   background-color: rgb(0, 132, 255);
@@ -271,6 +270,7 @@ export default {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin-bottom: 4px;
+  z-index: -1;
 }
 .name {
   font-weight: bold;

@@ -9,6 +9,7 @@
         <div v-if="doc.to == userTo && doc.userId == user.uid">
           <div class="single">
             <div
+              @click="showDateSelf(doc.id)"
               v-if="doc.to == userTo && doc.userId == user.uid"
               class="pvtSelfUser"
               style="max-width: 90%"
@@ -31,11 +32,14 @@
                 </el-image>
               </div>
               <!-- end of element-plus Image Preview -->
-              <span
-                style="margin-left: 5px; margin-right: 5px"
-                class="created-at"
-                >{{ doc.createdAt }} ago by you</span
-              >
+              <transition name="slide-fade">
+                <span
+                  style="margin-left: 5px; margin-right: 5px"
+                  class="created-at"
+                  v-if="shoSelf && doc.id == idsSelf"
+                  >{{ doc.createdAt }} ago by you</span
+                >
+              </transition>
             </div>
           </div>
         </div>
@@ -46,6 +50,7 @@
         <div
           style="margin-bottom: 20px"
           v-if="doc.to == user.uid && doc.userId == userTo"
+          @click="showDateOther(doc.id)"
         >
           <!-- overflow-x: hidden; -->
           <div style="max-width: 90%" class="pvtOtherUser">
@@ -61,10 +66,14 @@
               </el-image>
             </div>
             <!-- end of element-plus Image Preview -->
-
-            <span style="margin-right: 5px" class="created-at"
-              >{{ doc.createdAt }} ago by {{ doc.name }}</span
-            >
+            <transition name="slide-fade">
+              <span
+                style="margin-right: 5px"
+                class="created-at"
+                v-if="shoOther && doc.id == idsOther"
+                >{{ doc.createdAt }} ago by {{ doc.name }}</span
+              >
+            </transition>
           </div>
         </div>
 
@@ -176,6 +185,30 @@ export default {
     });
     //End of Auto Scrolling
 
+    const shoSelf = ref(false);
+    const idsSelf = ref(null);
+    let oldIdSelf;
+
+    const showDateSelf = (id) => {
+      oldIdSelf === id
+        ? (shoSelf.value = !shoSelf.value)
+        : (shoSelf.value = true);
+      idsSelf.value = id;
+      oldIdSelf = id;
+    };
+
+    const shoOther = ref(false);
+    const idsOther = ref(null);
+    let oldIdOther;
+
+    const showDateOther = (id) => {
+      oldIdOther === id
+        ? (shoOther.value = !shoOther.value)
+        : (shoOther.value = true);
+      idsOther.value = id;
+      oldIdOther = id;
+    };
+
     return {
       error,
       documents,
@@ -185,24 +218,44 @@ export default {
       esourceList,
       user,
       type,
+      showDateSelf,
+      shoSelf,
+      idsSelf,
+      showDateOther,
+      shoOther,
+      idsOther,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+// transition for msg time
+.slide-fade-enter-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.1s ease-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateY(-5px);
+  opacity: 0;
+}
+// end transition for msg time
+
+
 .p-chip.custom-chip {
   // background: var(--primary-color);
-  background: linear-gradient(
-    90deg,
-    rgba(16, 145, 255, 1) 0%,
-    rgba(0, 138, 255, 1) 29%,
-    rgba(0, 121, 255, 1) 56%,
-    rgba(0, 97, 249, 1) 100%
-  );
+  background-color: rgb(0, 132, 255);
   color: var(--primary-color-text);
   margin-right: 5px;
   margin-bottom: 3px;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .chat-windows {
@@ -282,10 +335,6 @@ a {
 .chatMessages::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  // background-color: #d62929;
-  // background-color: #838383;
-  // background-color: #b6b6b6a9;
-  // background-color: #e4e4e41e;
 }
 
 .pvtSelfUser .images {
@@ -340,7 +389,6 @@ a {
 
 .pvtOtherUser .message {
   color: rgb(63, 63, 63);
-  // color: rgb(255, 255, 255);
   font-weight: bold;
 }
 
@@ -364,19 +412,11 @@ a {
 }
 
 .othermsg {
-  color: black;
-  background: linear-gradient(
-    280deg,
-    rgba(219, 219, 219, 1) 0%,
-    rgba(217, 217, 217, 1) 29%,
-    rgba(205, 205, 205, 1) 65%,
-    rgba(203, 203, 203, 1) 100%
-  );
-  // background-color:;
-  // color: black;
-  //   -webkit-text-fill-color: white;
-  //   -webkit-text-stroke-width: .1px;
-  //   -webkit-text-stroke-color: black;
+  color: #050505;
+  background: #e4e6eb;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .p-mr-2 {

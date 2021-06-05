@@ -9,45 +9,45 @@
   <h3 style="text-align: center; font-family: Roboto, sans-serif">Messages</h3>
 
   <div v-if="hasMsg">
-  <div v-for="doc in documents" :key="doc.userUid">
-    <div v-for="fr in info.friendList" :key="fr.id">
-      <div v-if="doc.id === fr">
-        <div class="users">
-          <router-link
-            style="text-decoration: none"
-            :to="{ name: 'Profile', params: { id: doc.userUid } }"
-          >
-            <div class="name">
-              <el-avatar class="img" :size="60">
-                <img :src="doc.phofilePhoto" />
-              </el-avatar>
-              <h4>{{ doc.userName }}</h4>
+    <div v-for="doc in documents" :key="doc.userUid">
+      <div v-for="fr in info.friendList" :key="fr.id">
+        <div v-if="doc.id === fr">
+          <div class="users">
+            <router-link
+              style="text-decoration: none"
+              :to="{ name: 'Profile', params: { id: doc.userUid } }"
+            >
+              <div class="name">
+                <el-avatar class="img" :size="60">
+                  <img :src="doc.phofilePhoto" />
+                </el-avatar>
+                <h4>{{ doc.userName }}</h4>
+              </div>
+            </router-link>
+            <div class="friend">
+              <Button
+                style="margin-left: 10px"
+                v-if="!(doc.userUid === user.uid)"
+                @click="
+                  privateChat(
+                    doc.userUid,
+                    doc.userName,
+                    doc.phofilePhoto,
+                    user.uid
+                  )
+                "
+                icon="pi pi-comments"
+                class="p-button-rounded"
+              />
             </div>
-          </router-link>
-          <div class="friend">
-            <Button
-              style="margin-left: 10px"
-              v-if="!(doc.userUid === user.uid)"
-              @click="
-                privateChat(
-                  doc.userUid,
-                  doc.userName,
-                  doc.phofilePhoto,
-                  user.uid
-                )
-              "
-              icon="pi pi-comments"
-              class="p-button-rounded"
-            />
           </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
   <div v-else class="empty">
     <p>No Messages</p>
-    </div>
+  </div>
 </template>
 
 <script>

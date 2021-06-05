@@ -16,58 +16,62 @@
     Friend List
   </h3>
 
-  <div v-for="doc in documents" :key="doc.userUid">
-    <div v-for="fr in info.friendList" :key="fr.id">
-      <div v-if="doc.id === fr">
-        <div class="users">
-          <router-link
-            style="text-decoration: none"
-            :to="{ name: 'Profile', params: { id: doc.userUid } }"
-          >
-            <div class="name">
-              <el-avatar :size="60">
-                <img :src="doc.phofilePhoto" />
-              </el-avatar>
-              <h4>{{ doc.userName }}</h4>
+  <div v-if="hasFriend">
+    <div v-for="doc in documents" :key="doc.userUid">
+      <div v-for="fr in info.friendList" :key="fr.id">
+        <div v-if="doc.id === fr">
+          <div class="users">
+            <router-link
+              style="text-decoration: none"
+              :to="{ name: 'Profile', params: { id: doc.userUid } }"
+            >
+              <div class="name">
+                <el-avatar :size="60">
+                  <img :src="doc.phofilePhoto" />
+                </el-avatar>
+                <h4>{{ doc.userName }}</h4>
+              </div>
+            </router-link>
+            <div class="friend">
+              <!-- unfriend process -->
+              <Button
+                style="margin-left: 10px"
+                v-if="!(doc.userUid === user.uid)"
+                @click="confirmPosition('top', user.uid, doc.userUid)"
+                icon="pi pi-user-minus"
+                class="p-button-rounded p-button-danger p-button-outlined"
+              />
+              <!-- end unfriend process -->
+
+              <Button
+                style="margin-left: 10px"
+                v-if="!(doc.userUid === user.uid)"
+                @click="
+                  privateChat(
+                    doc.userUid,
+                    doc.userName,
+                    doc.phofilePhoto,
+                    user.uid
+                  )
+                "
+                icon="pi pi-comments"
+                class="p-button-rounded"
+              />
             </div>
-          </router-link>
-          <div class="friend">
-
-            <!-- unfriend process -->
-            <Button
-              style="margin-left: 10px"
-              v-if="!(doc.userUid === user.uid)"
-              @click="confirmPosition('top', user.uid, doc.userUid)"
-              icon="pi pi-user-minus"
-              class="p-button-rounded p-button-danger p-button-outlined"
-            />
-            <!-- end unfriend process -->
-
-            <Button
-              style="margin-left: 10px"
-              v-if="!(doc.userUid === user.uid)"
-              @click="
-                privateChat(
-                  doc.userUid,
-                  doc.userName,
-                  doc.phofilePhoto,
-                  user.uid
-                )
-              "
-              icon="pi pi-comments"
-              class="p-button-rounded"
-            />
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div v-else class="empty">
+    <p>No Friends</p>
   </div>
 </template>
 
 <script>
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import getUsers from "@/composable/getUsers.js";
 import getUser from "@/composable/getUser.js";
 import unfriendSelf from "@/composable/PrivateChat/unfriendSelf.js";
@@ -133,13 +137,26 @@ export default {
     const privateChat = (frId, userName, dp) => {
       router.push({
         name: "PrivateChat",
-        params: {route: "profile", routeTwo: "friendlist", id: frId, name: userName, picture: dp },
+        params: {
+          route: "profile",
+          routeTwo: "friendlist",
+          id: frId,
+          name: userName,
+          picture: dp,
+        },
       });
     };
 
     const unfriendPopup = () => {
       centerDialogVisible.value = true;
     };
+
+    const hasFriend = computed(() => {
+      return Array.isArray(info.value.friendList) &&
+        !info.value.friendList.length
+        ? false
+        : true;
+    });
 
     return {
       info,
@@ -150,6 +167,7 @@ export default {
       unfriendPopup,
       centerDialogVisible,
       confirmPosition,
+      hasFriend,
     };
   },
 };

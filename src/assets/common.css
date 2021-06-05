@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
-
 .empty {
-    font-family: "Roboto", sans-serif;
-    text-align: center;
+  font-family: "Roboto", sans-serif;
+  text-align: center; }
+  .empty p {
     color: red;
-    font-weight: bold;
-}
+    font-weight: bold; }
+/*# sourceMappingURL=common.css.map */

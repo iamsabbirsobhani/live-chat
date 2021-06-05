@@ -10,51 +10,56 @@
   <h2 style="text-align: center; font-family: Roboto, sans-serif">
     All the users
   </h2>
-  <div v-for="doc in documents" :key="doc.userUid">
-    <div class="users">
-      <router-link
-        style="text-decoration: none"
-        :to="{ name: 'Profile', params: { id: doc.userUid } }"
-      >
-        <div class="name">
-          <el-avatar :size="60" src="https://empty" @error="errorHandler">
-            <img :src="doc.phofilePhoto" />
-          </el-avatar>
-          <h4>{{ doc.userName }}</h4>
+  <div v-if="documents">
+    <div v-for="doc in documents" :key="doc.userUid">
+      <div class="users">
+        <router-link
+          style="text-decoration: none"
+          :to="{ name: 'Profile', params: { id: doc.userUid } }"
+        >
+          <div class="name">
+            <el-avatar :size="60" src="https://empty" @error="errorHandler">
+              <img :src="doc.phofilePhoto" />
+            </el-avatar>
+            <h4>{{ doc.userName }}</h4>
+          </div>
+        </router-link>
+        <div class="title">
+          <p>{{ doc.profession }}</p>
+          <p>{{ doc.location }}</p>
         </div>
-      </router-link>
-      <div class="title">
-        <p>{{ doc.profession }}</p>
-        <p>{{ doc.location }}</p>
-      </div>
-      <div class="addFriend">
-        <!-- && !doc.friendRequest.includes(user.uid) -->
-        <Button
-          v-if="
-            !(doc.userUid === user.uid) &&
-            !doc.friendList.includes(user.uid) &&
-            !doc.friendRequest.includes(user.uid)
-          "
-          @click="addFriends(doc.userUid, user.uid)"
-          icon="pi pi-user-plus"
-          class="p-button-rounded p-button-success"
-        />
-        <Button
-          disabled
-          v-if="doc.friendList.includes(user.uid)"
-          icon="pi pi-check"
-          class="p-button-rounded"
-          label="Friend"
-        />
-        <Button
-          v-if="doc.friendRequest.includes(user.uid)"
-          icon="pi pi-times"
-          class="p-button-rounded p-button-danger"
-          label="Unsent"
-          @click="unsent(user.uid, doc.userUid)"
-        />
+        <div class="addFriend">
+          <!-- && !doc.friendRequest.includes(user.uid) -->
+          <Button
+            v-if="
+              !(doc.userUid === user.uid) &&
+              !doc.friendList.includes(user.uid) &&
+              !doc.friendRequest.includes(user.uid)
+            "
+            @click="addFriends(doc.userUid, user.uid)"
+            icon="pi pi-user-plus"
+            class="p-button-rounded p-button-success"
+          />
+          <Button
+            disabled
+            v-if="doc.friendList.includes(user.uid)"
+            icon="pi pi-check"
+            class="p-button-rounded"
+            label="Friend"
+          />
+          <Button
+            v-if="doc.friendRequest.includes(user.uid)"
+            icon="pi pi-times"
+            class="p-button-rounded p-button-danger"
+            label="Unsent"
+            @click="unsent(user.uid, doc.userUid)"
+          />
+        </div>
       </div>
     </div>
+  </div>
+  <div v-else class="empty">
+    <p>No Users</p>
   </div>
 </template>
 
@@ -67,7 +72,7 @@ import { useRouter } from "vue-router";
 import Button from "primevue/button";
 import { computed } from "vue";
 import { useToast } from "primevue/usetoast";
-import unsentFreq from '@/composable/unsentFreq.js'
+import unsentFreq from "@/composable/unsentFreq.js";
 
 export default {
   props: ["id"],
@@ -79,7 +84,7 @@ export default {
     const router = useRouter();
     const { addFriend } = friendRequest();
 
-    const { doUnsent } = unsentFreq('profiles')
+    const { doUnsent } = unsentFreq("profiles");
 
     const toast = useToast();
 
@@ -102,14 +107,14 @@ export default {
     // unsent
 
     const unsent = (cruId, reqId) => {
-      doUnsent(cruId, reqId)
+      doUnsent(cruId, reqId);
       toast.add({
         severity: "info",
         summary: "Confirmed",
         detail: "Request unsent successfully",
         life: 3000,
       });
-    }
+    };
 
     // unsent
 

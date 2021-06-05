@@ -11,43 +11,48 @@
     Friend Request
   </h3>
 
-  <div v-for="doc in documents" :key="doc.userUid">
-    <div v-for="fr in info.friendRequest" :key="fr.id">
-      <div v-if="doc.id === fr">
-        <div class="users">
-          <router-link
-            style="text-decoration: none"
-            :to="{ name: 'Profile', params: { id: doc.userUid } }"
-          >
-            <div class="name">
-              <el-avatar :size="60">
-                <img :src="doc.phofilePhoto" />
-              </el-avatar>
-              <h4>{{ doc.userName }}</h4>
+  <div v-if="hasRequest">
+    <div v-for="doc in documents" :key="doc.userUid">
+      <div v-for="fr in info.friendRequest" :key="fr.id">
+        <div v-if="doc.id === fr">
+          <div class="users">
+            <router-link
+              style="text-decoration: none"
+              :to="{ name: 'Profile', params: { id: doc.userUid } }"
+            >
+              <div class="name">
+                <el-avatar :size="60">
+                  <img :src="doc.phofilePhoto" />
+                </el-avatar>
+                <h4>{{ doc.userName }}</h4>
+              </div>
+            </router-link>
+            <div class="title">
+              <p>{{ doc.profession }}</p>
+              <p>{{ doc.location }}</p>
             </div>
-          </router-link>
-          <div class="title">
-            <p>{{ doc.profession }}</p>
-            <p>{{ doc.location }}</p>
-          </div>
-          <div class="addFriend">
-            <Button
-              v-if="!(doc.userUid === user.uid)"
-              @click="accepts(user.uid, doc.userUid)"
-              icon="pi pi-check"
-              class="p-button-rounded p-button-success"
-            />
-            <Button
-              style="margin-left: 10px"
-              v-if="!(doc.userUid === user.uid)"
-              @click="rejects(user.uid, doc.userUid)"
-              icon="pi pi-times"
-              class="p-button-rounded p-button-danger p-button-outlined"
-            />
+            <div class="addFriend">
+              <Button
+                v-if="!(doc.userUid === user.uid)"
+                @click="accepts(user.uid, doc.userUid)"
+                icon="pi pi-check"
+                class="p-button-rounded p-button-success"
+              />
+              <Button
+                style="margin-left: 10px"
+                v-if="!(doc.userUid === user.uid)"
+                @click="rejects(user.uid, doc.userUid)"
+                icon="pi pi-times"
+                class="p-button-rounded p-button-danger p-button-outlined"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div v-else class="empty">
+    <p>No Friend Requests</p>
   </div>
 </template>
 
@@ -60,6 +65,7 @@ import updateRequester from "@/composable/acceptReq/updateRequester.js";
 import getUser from "@/composable/getUser.js";
 import cancelFreq from "@/composable/cancelFreq.js";
 import { useToast } from "primevue/usetoast";
+import { computed } from "vue";
 
 export default {
   props: ["id"],
@@ -73,7 +79,7 @@ export default {
     const { accept } = acceptReq();
     const { update } = updateRequester();
 
-    const { doCancelFreq } = cancelFreq('profiles');
+    const { doCancelFreq } = cancelFreq("profiles");
 
     const goBack = () => {
       router.push({ name: "Profile" });
@@ -93,7 +99,14 @@ export default {
       });
     };
 
-    return { info, goBack, documents, accepts, rejects, user };
+    const hasRequest = computed(() => {
+      return Array.isArray(info.value.friendRequest) &&
+        !info.value.friendRequest.length
+        ? false
+        : true;
+    });
+
+    return { info, goBack, documents, accepts, rejects, user, hasRequest };
   },
 };
 </script>

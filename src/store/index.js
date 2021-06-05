@@ -6,11 +6,11 @@ export default createStore({
     },
     getters: {
         getRoute: (state) => {
-            console.log(state.route)
+            // console.log(state.route)
             return state.route
         },
         getBack: (state) => {
-            console.log(state.back)
+            // console.log(state.back)
             return state.back
         },
     },

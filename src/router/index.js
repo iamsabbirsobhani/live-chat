@@ -78,21 +78,21 @@ const routes = [
     props: true
   },
   {
-    path: '/profile/:id/friendlist',
+    path: '/profile/friendlist/:id',
     name: "FriendList",
     component: FriendList,
     beforeEnter: requiredAuth,
     props: true
   },
   {
-    path: '/profile/:id/messages',
+    path: '/home/messages/:id',
     name: "Messages",
     component: Messages,
     beforeEnter: requiredAuth,
     props: true
   },
   {
-    path: '/profile/:id/privatechat',
+    path: '/:route/:routeTwo/privatechat/:id',
     name: "PrivateChat",
     component: PrivateChat,
     beforeEnter: requiredAuth,

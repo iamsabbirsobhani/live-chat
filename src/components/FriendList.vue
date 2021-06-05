@@ -133,7 +133,7 @@ export default {
     const privateChat = (frId, userName, dp) => {
       router.push({
         name: "PrivateChat",
-        params: { id: frId, name: userName, picture: dp },
+        params: {route: "profile", routeTwo: "friendlist", id: frId, name: userName, picture: dp },
       });
     };
 

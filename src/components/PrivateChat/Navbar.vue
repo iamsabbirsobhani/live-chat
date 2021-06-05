@@ -51,6 +51,18 @@ export default {
 
     const router = useRouter();
 
+    onMounted(() => {
+      let currentPathObject = router.currentRoute.value;
+
+      if (currentPathObject.fullPath.includes("/home/messages/")) {
+        let payload = { name: "Messages", back: "Messages" };
+        store.commit("clickOn", payload);
+      }
+      if (currentPathObject.fullPath.includes("/profile/friendlist/")) {
+        let payload = { name: "FriendList", back: "Friends" };
+        store.commit("clickOn", payload);
+      }
+    });
 
     const goBack = () => {
       router.push({

@@ -17,6 +17,7 @@ import Button from 'primevue/button';
 import vueDebounce from 'vue-debounce'
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
+import '@/assets/common.css'
 // import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store';

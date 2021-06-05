@@ -8,6 +8,7 @@
   </el-page-header>
   <h3 style="text-align: center; font-family: Roboto, sans-serif">Messages</h3>
 
+  <div v-if="hasMsg">
   <div v-for="doc in documents" :key="doc.userUid">
     <div v-for="fr in info.friendList" :key="fr.id">
       <div v-if="doc.id === fr">
@@ -43,12 +44,16 @@
       </div>
     </div>
   </div>
+  </div>
+  <div v-else class="empty">
+    <p>No Messages</p>
+    </div>
 </template>
 
 <script>
 import { mapGetters, useStore } from "vuex";
 import getProfile from "@/composable/getProfile.js";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import getUsers from "@/composable/getUsers.js";
 import getUser from "@/composable/getUser.js";
 import unfriendSelf from "@/composable/PrivateChat/unfriendSelf.js";
@@ -70,15 +75,28 @@ export default {
     const privateChat = (frId, userName, dp) => {
       router.push({
         name: "PrivateChat",
-        params: {route: "home", routeTwo: "messages", id: frId, name: userName, picture: dp },
+        params: {
+          route: "home",
+          routeTwo: "messages",
+          id: frId,
+          name: userName,
+          picture: dp,
+        },
       });
     };
 
     const goBack = () => {
-        router.push({ name: "Home" });
+      router.push({ name: "Home" });
     };
 
-    return { goBack, documents, info, privateChat, user };
+    const hasMsg = computed(() => {
+      return Array.isArray(info.value.friendList) &&
+        !info.value.friendList.length
+        ? false
+        : true;
+    });
+
+    return { goBack, documents, info, privateChat, user, hasMsg };
   },
   computed: {
     ...mapGetters(["getRoute"]),

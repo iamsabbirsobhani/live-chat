@@ -14,12 +14,37 @@
               class="pvtSelfUser"
               style="max-width: 90%"
             >
-              <div style="max-width: 100%; text-align: end">
+
+              <div
+                v-if="
+                  doc.message !== `${doc.name} unsent a message` &&
+                  doc.message !== `${doc.name} unsent an image`
+                "
+                style="max-width: 100%; text-align: end"
+              >
                 <Chip
                   style="text-align: start"
                   v-if="doc.message"
                   :label="doc.message"
                   class="p-mr-2 p-mb-2 custom-chip"
+                />
+              </div>
+              <div v-else>
+                <Chip
+                  style="text-align: start"
+                  v-if="
+                    doc.message &&
+                    doc.userId === user.uid &&
+                    doc.imgUrl !== null
+                  "
+                  label="You unsent a message"
+                  class="p-mr-2 p-mb-2 unsentChat"
+                />
+                <Chip
+                  style="text-align: start"
+                  v-else
+                  label="You unsent an image"
+                  class="p-mr-2 p-mb-2 unsentChat"
                 />
               </div>
               <!-- element-plus Image Preview -->
@@ -30,14 +55,47 @@
                   :preview-src-list="esourceList"
                 >
                 </el-image>
+                <transition name="slide-fade">
+                  <span
+                    style="margin-left: 5px; margin-right: 5px"
+                    class="created-at"
+                    >{{ doc.createdAt }} ago by you
+                    <span
+                      v-if="user.uid === doc.userId && doc.imgUrl"
+                      class="chatDelete"
+                      @click="chatDel(doc.id, doc.imgUrl, doc.name)"
+                      >Delete</span
+                    ></span
+                  >
+                </transition>
               </div>
               <!-- end of element-plus Image Preview -->
               <transition name="slide-fade">
                 <span
                   style="margin-left: 5px; margin-right: 5px"
                   class="created-at"
-                  v-if="shoSelf && doc.id == idsSelf"
-                  >{{ doc.createdAt }} ago by you</span
+                  v-if="shoSelf && doc.id == idsSelf && !doc.imgUrl"
+                  >{{ doc.createdAt }} ago by you
+
+<!-- doesnt work, dont know why! -->
+                  <!-- v-if="
+                      user.uid === doc.userId && !doc.message.includes(`unsent`)
+                    " -->
+<!-- end doesnt work, dont know why! -->
+
+                  <span class="deleteTime" v-if="doc.deletedAt">
+                    <br />Deleted {{ doc.deletedAt }} ago</span
+                  >
+                  <span
+                    v-if="
+                      user.uid === doc.userId &&
+                      doc.message !== `${doc.name} unsent a message` &&
+                      doc.message !== `${doc.name} unsent an image`
+                    "
+                    class="chatDelete"
+                    @click="chatDel(doc.id, doc.imgUrl, doc.name)"
+                    >Delete</span
+                  ></span
                 >
               </transition>
             </div>
@@ -52,8 +110,15 @@
           v-if="doc.to == user.uid && doc.userId == userTo"
           @click="showDateOther(doc.id)"
         >
-          <!-- overflow-x: hidden; -->
-          <div style="max-width: 90%" class="pvtOtherUser">
+
+          <div
+            v-if="
+              doc.message !== `${doc.name} unsent a message` &&
+              doc.message !== `${doc.name} unsent an image`
+            "
+            style="max-width: 90%"
+            class="pvtOtherUser"
+          >
             <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
 
             <!-- element-plus Image Preview -->
@@ -66,15 +131,27 @@
               </el-image>
             </div>
             <!-- end of element-plus Image Preview -->
-            <transition name="slide-fade">
-              <span
-                style="margin-right: 5px"
-                class="created-at"
-                v-if="shoOther && doc.id == idsOther"
-                >{{ doc.createdAt }} ago by {{ doc.name }}</span
-              >
-            </transition>
           </div>
+          <div v-else>
+            <Chip
+              style="text-align: start"
+              v-if="doc.message"
+              :label="doc.message"
+              class="p-mr-2 p-mb-2 unsentChat"
+            />
+          </div>
+
+          <transition name="slide-fade">
+            <span
+              style="margin-right: 5px"
+              class="created-at"
+              v-if="shoOther && doc.id == idsOther"
+              >{{ doc.createdAt }} ago by {{ doc.name }}
+              <span class="deleteTime" v-if="doc.deletedAt">
+                <br />Deleted {{ doc.deletedAt }} ago</span
+              >
+            </span>
+          </transition>
         </div>
 
         <!-- end of other user -->
@@ -124,6 +201,7 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
+import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 export default {
@@ -131,6 +209,7 @@ export default {
   components: { Dialog, Button, Chip, ScrollPanel },
   setup(props) {
     const { user } = getUser();
+    const { performDelete } = deleteChat();
 
     const { error, documents, esourceList } = getCollection(
       "privateChat",
@@ -159,11 +238,22 @@ export default {
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
-          let time = formatDistanceToNow(doc.createdAt.toDate());
-          return { ...doc, createdAt: time };
+          if (doc.createdAt && !doc.deletedAt) {
+            let time = formatDistanceToNow(doc.createdAt.toDate());
+            return { ...doc, createdAt: time };
+          }
+          if (doc.createdAt && doc.deletedAt) {
+            let time = formatDistanceToNow(doc.createdAt.toDate());
+            let timeTwo = formatDistanceToNow(doc.deletedAt.toDate());
+            return { ...doc, createdAt: time, deletedAt: timeTwo };
+          }
         });
       }
     });
+
+    // const deletedTime = computed(() => {
+    //   return formatDistanceToNow(deltime.toDate());
+    // })
 
     //Auto Scrolling
     const messages = ref(null);
@@ -202,11 +292,24 @@ export default {
     let oldIdOther;
 
     const showDateOther = (id) => {
+      console.log("show other");
       oldIdOther === id
         ? (shoOther.value = !shoOther.value)
         : (shoOther.value = true);
       idsOther.value = id;
       oldIdOther = id;
+    };
+
+    const chatDel = (id, img, docName) => {
+      console.log(id, img, docName);
+      if (!img) {
+        console.log("no img");
+        performDelete(id, { url: false, name: docName });
+      }
+      if (img) {
+        console.log("has img");
+        performDelete(id, { url: true, name: docName });
+      }
     };
 
     return {
@@ -224,6 +327,7 @@ export default {
       showDateOther,
       shoOther,
       idsOther,
+      chatDel,
     };
   },
 };

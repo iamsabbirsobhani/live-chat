@@ -133,6 +133,7 @@ export default {
           userId: user.value.uid,
           to: props.userTo,
           createdAt: timestamp(),
+          deletedAt: null,
         };
         await addDoc(chat);
         newModel.value.msg = null;
@@ -191,6 +192,7 @@ export default {
         to: props.userTo,
         createdAt: timestamp(),
         imgUrl: url.value,
+        deletedAt: null,
       };
       await addDoc(chat);
 

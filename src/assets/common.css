@@ -1,8 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap");
 .empty {
   font-family: "Roboto", sans-serif;
   text-align: center; }
   .empty p {
     color: red;
     font-weight: bold; }
+
+.chatDelete {
+  cursor: pointer;
+  color: red;
+  text-decoration: underline; }
+
+.unsentChat {
+  font-family: 'Open Sans', sans-serif;
+  color: #BCC0C4;
+  background-color: white;
+  border: 1px solid #BCC0C4; }
+
+.deleteTime {
+  color: rgba(255, 0, 0, 0.699); }
 /*# sourceMappingURL=common.css.map */

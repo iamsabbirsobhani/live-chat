@@ -292,7 +292,6 @@ export default {
     let oldIdOther;
 
     const showDateOther = (id) => {
-      console.log("show other");
       oldIdOther === id
         ? (shoOther.value = !shoOther.value)
         : (shoOther.value = true);
@@ -301,7 +300,6 @@ export default {
     };
 
     const chatDel = (id, img, docName) => {
-      console.log(id, img, docName);
       if (!img) {
         console.log("no img");
         performDelete(id, { url: false, name: docName });

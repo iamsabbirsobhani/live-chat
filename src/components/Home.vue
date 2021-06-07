@@ -125,8 +125,8 @@
           <p style="font-family: Roboto, sans-serif">Comments:</p>
 
           <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
-            <div class="commentDes">
-              <p class="commentName" v-if="cmt.docId === doc.id">
+            <div class="commentDes" v-if="cmt.docId === doc.id">
+              <p class="commentName">
                 {{ cmt.name }}
               </p>
               <p class="commentDate" v-if="cmt.docId === doc.id">

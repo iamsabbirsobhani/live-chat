@@ -14,7 +14,6 @@
               class="pvtSelfUser"
               style="max-width: 90%"
             >
-
               <div
                 v-if="
                   doc.message !== `${doc.name} unsent a message` &&
@@ -29,7 +28,7 @@
                   class="p-mr-2 p-mb-2 custom-chip"
                 />
               </div>
-              <div v-else>
+              <div style="max-width: 100%; text-align: end" v-else>
                 <Chip
                   style="text-align: start"
                   v-if="
@@ -75,16 +74,17 @@
                   style="margin-left: 5px; margin-right: 5px"
                   class="created-at"
                   v-if="shoSelf && doc.id == idsSelf && !doc.imgUrl"
-                  >{{ doc.createdAt }} ago by you
+                  >{{ doc.createdAt }} by you
 
-<!-- doesnt work, dont know why! -->
+                  <!-- doesnt work, dont know why! -->
                   <!-- v-if="
                       user.uid === doc.userId && !doc.message.includes(`unsent`)
                     " -->
-<!-- end doesnt work, dont know why! -->
+                  <!-- end doesnt work, dont know why! -->
 
                   <span class="deleteTime" v-if="doc.deletedAt">
-                    <br />Deleted {{ doc.deletedAt }} ago</span
+                    <br />
+                    Deleted {{ doc.deletedAt }}</span
                   >
                   <span
                     v-if="
@@ -110,7 +110,6 @@
           v-if="doc.to == user.uid && doc.userId == userTo"
           @click="showDateOther(doc.id)"
         >
-
           <div
             v-if="
               doc.message !== `${doc.name} unsent a message` &&
@@ -132,7 +131,7 @@
             </div>
             <!-- end of element-plus Image Preview -->
           </div>
-          <div v-else>
+          <div style="max-width: 100%; text-align: start" v-else>
             <Chip
               style="text-align: start"
               v-if="doc.message"
@@ -148,7 +147,7 @@
               v-if="shoOther && doc.id == idsOther"
               >{{ doc.createdAt }} ago by {{ doc.name }}
               <span class="deleteTime" v-if="doc.deletedAt">
-                <br />Deleted {{ doc.deletedAt }} ago</span
+                <br />Deleted {{ doc.deletedAt }}</span
               >
             </span>
           </transition>
@@ -195,7 +194,7 @@
 <script>
 import Chip from "primevue/chip";
 import { computed, onUpdated, ref, watch } from "vue";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import getCollection from "@/composable/PrivateChat/getCollection";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
@@ -238,14 +237,26 @@ export default {
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
+          // createdAt
+          let timeAgo = formatDistanceToNow(doc.createdAt.toDate());
+          let timeFormat = format(doc.createdAt.toDate(), "Pp");
           if (doc.createdAt && !doc.deletedAt) {
-            let time = formatDistanceToNow(doc.createdAt.toDate());
-            return { ...doc, createdAt: time };
+            if (!timeAgo.includes("day")) {
+              return { ...doc, createdAt: `${timeAgo} ago` };
+            } else {
+              return { ...doc, createdAt: `${timeFormat}` };
+            }
           }
+
+          // deletedAt
           if (doc.createdAt && doc.deletedAt) {
-            let time = formatDistanceToNow(doc.createdAt.toDate());
-            let timeTwo = formatDistanceToNow(doc.deletedAt.toDate());
-            return { ...doc, createdAt: time, deletedAt: timeTwo };
+            let timeAgoDel = formatDistanceToNow(doc.deletedAt.toDate());
+            let timeFormatDel = format(doc.deletedAt.toDate(), "Pp");
+            if (!timeAgo.includes("day")) {
+              return { ...doc, createdAt: `${timeAgo} ago`, deletedAt: `${timeAgoDel} ago`};
+            } else {
+              return { ...doc, createdAt: `${timeFormat}`, deletedAt: `${timeFormatDel}`};
+            }
           }
         });
       }
@@ -301,11 +312,9 @@ export default {
 
     const chatDel = (id, img, docName) => {
       if (!img) {
-        console.log("no img");
         performDelete(id, { url: false, name: docName });
       }
       if (img) {
-        console.log("has img");
         performDelete(id, { url: true, name: docName });
       }
     };

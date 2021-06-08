@@ -16,7 +16,13 @@
   font-family: 'Open Sans', sans-serif;
   color: #BCC0C4;
   background-color: white;
-  border: 1px solid #BCC0C4; }
+  border: 1px solid #BCC0C4;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  text-align: end !important; }
 
 .deleteTime {
   color: rgba(255, 0, 0, 0.699); }

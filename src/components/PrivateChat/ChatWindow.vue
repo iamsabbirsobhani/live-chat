@@ -118,8 +118,16 @@
             style="max-width: 90%"
             class="pvtOtherUser"
           >
-            <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
-
+            <div v-if="doc.createdAt.includes('Just')">
+              <Chip
+                class="othermsg-just"
+                v-if="doc.message"
+                :label="doc.message"
+              />
+            </div>
+            <div v-else>
+              <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
+            </div>
             <!-- element-plus Image Preview -->
             <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
               <el-image
@@ -130,6 +138,10 @@
               </el-image>
             </div>
             <!-- end of element-plus Image Preview -->
+            <span class="created-at-now" v-if="doc.createdAt.includes('Just')">
+              <!-- <Tag class="p-mr-2" severity="success" value="Just now" rounded></Tag> -->
+              <p>Just now</p>
+            </span>
           </div>
           <div style="max-width: 100%; text-align: start" v-else>
             <Chip
@@ -145,7 +157,7 @@
               style="margin-right: 5px"
               class="created-at"
               v-if="shoOther && doc.id == idsOther"
-              >{{ doc.createdAt }} ago by {{ doc.name }}
+              >{{ doc.createdAt }} by {{ doc.name }}
               <span class="deleteTime" v-if="doc.deletedAt">
                 <br />Deleted {{ doc.deletedAt }}</span
               >
@@ -193,7 +205,16 @@
 
 <script>
 import Chip from "primevue/chip";
-import { computed, onUpdated, ref, watch } from "vue";
+import Tag from "primevue/tag";
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUpdate,
+  onMounted,
+  onUpdated,
+  ref,
+  watch,
+} from "vue";
 import { formatDistanceToNow, format } from "date-fns";
 import getCollection from "@/composable/PrivateChat/getCollection";
 import Dialog from "primevue/dialog";
@@ -205,7 +226,7 @@ import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 export default {
   props: ["userTo"],
-  components: { Dialog, Button, Chip, ScrollPanel },
+  components: { Dialog, Button, Chip, ScrollPanel, Tag },
   setup(props) {
     const { user } = getUser();
     const { performDelete } = deleteChat();
@@ -233,15 +254,17 @@ export default {
     // based on its dependencies. ... If we want to add a bit of
     //functionality each time something changes, or respond to a particular
     //change, we could watch a property and apply some logic.
-
+    const backStyle = ref(null)
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
           // createdAt
           let timeAgo = formatDistanceToNow(doc.createdAt.toDate());
-          let timeFormat = format(doc.createdAt.toDate(), "Pp");
+          let timeFormat = format(doc.createdAt.toDate(), "PPp");
           if (doc.createdAt && !doc.deletedAt) {
-            if (!timeAgo.includes("day")) {
+            if (timeAgo.includes("less")) {
+              return { ...doc, createdAt: `Just now` };
+            } else if (!timeAgo.includes("hour")) {
               return { ...doc, createdAt: `${timeAgo} ago` };
             } else {
               return { ...doc, createdAt: `${timeFormat}` };
@@ -251,11 +274,19 @@ export default {
           // deletedAt
           if (doc.createdAt && doc.deletedAt) {
             let timeAgoDel = formatDistanceToNow(doc.deletedAt.toDate());
-            let timeFormatDel = format(doc.deletedAt.toDate(), "Pp");
-            if (!timeAgo.includes("day")) {
-              return { ...doc, createdAt: `${timeAgo} ago`, deletedAt: `${timeAgoDel} ago`};
+            let timeFormatDel = format(doc.deletedAt.toDate(), "PPp");
+            if (!timeAgo.includes("hour")) {
+              return {
+                ...doc,
+                createdAt: `${timeAgo} ago`,
+                deletedAt: `${timeAgoDel} ago`,
+              };
             } else {
-              return { ...doc, createdAt: `${timeFormat}`, deletedAt: `${timeFormatDel}`};
+              return {
+                ...doc,
+                createdAt: `${timeFormat}`,
+                deletedAt: `on ${timeFormatDel}`,
+              };
             }
           }
         });

@@ -138,10 +138,6 @@
               </el-image>
             </div>
             <!-- end of element-plus Image Preview -->
-            <span class="created-at-now" v-if="doc.createdAt.includes('Just')">
-              <!-- <Tag class="p-mr-2" severity="success" value="Just now" rounded></Tag> -->
-              <p>Just now</p>
-            </span>
           </div>
           <div style="max-width: 100%; text-align: start" v-else>
             <Chip

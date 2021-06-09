@@ -44,9 +44,9 @@
   text-shadow: 0px 0.1px 5px #e0e0e0; }
 
 .othermsg-just {
-  backdrop-filter: blur(6px);
   border: 2px solid #0084ff;
-  background-color: white;
+  background-color: #faf7f7;
   color: white;
-  color: black; }
+  color: black;
+  backdrop-filter: blur(6px); }
 /*# sourceMappingURL=common.css.map */

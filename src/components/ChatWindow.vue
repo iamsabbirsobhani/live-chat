@@ -1,7 +1,7 @@
 <template>
   <div class="chat-window">
     <div v-if="error">{{ error }}</div>
-    <el-skeleton :rows="9" animated  v-if="!documents"/>
+    <el-skeleton :rows="9" animated v-if="!documents" />
     <div v-if="documents" ref="messages" class="messages">
       <div v-for="doc in formattedDocuments" :key="doc.id" class="single">
         <!-- self user -->
@@ -11,10 +11,9 @@
           v-if="user.uid == doc.userId && !doc.to"
           class="selfUser"
         >
-          <div class="name-wraper" style="width: 100%; text-align: end">
-          </div>
+          <div class="name-wraper" style="width: 100%; text-align: end"></div>
           <div style="max-width: 100%; text-align: end">
-              <!-- v-if="doc.message && !doc.to" -->
+            <!-- v-if="doc.message && !doc.to" -->
             <Chip
               style="text-align: start"
               v-if="doc.message"
@@ -32,7 +31,7 @@
             </el-image>
           </div>
           <!-- end of element-plus Image Preview -->
-          <span  style="margin-left: 5px; margin-right: 5px" class="created-at"
+          <span style="margin-left: 5px; margin-right: 5px" class="created-at"
             >{{ doc.createdAt }} ago by you</span
           >
         </div>
@@ -41,8 +40,8 @@
 
         <!-- other user -->
 
-        <div style="max-width: 90%; " v-else class="otherUser">
-<!-- overflow-x: hidden; -->
+        <div style="max-width: 90%" v-else class="otherUser">
+          <!-- overflow-x: hidden; -->
           <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
 
           <!-- element-plus Image Preview -->
@@ -56,7 +55,7 @@
           </div>
           <!-- end of element-plus Image Preview -->
 
-          <span  style="margin-right: 5px" class="created-at"
+          <span style="margin-right: 5px" class="created-at"
             >{{ doc.createdAt }} ago by {{ doc.name }}</span
           >
         </div>
@@ -100,7 +99,7 @@
 <script>
 import Chip from "primevue/chip";
 import { computed, onUpdated, ref, watch } from "vue";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import getCollection from "../composable/getCollection";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
@@ -136,8 +135,13 @@ export default {
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
-          let time = formatDistanceToNow(doc.createdAt.toDate());
-          return { ...doc, createdAt: time };
+          let timeAgo = formatDistanceToNow(doc.createdAt.toDate());
+          let timeFormat = format(doc.createdAt.toDate(), "PPp");
+          if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
+            return { ...doc, createdAt: `${timeAgo} ago` };
+          } else {
+            return { ...doc, createdAt: `${timeFormat}` };
+          }
         });
       }
     });
@@ -275,7 +279,6 @@ a {
   margin-right: 5px;
 }
 
-
 .otherUser .images {
   max-width: 200px;
   max-height: 400px;
@@ -299,7 +302,6 @@ a {
   padding: 1px;
   background-color: #0086f9;
   margin-right: 5px;
-
 }
 .otherUser .message-wraper {
   max-width: 180px;
@@ -308,8 +310,8 @@ a {
   background-color: #e4e6eb;
 }
 
-.otherUser{
-      word-wrap: break-word !important;
+.otherUser {
+  word-wrap: break-word !important;
 }
 
 .selfUser .message {

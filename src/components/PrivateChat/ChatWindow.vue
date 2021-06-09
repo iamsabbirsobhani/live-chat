@@ -260,7 +260,7 @@ export default {
           if (doc.createdAt && !doc.deletedAt) {
             if (timeAgo.includes("less")) {
               return { ...doc, createdAt: `Just now` };
-            } else if (!timeAgo.includes("hour")) {
+            } else if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
               return { ...doc, createdAt: `${timeAgo} ago` };
             } else {
               return { ...doc, createdAt: `${timeFormat}` };

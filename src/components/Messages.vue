@@ -8,7 +8,7 @@
   </el-page-header>
   <h3 style="text-align: center; font-family: Roboto, sans-serif">Messages</h3>
 
-  <div v-if="hasMsg">
+  <div v-if="documents">
     <div v-for="doc in documents" :key="doc.userUid">
       <div v-for="fr in info.friendList" :key="fr.id">
         <div v-if="doc.id === fr">
@@ -45,9 +45,10 @@
       </div>
     </div>
   </div>
-  <div v-else class="empty">
+  <div v-else v-loading.fullscreen.lock="true"></div>
+  <!-- <div v-else class="empty">
     <p>No Messages</p>
-  </div>
+  </div> -->
 </template>
 
 <script>

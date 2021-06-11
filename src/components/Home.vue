@@ -189,7 +189,6 @@
     </div>
   </div>
   <div v-else v-loading.fullscreen.lock="true"></div>
-  <!-- <button @click="showMore" type="click">Show more...</button> -->
   <div class="showMore">
     <el-button
       v-if="clickedShowMore"

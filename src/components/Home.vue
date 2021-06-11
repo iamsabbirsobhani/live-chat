@@ -44,142 +44,163 @@
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
-  <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
-    <!-- :class="{ borderCard: !seeComments  && doc.id === seeCommentsDocId}" -->
-    <el-card
-      v-if="doc.post"
-      :style="doc.id === seeCommentsDocId ? styleBorder : ''"
-      shadow="always"
-      style="border-radius: 10px"
-    >
-      <router-link
-        style="text-decoration: none; margin: 0px"
-        :to="{ name: 'Profile', params: { id: doc.userId } }"
+  <div v-if="formattedDocuments">
+    <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
+      <!-- :class="{ borderCard: !seeComments  && doc.id === seeCommentsDocId}" -->
+      <el-card
+        v-if="doc.post"
+        :style="doc.id === seeCommentsDocId ? styleBorder : ''"
+        shadow="always"
+        style="border-radius: 10px"
       >
-        <div class="name">
-          <el-avatar :size="40">
-            <img :src="doc.dp" />
-          </el-avatar>
-          <div class="nameDate">
-            <h3>{{ doc.userName }}</h3>
-            <p class="date">{{ doc.createdAt }}</p>
-          </div>
-        </div>
-      </router-link>
-      <p class="post">{{ doc.post }}</p>
-      <div class="feeling">
-        <div class="feelinglikedislike">
-          <Button
-            @click.stop="like(doc.id, user.uid)"
-            icon="pi pi-thumbs-up"
-            class="p-button-rounded p-button-text"
-          />
-          <p>{{ doc.like }}</p>
-          <Button
-            @click.stop="dislike(doc.id, user.uid)"
-            style="color: red"
-            icon="pi pi-thumbs-down"
-            class="p-button-rounded p-button-danger p-button-text"
-          />
-          <p style="display: inline">{{ doc.dislike }}</p>
-        </div>
-        <!-- comments -->
-        <div style="cursor: pointer; font-family: Roboto, sans-serif">
-          <p
-            v-if="seeComments"
-            class="seeComment"
-            @click="seeComment(doc.id, seeCommentsDocId)"
-          >
-            See Comments
-          </p>
-          <p
-            v-if="closeComments && doc.id === seeCommentsDocId"
-            class="closeComment"
-            @click="closeComment(doc.id)"
-          >
-            Close
-          </p>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="To see comments please close the other comment section"
-            placement="top"
-          >
-            <div>
-              <p
-                style="cursor: text"
-                v-if="closeComments && !(doc.id === seeCommentsDocId)"
-              >
-                See Comments
-              </p>
-            </div>
-          </el-tooltip>
-        </div>
-      </div>
-
-      <transition name="fade">
-        <div
-          class="comment-section"
-          v-if="!seeComments && doc.id === seeCommentsDocId"
+        <router-link
+          style="text-decoration: none; margin: 0px"
+          :to="{ name: 'Profile', params: { id: doc.userId } }"
         >
-          <p style="font-family: Roboto, sans-serif">Comments:</p>
-
-          <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
-            <div class="commentDes" v-if="cmt.docId === doc.id">
-              <p class="commentName">
-                {{ cmt.name }}
-              </p>
-              <p class="commentDate" v-if="cmt.docId === doc.id">
-                {{ cmt.createdAt }}
-              </p>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="Delete Comment"
-                placement="left"
-              >
-                <div style="margin-left: auto">
-                  <Button
-                    v-if="cmt.docId === doc.id && user.uid === cmt.userId"
-                    icon="pi pi pi-times"
-                    style="color: red; margin-left: auto"
-                    @click="deleteCmt(cmt.id)"
-                    class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
-                  />
-                </div>
-              </el-tooltip>
+          <div class="name">
+            <el-avatar :size="40">
+              <img :src="doc.dp" />
+            </el-avatar>
+            <div class="nameDate">
+              <h3>{{ doc.userName }}</h3>
+              <p class="date">{{ doc.createdAt }}</p>
             </div>
-            <p class="commentComment" v-if="cmt.docId === doc.id">
-              {{ cmt.comment }}
-            </p>
           </div>
-
-          <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
-          <div style="display: flex; flex-direction: column">
-            <InputText
-              style="border-radius: 10px"
-              placeholder="Please enter comment"
-              type="text"
-              v-model.trim="comment"
+        </router-link>
+        <p class="post">{{ doc.post }}</p>
+        <div class="feeling">
+          <div class="feelinglikedislike">
+            <Button
+              @click.stop="like(doc.id, user.uid)"
+              icon="pi pi-thumbs-up"
+              class="p-button-rounded p-button-text"
             />
-            <el-button
-              style="margin-top: 10px; border-radius: 10px"
-              class="button"
-              v-if="isLoading"
-              :loading="isLoading"
-              >Loading</el-button
+            <p>{{ doc.like }}</p>
+            <Button
+              @click.stop="dislike(doc.id, user.uid)"
+              style="color: red"
+              icon="pi pi-thumbs-down"
+              class="p-button-rounded p-button-danger p-button-text"
+            />
+            <p style="display: inline">{{ doc.dislike }}</p>
+          </div>
+          <!-- comments -->
+          <div style="cursor: pointer; font-family: Roboto, sans-serif">
+            <p
+              v-if="seeComments"
+              class="seeComment"
+              @click="seeComment(doc.id, seeCommentsDocId)"
             >
-            <el-button
-              v-else
-              @click="postComment(doc.id, user.displayName, user.uid)"
-              style="margin-top: 10px; border-radius: 10px"
-              >Comment</el-button
+              See Comments
+            </p>
+            <p
+              v-if="closeComments && doc.id === seeCommentsDocId"
+              class="closeComment"
+              @click="closeComment(doc.id)"
             >
+              Close
+            </p>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="To see comments please close the other comment section"
+              placement="top"
+            >
+              <div>
+                <p
+                  style="cursor: text"
+                  v-if="closeComments && !(doc.id === seeCommentsDocId)"
+                >
+                  See Comments
+                </p>
+              </div>
+            </el-tooltip>
           </div>
         </div>
-      </transition>
-      <!-- comments -->
-    </el-card>
+
+        <transition name="fade">
+          <div
+            class="comment-section"
+            v-if="!seeComments && doc.id === seeCommentsDocId"
+          >
+            <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+            <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+              <div class="commentDes" v-if="cmt.docId === doc.id">
+                <p class="commentName">
+                  {{ cmt.name }}
+                </p>
+                <p class="commentDate" v-if="cmt.docId === doc.id">
+                  {{ cmt.createdAt }}
+                </p>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="Delete Comment"
+                  placement="left"
+                >
+                  <div style="margin-left: auto">
+                    <Button
+                      v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+                      icon="pi pi pi-times"
+                      style="color: red; margin-left: auto"
+                      @click="deleteCmt(cmt.id)"
+                      class="
+                        p-button-rounded
+                        p-button-danger
+                        p-button-outlined
+                        p-button-sm
+                      "
+                    />
+                  </div>
+                </el-tooltip>
+              </div>
+              <p class="commentComment" v-if="cmt.docId === doc.id">
+                {{ cmt.comment }}
+              </p>
+            </div>
+
+            <!-- <el-input placeholder="Please input" v-model="comment"></el-input> -->
+            <div style="display: flex; flex-direction: column">
+              <InputText
+                style="border-radius: 10px"
+                placeholder="Please enter comment"
+                type="text"
+                v-model.trim="comment"
+              />
+              <el-button
+                style="margin-top: 10px; border-radius: 10px"
+                class="button"
+                v-if="isLoading"
+                :loading="isLoading"
+                >Loading</el-button
+              >
+              <el-button
+                v-else
+                @click="postComment(doc.id, user.displayName, user.uid)"
+                style="margin-top: 10px; border-radius: 10px"
+                >Comment</el-button
+              >
+            </div>
+          </div>
+        </transition>
+        <!-- comments -->
+      </el-card>
+    </div>
+  </div>
+  <div v-else v-loading.fullscreen.lock="true"></div>
+  <!-- <button @click="showMore" type="click">Show more...</button> -->
+  <div class="showMore">
+    <el-button
+      v-if="clickedShowMore"
+      type="primary"
+      @click="showMore"
+      v-loading.fullscreen.lock="fullscreenLoading"
+      :disabled="showMoreBtn"
+      style="margin-bottom: 10px; margin-top: 10px;"
+    >
+      Show more...
+    </el-button>
   </div>
 </template>
 
@@ -207,7 +228,7 @@ export default {
   setup() {
     const { user } = getUser();
     const { error, documents } = getUsers();
-    const { statusHome } = getPosts("posts");
+    const { statusHome, morePosts, showMoreBtn } = getPosts("posts");
     const router = useRouter();
     const isLoading = ref(false);
     const store = useStore();
@@ -316,6 +337,19 @@ export default {
       router.push({ name: "Messages", params: { id: uid } });
     };
 
+    const fullscreenLoading = ref(false);
+    const clickedShowMore = ref(true)
+
+    const showMore = async () => {
+      clickedShowMore.value = false
+      fullscreenLoading.value = true;
+
+      await morePosts();
+
+      fullscreenLoading.value = false;
+      clickedShowMore.value = true
+    };
+
     return {
       goBack,
       user,
@@ -337,6 +371,10 @@ export default {
       documents,
       info,
       messages,
+      showMore,
+      fullscreenLoading,
+      showMoreBtn,
+      clickedShowMore
     };
   },
 };
@@ -474,6 +512,10 @@ export default {
 }
 .navPhoto:hover {
   filter: opacity(100%);
+}
+
+.showMore {
+  text-align: center;
 }
 
 @media (max-width: 425px) {

@@ -138,7 +138,7 @@ export default {
           let timeAgo = formatDistanceToNow(doc.createdAt.toDate());
           let timeFormat = format(doc.createdAt.toDate(), "PPp");
           if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
-            return { ...doc, createdAt: `${timeAgo} ago` };
+            return { ...doc, createdAt: `${timeAgo}` };
           } else {
             return { ...doc, createdAt: `${timeFormat}` };
           }

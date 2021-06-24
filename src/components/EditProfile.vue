@@ -1,7 +1,9 @@
 <template>
   <el-page-header class="pghd" @back="goBack" content="Profile">
   </el-page-header>
-  <h4 style="text-align: center;font-family: Roboto, sans-serif;">Input All the fields</h4>
+  <h4 style="text-align: center; font-family: Roboto, sans-serif">
+    Input All the fields
+  </h4>
   <form @submit.prevent="submitForm">
     <label for="bio">Bio:</label>
     <el-input
@@ -56,6 +58,19 @@
       >Change Edit</el-button
     >
   </form>
+  <form @submit.prevent="changeName">
+    <label for="displayName">Name: </label>
+    <el-input
+      type="text"
+      :placeholder="user.displayName"
+      v-model="changeDisplayName"
+      maxlength="6"
+      show-word-limit
+      name="displayName"
+    >
+    </el-input>
+      <el-button class="button" type="primary" native-type="submit">Change Name</el-button>
+  </form>
 </template>
 
 <script>
@@ -63,6 +78,7 @@ import { ref } from "vue";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import getUser from "@/composable/getUser.js";
+import updateUserName from "@/composable/updateUserName.js";
 
 export default {
   props: ["id"],
@@ -79,6 +95,7 @@ export default {
     const profession = ref(null);
     const interest = ref(null);
     const fileError = ref("");
+    const changeDisplayName = ref(null);
 
     const isLoading = ref(false);
 
@@ -102,6 +119,14 @@ export default {
       router.push({ name: "Profile" });
     };
 
+    const changeName = async () => {
+      await updateUserName(changeDisplayName.value)
+
+      changeDisplayName.value = null
+
+      goBack()
+    }
+
     return {
       bio,
       location,
@@ -110,6 +135,9 @@ export default {
       submitForm,
       isLoading,
       goBack,
+      changeDisplayName,
+      changeName,
+      user
     };
   },
 };

@@ -7,7 +7,7 @@
       required
       placeholder="Display Name"
       v-model="displayName"
-      maxlength="15"
+      maxlength="6"
     />
     <InputText type="email" required placeholder="Email" v-model="email" />
 

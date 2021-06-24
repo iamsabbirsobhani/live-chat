@@ -3,15 +3,15 @@
     <h1>Live Chat</h1>
     <div v-if="showLogin">
       <SigninForm @login="chatroom" />
-      <p>Not registered? <span @click="show">Sign up</span> Instead</p>
+      <p style="font-family: Roboto, sans-serif;">Not registered? <span @click="show">Sign up</span> Instead</p>
     </div>
     <div v-if="showSignup">
       <SignupForm @signup="chatroom" />
-      <p>Already registered? <span @click="show">Login</span> Instead</p>
+      <p style="font-family: Roboto, sans-serif;">Already registered? <span @click="show">Login</span> Instead</p>
     </div>
     <!-- Footer -->
     <div class="footer">
-      <span>Copyright © 2021 </span>
+      <span style="font-family: Roboto, sans-serif;">Copyright © 2021 </span>
       <!-- <Button @click="openPosition" label="See Credit" class="p-button-link" /> -->
     </div>
     <Dialog
@@ -93,6 +93,8 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+
 /* Footer */
 .p-dialog-content p {
   margin: 0 !important;
@@ -122,7 +124,7 @@ export default {
   margin-left: 5px !important;
 }
 .welcome > h1:nth-child(1) {
-  font-family: "Hammersmith One", sans-serif;
+  /* font-family: "Hammersmith One", sans-serif; */
   /* background: -webkit-linear-gradient(139deg, rgba(13,137,236,1) 0%, rgba(79,33,252,1) 36%, rgba(81,92,222,1) 64%, rgba(0,212,255,1) 100%); */
   -webkit-background-clip: text;
   background: -webkit-linear-gradient(

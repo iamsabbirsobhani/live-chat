@@ -271,7 +271,7 @@ export default {
           if (doc.createdAt && doc.deletedAt) {
             let timeAgoDel = formatDistanceToNow(doc.deletedAt.toDate());
             let timeFormatDel = format(doc.deletedAt.toDate(), "PPp");
-            if (!timeAgo.includes("hour")) {
+            if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
               return {
                 ...doc,
                 createdAt: `${timeAgo} ago`,

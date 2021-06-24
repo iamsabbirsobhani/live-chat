@@ -5,10 +5,22 @@ import { projectFirestore } from "../firebase/config";
 let first = null;
 let results = [];
 let newResults = [];
+let lastB = null;
+let last = null;
+let snapshotB = null;
+let snapshot = null;
+let next = null;
+const statusHome = ref("");
+const status = ref("");
 
 const getPosts = (collection, id) => {
-  const status = ref("");
-  const statusHome = ref("");
+  statusHome.value = null;
+  status.value = null;
+  next = null;
+  lastB = null;
+  last = null;
+  first = null;
+
   const showMoreBtn = ref(false);
 
   // let collectionRef = projectFirestore.collection(collection).doc(id).collection('posts')
@@ -46,22 +58,22 @@ const getPosts = (collection, id) => {
 
   const morePosts = async () => {
     statusHome.value = null;
-    const snapshot = await collectionRef.get();
-    const last = snapshot.docs[snapshot.docs.length - 1];
+    snapshot = await collectionRef.get();
+    last = snapshot.docs[snapshot.docs.length - 1];
 
     // preview output
     // if (last) {
     //   console.log("Last", last.data());
     // }
 
-    let next = projectFirestore
+    next = projectFirestore
       .collection(collection)
       .orderBy("createdAt", "desc")
       .startAfter(first || last)
       .limit(4);
 
-    const snapshotB = await next.get();
-    let lastB = snapshotB.docs[snapshotB.docs.length - 1];
+    snapshotB = await next.get();
+    lastB = snapshotB.docs[snapshotB.docs.length - 1];
 
     // preview output
     // if (lastB) {
@@ -89,8 +101,8 @@ const getPosts = (collection, id) => {
           showMoreBtn.value = true;
           first = null;
           lastB = null;
+          snapshotB = null;
         }
-
         error.value = null;
       },
       (err) => {

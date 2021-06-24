@@ -59,7 +59,7 @@
     >
   </form>
   <form @submit.prevent="changeName">
-    <label for="displayName">Name: </label>
+    <label for="displayName">Update Name: </label>
     <el-input
       type="text"
       :placeholder="user.displayName"
@@ -69,7 +69,14 @@
       name="displayName"
     >
     </el-input>
-      <el-button class="button" type="primary" native-type="submit">Change Name</el-button>
+      <el-button
+      class="button"
+      v-if="isLoadingName"
+      type="primary"
+      :loading="isLoadingName"
+      >Loading</el-button
+    >
+      <el-button v-else class="button" type="primary" native-type="submit">Update Name</el-button>
   </form>
 </template>
 
@@ -98,6 +105,7 @@ export default {
     const changeDisplayName = ref(null);
 
     const isLoading = ref(false);
+    const isLoadingName = ref(false);
 
     const submitForm = async () => {
       isLoading.value = true;
@@ -120,10 +128,12 @@ export default {
     };
 
     const changeName = async () => {
+      isLoadingName.value = true
       await updateUserName(changeDisplayName.value)
 
       changeDisplayName.value = null
 
+      isLoadingName.value = false
       goBack()
     }
 
@@ -136,6 +146,7 @@ export default {
       isLoading,
       goBack,
       changeDisplayName,
+      isLoadingName,
       changeName,
       user
     };

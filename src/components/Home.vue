@@ -210,7 +210,7 @@ import getUsers from "@/composable/getUsers.js";
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
-import { computed, ref } from "vue";
+import { computed, ref, onUpdated } from "vue";
 import { format, formatDistanceToNow } from "date-fns";
 import likeSystem from "@/composable/likeSystem.js";
 import dislikeSystem from "@/composable/dislikeSystem.js";
@@ -348,6 +348,15 @@ export default {
       fullscreenLoading.value = false;
       clickedShowMore.value = true
     };
+
+    let i = 0;
+    onUpdated(() => {
+      if (i !== 0) {
+        var scrollingElement = document.scrollingElement || document.body;
+        scrollingElement.scrollTop = scrollingElement.scrollHeight;
+      }
+      i++;
+    });
 
     return {
       goBack,

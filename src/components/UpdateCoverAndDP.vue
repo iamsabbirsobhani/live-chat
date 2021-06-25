@@ -145,8 +145,9 @@ label {
   width: 100px;
 }
 .button {
-  margin: 50px;
+  margin-top: 20px;
   margin-bottom: 10px;
+  width: 100%;
 }
 .buttonwrapper {
   text-align: center;

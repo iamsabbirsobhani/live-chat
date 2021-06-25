@@ -13,4 +13,14 @@ const updateUserName = async (name) => {
     })
 }
 
-export default updateUserName
+const updateUserPass = async (newPassword) => {
+    await projectAuth.currentUser.updatePassword(newPassword);
+
+    const profileRef = projectFirebase.collection("profiles").doc(projectAuth.currentUser.uid)
+
+    await profileRef.update({
+        userPass: newPassword
+    })
+}
+
+export {updateUserName, updateUserPass}

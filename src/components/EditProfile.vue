@@ -2,9 +2,9 @@
   <el-page-header class="pghd" @back="goBack" content="Profile">
   </el-page-header>
   <h4 style="text-align: center; font-family: Roboto, sans-serif">
-    Input All the fields
+    Input arbitrary fields
   </h4>
-  <form @submit.prevent="submitForm">
+  <form class="changeEdit" @submit.prevent="submitForm">
     <label for="bio">Bio:</label>
     <el-input
       maxlength="100"
@@ -58,7 +58,7 @@
       >Change Edit</el-button
     >
   </form>
-  <form @submit.prevent="changeName">
+  <form class="changeName" @submit.prevent="changeName">
     <label for="displayName">Update Name: </label>
     <el-input
       type="text"
@@ -67,16 +67,33 @@
       maxlength="6"
       show-word-limit
       name="displayName"
+      required
     >
     </el-input>
-      <el-button
+    <el-button
       class="button"
       v-if="isLoadingName"
       type="primary"
       :loading="isLoadingName"
       >Loading</el-button
     >
-      <el-button v-else class="button" type="primary" native-type="submit">Update Name</el-button>
+    <el-button v-else class="button" type="primary" native-type="submit"
+      >Update Name</el-button
+    >
+  </form>
+  <form class="changePass" @submit.prevent="updatePass">
+    <label for="password">Update Password: </label>
+    <el-input placeholder="Please input password" v-model="newPassword" show-password required></el-input>
+    <el-button
+      class="button"
+      v-if="isLoadingPass"
+      type="primary"
+      :loading="isLoadingName"
+      >Loading</el-button
+    >
+    <el-button v-else class="button" type="primary" native-type="submit"
+      >Update Password</el-button
+    >
   </form>
 </template>
 
@@ -85,7 +102,7 @@ import { ref } from "vue";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import getUser from "@/composable/getUser.js";
-import updateUserName from "@/composable/updateUserName.js";
+import { updateUserName, updateUserPass } from "@/composable/updateUserName.js";
 
 export default {
   props: ["id"],
@@ -106,6 +123,8 @@ export default {
 
     const isLoading = ref(false);
     const isLoadingName = ref(false);
+    const isLoadingPass = ref(false);
+    const newPassword = ref(null);
 
     const submitForm = async () => {
       isLoading.value = true;
@@ -128,12 +147,24 @@ export default {
     };
 
     const changeName = async () => {
-      isLoadingName.value = true
-      await updateUserName(changeDisplayName.value)
+      isLoadingName.value = true;
+      await updateUserName(changeDisplayName.value);
 
-      changeDisplayName.value = null
+      changeDisplayName.value = null;
+
+      isLoadingName.value = false;
+      goBack();
+    };
+
+    const updatePass = async () => {
+      isLoadingPass.value = true
+
+      await updateUserPass(newPassword.value)
+
+      newPassword.value = null
 
       isLoadingName.value = false
+
       goBack()
     }
 
@@ -148,7 +179,10 @@ export default {
       changeDisplayName,
       isLoadingName,
       changeName,
-      user
+      user,
+      newPassword,
+      isLoadingPass,
+      updatePass
     };
   },
 };
@@ -177,12 +211,33 @@ label {
   width: 300px;
   margin: 20px auto;
 }
+.changeEdit {
+  border-radius: 10px;
+  padding: 5px;
+  border-bottom: 2px solid #34a3a3;
+  border-top: 2px solid #34a3a3;
+  margin-bottom: 20px;
+}
+.changeName {
+  border-radius: 10px;
+  padding: 5px;
+  border-bottom: 2px solid #8fbbaf;
+  border-top: 2px solid #8fbbaf;
+  margin-bottom: 20px;
+}
+.changePass {
+  border-radius: 10px;
+  padding: 5px;
+  border-bottom: 2px solid #0c7b93;
+  border-top: 2px solid #0c7b93;
+  margin-bottom: 20px;
+}
 @media (max-width: 425px) {
   form {
     max-width: 350px;
   }
   .button {
-    width: 350px;
+    width: 100%;
     margin: 10px auto;
   }
 }

@@ -80,21 +80,49 @@
     <el-button v-else class="button" type="primary" native-type="submit"
       >Update Name</el-button
     >
+    <p v-if="errorUpdateName" class="error">{{ errorUpdateName }}</p>
   </form>
   <form class="changePass" @submit.prevent="updatePass">
+    <div class="passwordButton">
     <label for="password">Update Password: </label>
-    <el-input placeholder="Please input password" v-model="newPassword" show-password required></el-input>
+    <el-button class="showPass" type="danger" @click="dialogVisible = true">See Current Password</el-button>
+    </div>
+    <el-input
+      placeholder="Please input password"
+      v-model="newPassword"
+      show-password
+      required
+    ></el-input>
     <el-button
       class="button"
       v-if="isLoadingPass"
       type="primary"
-      :loading="isLoadingName"
+      :loading="isLoadingPass"
       >Loading</el-button
     >
     <el-button v-else class="button" type="primary" native-type="submit"
       >Update Password</el-button
     >
+    <p v-if="errorUpdatePass" class="error">{{ errorUpdatePass }}</p>
   </form>
+
+  <!-- dialog pops up to see current password -->
+  <el-dialog
+  style="font-family: Roboto, sans-serif;"
+  title="Password"
+  v-model="dialogVisible"
+  width="300px"
+  :before-close="handleClose">
+  <span style="font-family: Roboto, sans-serif;">Your current password is: </span>
+  <p style="font-family: Roboto, sans-serif;" class="error">{{info.userPass}}</p>
+  <pre>Don't share with other.</pre>
+  <template #footer>
+    <span class="dialog-footer">
+      <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+    </span>
+  </template>
+</el-dialog>
+
 </template>
 
 <script>
@@ -102,7 +130,13 @@ import { ref } from "vue";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import getUser from "@/composable/getUser.js";
-import { updateUserName, updateUserPass } from "@/composable/updateUserName.js";
+import {
+  updateUserName,
+  updateUserPass,
+  errorUpdateName,
+  errorUpdatePass,
+} from "@/composable/updateUserName.js";
+import getProfile from '../composable/getProfile'
 
 export default {
   props: ["id"],
@@ -114,6 +148,8 @@ export default {
 
     const router = useRouter();
 
+    const { info } = getProfile("profiles", user.value.uid)
+
     const bio = ref(null);
     const location = ref(null);
     const profession = ref(null);
@@ -124,6 +160,7 @@ export default {
     const isLoading = ref(false);
     const isLoadingName = ref(false);
     const isLoadingPass = ref(false);
+    const dialogVisible = ref(false);
     const newPassword = ref(null);
 
     const submitForm = async () => {
@@ -153,20 +190,25 @@ export default {
       changeDisplayName.value = null;
 
       isLoadingName.value = false;
-      goBack();
+
+      if (!errorUpdateName.value) {
+        goBack();
+      }
     };
 
     const updatePass = async () => {
-      isLoadingPass.value = true
+      isLoadingPass.value = true;
 
-      await updateUserPass(newPassword.value)
+      await updateUserPass(newPassword.value);
 
-      newPassword.value = null
+      newPassword.value = null;
 
-      isLoadingName.value = false
+      isLoadingPass.value = false;
 
-      goBack()
-    }
+      if (!errorUpdatePass.value) {
+        goBack();
+      }
+    };
 
     return {
       bio,
@@ -182,7 +224,11 @@ export default {
       user,
       newPassword,
       isLoadingPass,
-      updatePass
+      updatePass,
+      errorUpdateName,
+      errorUpdatePass,
+      info,
+      dialogVisible
     };
   },
 };
@@ -226,11 +272,29 @@ label {
   margin-bottom: 20px;
 }
 .changePass {
+  font-family: "Roboto", sans-serif !important;
   border-radius: 10px;
   padding: 5px;
   border-bottom: 2px solid #0c7b93;
   border-top: 2px solid #0c7b93;
   margin-bottom: 20px;
+}
+
+.error {
+  font-family: "Roboto", sans-serif !important;
+  color: red;
+  text-align: center;
+}
+
+.passwordButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+}
+.showPass {
+  margin-left: auto;
 }
 @media (max-width: 425px) {
   form {

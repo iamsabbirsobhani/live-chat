@@ -201,6 +201,7 @@
       Show more...
     </el-button>
   </div>
+  <pre style="text-align: center; color: rgb(196, 196, 196);">Pagination is Beta.</pre>
 </template>
 
 <script>

@@ -63,7 +63,7 @@
                       v-if="user.uid === doc.userId && doc.imgUrl"
                       class="chatDelete"
                       @click="chatDel(doc.id, doc.imgUrl, doc.name)"
-                      >Delete</span
+                      >Unsent</span
                     ></span
                   >
                 </transition>
@@ -94,7 +94,7 @@
                     "
                     class="chatDelete"
                     @click="chatDel(doc.id, doc.imgUrl, doc.name)"
-                    >Delete</span
+                    >Unsent</span
                   ></span
                 >
               </transition>

@@ -60,6 +60,7 @@
   </form>
   <form class="changeName" @submit.prevent="changeName">
     <label for="displayName">Update Name: </label>
+    <p v-if="errorUpdateName" class="error">{{ errorUpdateName }}</p>
     <el-input
       type="text"
       :placeholder="user.displayName"
@@ -80,13 +81,13 @@
     <el-button v-else class="button" type="primary" native-type="submit"
       >Update Name</el-button
     >
-    <p v-if="errorUpdateName" class="error">{{ errorUpdateName }}</p>
   </form>
   <form class="changePass" @submit.prevent="updatePass">
     <div class="passwordButton">
     <label for="password">Update Password: </label>
     <el-button class="showPass" type="danger" @click="dialogVisible = true">See Current Password</el-button>
     </div>
+    <p v-if="errorUpdatePass" class="error">{{ errorUpdatePass }}</p>
     <el-input
       placeholder="Please input password"
       v-model="newPassword"
@@ -103,7 +104,6 @@
     <el-button v-else class="button" type="primary" native-type="submit"
       >Update Password</el-button
     >
-    <p v-if="errorUpdatePass" class="error">{{ errorUpdatePass }}</p>
   </form>
 
   <!-- dialog pops up to see current password -->

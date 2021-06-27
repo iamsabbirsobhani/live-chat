@@ -71,15 +71,30 @@
         <div class="feeling">
           <div class="feelinglikedislike">
             <Button
+              v-if="doc.likeId.includes(user.uid)"
               @click.stop="like(doc.id, user.uid)"
-              icon="pi pi-thumbs-up"
-              class="p-button-rounded p-button-text"
+              icon="fas fa-thumbs-up"
+              class="p-button-rounded p-button-text likeButton "
+            />
+            <Button
+              v-else
+              @click.stop="like(doc.id, user.uid)"
+              icon="far fa-thumbs-up"
+              class="p-button-rounded p-button-text likeButton "
             />
             <p>{{ doc.like }}</p>
             <Button
+              v-if="doc.dislikeId.includes(user.uid)"
               @click.stop="dislike(doc.id, user.uid)"
               style="color: red"
-              icon="pi pi-thumbs-down"
+              icon="fas fa-thumbs-down"
+              class="p-button-rounded p-button-danger p-button-text"
+            />
+            <Button
+              v-else
+              @click.stop="dislike(doc.id, user.uid)"
+              style="color: red"
+              icon="far fa-thumbs-down"
               class="p-button-rounded p-button-danger p-button-text"
             />
             <p style="display: inline">{{ doc.dislike }}</p>
@@ -201,7 +216,7 @@
       Show more...
     </el-button>
   </div>
-  <pre style="text-align: center; color: rgb(196, 196, 196);">Pagination is Beta.</pre>
+  <pre style="text-align: center; color: rgb(196, 196, 196); cursor: not-allowed; user-select: none;">Pagination is Beta.</pre>
 </template>
 
 <script>
@@ -399,6 +414,10 @@ export default {
     text-decoration: none;
     font-size: 18px;
   }
+}
+
+.likeButton {
+  background-blend-mode: red !important;
 }
 
 .postcard {

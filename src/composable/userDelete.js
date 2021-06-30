@@ -14,8 +14,9 @@ const delUser = async () => {
 
     error.value = null
     try{
-        await user.delete();
         await projectFirestore.collection('profiles').doc(user.uid).delete();
+
+        await user.delete()
     } catch(err) {
         error.value = err.message
         console.log(err.message)

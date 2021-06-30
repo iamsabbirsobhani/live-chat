@@ -12,7 +12,7 @@
     <!-- Footer -->
     <div class="footer">
       <span style="font-family: Roboto, sans-serif;">Copyright © 2021 </span>
-      <Button @click="openPosition" label="See Credit" class="p-button-link" />
+      <!-- <Button @click="openPosition" label="See Credit" class="p-button-link" /> -->
     </div>
     <Dialog
       header="Sabbir Sobhani"

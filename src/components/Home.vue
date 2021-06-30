@@ -74,13 +74,13 @@
               v-if="doc.likeId.includes(user.uid)"
               @click.stop="like(doc.id, user.uid)"
               icon="fas fa-thumbs-up"
-              class="p-button-rounded p-button-text likeButton "
+              class="p-button-rounded p-button-text likeButton"
             />
             <Button
               v-else
               @click.stop="like(doc.id, user.uid)"
               icon="far fa-thumbs-up"
-              class="p-button-rounded p-button-text likeButton "
+              class="p-button-rounded p-button-text likeButton"
             />
             <p>{{ doc.like }}</p>
             <Button
@@ -211,12 +211,21 @@
       @click="showMore"
       v-loading.fullscreen.lock="fullscreenLoading"
       :disabled="showMoreBtn"
-      style="margin-bottom: 10px; margin-top: 10px;"
+      style="margin-bottom: 10px; margin-top: 10px"
     >
       Show more...
     </el-button>
   </div>
-  <pre style="text-align: center; color: rgb(196, 196, 196); cursor: not-allowed; user-select: none;">Pagination is Beta.</pre>
+  <pre
+    style="
+      text-align: center;
+      color: rgb(196, 196, 196);
+      cursor: not-allowed;
+      user-select: none;
+    "
+  >
+Pagination is Beta.</pre
+  >
 </template>
 
 <script>
@@ -353,26 +362,27 @@ export default {
     };
 
     const fullscreenLoading = ref(false);
-    const clickedShowMore = ref(true)
+    const clickedShowMore = ref(true);
 
     const showMore = async () => {
-      clickedShowMore.value = false
+      clickedShowMore.value = false;
       fullscreenLoading.value = true;
 
       await morePosts();
 
       fullscreenLoading.value = false;
-      clickedShowMore.value = true
+      clickedShowMore.value = true;
+
     };
 
-    let i = 0;
-    onUpdated(() => {
-      if (i !== 0) {
-        var scrollingElement = document.scrollingElement || document.body;
-        scrollingElement.scrollTop = scrollingElement.scrollHeight;
-      }
-      i++;
-    });
+    // let i = 0;
+    // onUpdated(() => {
+    //   if (i !== 0) {
+    //     var scrollingElement = document.scrollingElement || document.body;
+    //     scrollingElement.scrollTop = scrollingElement.scrollHeight;
+    //   }
+    //   i++;
+    // });
 
     return {
       goBack,
@@ -398,7 +408,7 @@ export default {
       showMore,
       fullscreenLoading,
       showMoreBtn,
-      clickedShowMore
+      clickedShowMore,
     };
   },
 };

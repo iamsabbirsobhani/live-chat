@@ -84,7 +84,7 @@
 
                   <span class="deleteTime" v-if="doc.deletedAt">
                     <br />
-                    Deleted {{ doc.deletedAt }}</span
+                    Unsent {{ doc.deletedAt }}</span
                   >
                   <span
                     v-if="
@@ -155,7 +155,7 @@
               v-if="shoOther && doc.id == idsOther"
               >{{ doc.createdAt }} by {{ doc.name }}
               <span class="deleteTime" v-if="doc.deletedAt">
-                <br />Deleted {{ doc.deletedAt }}</span
+                <br />Unsent {{ doc.deletedAt }}</span
               >
             </span>
           </transition>

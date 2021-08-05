@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="handleSumbit">
     <div class="pvtChatbox">
       <ChatWindow :userTo="userTo" class="cwindows" />
       <div class="typeStatus">
@@ -7,13 +7,16 @@
       </div>
     </div>
     <div class="type">
+      <Button v-if="!isLoading" type="submit" icon="pi pi-send" class="send-button"/>
+      <Button v-else type="submit" icon="pi pi-spin pi-spinner" class="send-button"/>
       <el-input
-        placeholder="Hit enter to send message..."
+        placeholder="type..."
         v-model.msg="newModel.msg"
         v-debounce:610ms.cancelonempty="stopTyping"
         v-model.typest="newModel.typest"
-        @keypress.enter.prevent="handleSumbit"
       ></el-input>
+
+        <!-- @keypress.enter.prevent="handleSumbit" -->
       <div class="files">
         <el-upload
           class="upload-demo"
@@ -99,6 +102,10 @@ export default {
     const { url, uploadImage } = useStorage();
     const displayConfirmation = ref(false);
 
+    // variable
+    const isLoading = ref(false)
+    // end variable
+
     // binding multiple "v-model" within one html element
     const newModel = ref({
       msg: null,
@@ -113,18 +120,17 @@ export default {
     });
 
     const handleSumbit = async () => {
-      // const random = Math.random();
-      // const index = Math.round(random * 279);
-
-      // let backgroundColor = `${colors[index]}`;
-
-      // console.log(newModel.value.msg);
+      isLoading.value = true
 
       // checking if the "newModel.value.msg" has any value
       function isEmptyOrSpaces(str) {
         return str === null || str.match(/^ *$/) !== null;
       }
       // end of checking if the "newModel.value.msg" has any value
+
+      // empty/blank text field send button
+      if (isEmptyOrSpaces(newModel.value.msg)) { isLoading.value = false }
+      // end empty/blank text field send button
 
       if (!isEmptyOrSpaces(newModel.value.msg)) {
         const chat = {
@@ -136,6 +142,7 @@ export default {
           deletedAt: null,
         };
         await addDoc(chat);
+        isLoading.value = false
         newModel.value.msg = null;
         if (!error.value) {
           newModel.value.msg = "";
@@ -145,18 +152,15 @@ export default {
 
     // Type Status Check
     watch(newModel.value, () => {
-      // console.log(newModel.value);
       keypressF();
     });
 
     const keypressF = async () => {
       if (newModel.value.msg) {
-        // console.log(newModel.value.typest);
         var keypresss = {
           isType: true,
           typeTo: props.userTo,
         };
-        // console.log("Typing Start");
         await addDocType(keypresss, user.value.uid);
       } else {
         var keypresss = {
@@ -164,7 +168,6 @@ export default {
           typeTo: props.userTo,
         };
         await addDocType(keypresss, user.value.uid);
-        // await addDocType(keypresss, props.userTo);
       }
     };
 
@@ -173,7 +176,6 @@ export default {
         isType: false,
       };
       addDocType(key, user.value.uid);
-      // console.log("Typing Stopped");
     };
     // End of Type Status Check
 
@@ -218,11 +220,11 @@ export default {
       handleAvatarSuccess,
       url,
       newModel,
+      isLoading
     };
   },
 };
 </script>
-
 
 <style scoped>
 .pvtChatbox {
@@ -278,6 +280,11 @@ export default {
 }
 .upbutton {
   width: 90px;
+}
+
+.send-button {
+  width: 80px !important;
+  margin: 10px !important;
 }
 
 @media (max-width: 425px) {

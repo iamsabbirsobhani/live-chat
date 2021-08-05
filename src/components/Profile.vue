@@ -86,29 +86,57 @@
   </div>
 
   <div v-if="id === user.uid" class="status">
-    <el-input
-      class="el-input"
-      style="display: block"
-      placeholder="Express your mind?"
-      v-model="input"
-    ></el-input>
-    <el-button
-      v-if="isLoadingStatus"
-      type="primary"
-      :loading="true"
-    ></el-button>
-    <el-button
-      v-else
-      @click="post"
-      class="el-button"
-      type="primary"
-      icon="el-icon-position"
-    ></el-button>
+    <form>
+      <div class="express">
+        <el-input
+          class="el-input"
+          style="display: block"
+          placeholder="Express your mind?"
+          v-model="input"
+        ></el-input>
+        <el-button
+          v-if="isLoadingStatus"
+          type="primary"
+          :loading="true"
+        ></el-button>
+        <el-button
+          v-else
+          @click="post"
+          class="el-button"
+          type="primary"
+          icon="el-icon-position"
+        ></el-button>
+      </div>
+      <div class="post-choice">
+        <label for="public">Public</label>
+        <Checkbox
+          class="cbox"
+          @click="publicP"
+          value="public"
+          v-model="checked"
+          :binary="true"
+          id="public"
+        />
+        <label for="private">Private</label>
+        <Checkbox
+          class="cbox"
+          @click="privateP"
+          value="private"
+          v-model="checked2"
+          :binary="true"
+          id="public"
+        />
+      </div>
+    </form>
   </div>
 
   <!-- status -->
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
-    <el-card v-if="doc.post" shadow="always" style="border-radius: 10px">
+    <el-card
+      v-if="doc.post && user.uid == doc.userId"
+      shadow="always"
+      style="border-radius: 10px"
+    >
       <div class="name">
         <el-avatar :size="40">
           <img :src="doc.dp" />
@@ -117,22 +145,82 @@
           <h3>{{ doc.userName }}</h3>
           <p class="date">{{ doc.createdAt }}</p>
         </div>
-        <el-tooltip
+        <!-- <el-tooltip
           class="item"
           effect="dark"
-          content="Delete Post"
           placement="left"
-        >
-          <div class="delbtn">
-            <Button
+          content="Edit Post"
+        > -->
+        <div class="delbtn">
+          <!-- <Button
               v-if="user.uid == doc.userId"
               icon="pi pi pi-times"
               @click="deleteDoc(doc.id)"
               style="color: red"
               class="p-button-rounded p-button-danger p-button-outlined"
-            />
-          </div>
-        </el-tooltip>
+            /> -->
+          <Button
+            icon="pi pi-ellipsis-v"
+            class="p-button-rounded p-button-text"
+            @click="openMaximizable(doc.id)"
+          />
+          <Dialog
+            header="Edit Post"
+            v-model:visible="displayMaximizable"
+            :maximizable="true"
+            :modal="true"
+            :style="editPostQuery"
+            class="dialog-edit-post"
+          >
+            <form>
+              <div class="edit-post-form">
+                <label for="post">Post:</label>
+                <InputText
+                  type="text"
+                  class="p-inputtext-lg"
+                  placeholder="Input"
+                  id="post"
+                  v-model="postValue"
+                />
+              </div>
+              <div class="post-choice">
+                <label for="public">Public</label>
+                <Checkbox
+                  class="cbox"
+                  @click="publicPostF"
+                  value="public"
+                  v-model="checked3"
+                  :binary="true"
+                  id="public"
+                />
+                <label for="private">Private</label>
+                <Checkbox
+                  class="cbox"
+                  @click="privatePostF"
+                  value="private"
+                  v-model="checked4"
+                  :binary="true"
+                  id="public"
+                />
+              </div>
+            </form>
+            <template #footer>
+              <Button
+                label="Update"
+                icon="pi pi-check"
+                @click="closeMaximizable"
+              />
+              <Button
+                v-if="user.uid == doc.userId"
+                icon="pi pi pi-times"
+                label="Delete"
+                @click="deleteDoc"
+                class="p-button-danger"
+              />
+            </template>
+          </Dialog>
+        </div>
+        <!-- </el-tooltip> -->
       </div>
       <p class="post">{{ doc.post }}</p>
 
@@ -143,6 +231,25 @@
           <p class="postReact" v-if="doc.dislike > 0">
             Disliked by {{ doc.dislike }}
           </p>
+          <Chip
+            @click="publicToolTip"
+            icon="pi pi-lock-open"
+            v-if="doc.privacy == `public`"
+            label="Public"
+            class="p-mr-2 p-mb-2 custom-chip public-chip"
+          />
+          <Chip
+            @click="privateToolTip"
+            icon="pi pi-lock"
+            v-if="doc.privacy == `private`"
+            label="Private"
+            class="p-mr-2 p-mb-2 custom-chip private-chip"
+          />
+          <Chip
+            v-if="doc.privacy == ``"
+            label="Not Set"
+            class="p-mr-2 p-mb-2 custom-chip"
+          />
         </div>
 
         <!-- comment section -->
@@ -242,15 +349,221 @@
         <!-- end of comment section -->
       </transition>
     </el-card>
-    <h3 v-else>Nothing</h3>
+    <!-- <h3 v-else>Nothing</h3> -->
+    <di v-else-if="doc.post && doc.privacy == `public`">
+      <el-card shadow="always" style="border-radius: 10px">
+        <div class="name">
+          <el-avatar :size="40">
+            <img :src="doc.dp" />
+          </el-avatar>
+          <div class="nameDate">
+            <h3>{{ doc.userName }}</h3>
+            <p class="date">{{ doc.createdAt }}</p>
+          </div>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="Delete Post"
+            placement="left"
+          >
+            <div class="delbtn">
+              <Button
+                v-if="user.uid == doc.userId"
+                icon="pi pi pi-times"
+                @click="deleteDoc(doc.id)"
+                style="color: red"
+                class="p-button-rounded p-button-danger p-button-outlined"
+              />
+            </div>
+          </el-tooltip>
+        </div>
+        <p class="post">{{ doc.post }}</p>
+
+        <div style="display: flex">
+          <div>
+            <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
+
+            <p class="postReact" v-if="doc.dislike > 0">
+              Disliked by {{ doc.dislike }}
+            </p>
+
+            <Chip
+              @click="publicToolTip"
+              icon="pi pi-lock-open"
+              v-if="doc.privacy == `public`"
+              label="Public"
+              class="p-mr-2 p-mb-2 custom-chip public-chip"
+            />
+            <Chip
+              @click="privateToolTip"
+              icon="pi pi-lock"
+              v-if="doc.privacy == `private`"
+              label="Private"
+              class="p-mr-2 p-mb-2 custom-chip private-chip"
+            />
+          </div>
+
+          <!-- comment section -->
+          <div
+            style="
+            cursor: pointer;
+            font-family: Roboto, sans-serif;
+            margin-left: auto;
+          "
+          >
+            <p
+              v-if="seeComments"
+              class="seeComment"
+              @click="seeComment(doc.id)"
+            >
+              See Comments
+            </p>
+            <p
+              v-if="closeComments && doc.id === seeCommentsDocId"
+              class="closeComment"
+              @click="closeComment(doc.id)"
+            >
+              Close
+            </p>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="To see comments please close the other comment section"
+              placement="top"
+            >
+              <div>
+                <p
+                  style="cursor: text"
+                  v-if="closeComments && !(doc.id === seeCommentsDocId)"
+                >
+                  See Comments
+                </p>
+              </div>
+            </el-tooltip>
+          </div>
+        </div>
+        <transition name="fade">
+          <div
+            class="comment-section"
+            v-if="!seeComments && doc.id === seeCommentsDocId"
+          >
+            <p style="font-family: Roboto, sans-serif">Comments:</p>
+
+            <div class="comment" v-for="cmt in formattedComments" :key="cmt.id">
+              <div class="commentDes" v-if="cmt.docId === doc.id">
+                <p class="commentName" v-if="cmt.docId === doc.id">
+                  {{ cmt.name }}
+                </p>
+                <p class="commentDate" v-if="cmt.docId === doc.id">
+                  {{ cmt.createdAt }}
+                </p>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="Delete Comment"
+                  placement="left"
+                >
+                  <div style="margin-left: auto">
+                    <Button
+                      v-if="cmt.docId === doc.id && user.uid === cmt.userId"
+                      icon="pi pi pi-times"
+                      style="color: red; margin-left: auto"
+                      @click="deleteCmt(cmt.id)"
+                      class="p-button-rounded p-button-danger p-button-outlined p-button-sm"
+                    />
+                  </div>
+                </el-tooltip>
+              </div>
+              <p class="commentComment" v-if="cmt.docId === doc.id">
+                {{ cmt.comment }}
+              </p>
+            </div>
+
+            <div style="display: flex; flex-direction: column">
+              <InputText
+                style="border-radius: 10px"
+                placeholder="Please enter comment"
+                type="text"
+                v-model.trim="comment"
+              />
+              <el-button
+                style="margin-top: 10px; border-radius: 10px"
+                class="button"
+                v-if="isLoadingCmt"
+                :loading="isLoadingCmt"
+                >Loading</el-button
+              >
+              <el-button
+                v-else
+                @click="postComment(doc.id, user.displayName, user.uid)"
+                style="margin-top: 10px; border-radius: 10px"
+                >Comment</el-button
+              >
+            </div>
+          </div>
+          <!-- end of comment section -->
+        </transition>
+      </el-card>
+    </di>
   </div>
   <!-- status -->
+
+  <!-- tool tip -->
+  <!-- public tool tip -->
+  <Dialog
+    header="Post privacy (Public)"
+    v-model:visible="displayPublicToolTip"
+    :style="editPostQuery"
+  >
+    <div class="privacy-icon-public">
+      <i class="pi pi-lock-open" style="fontSize: 4rem;"></i>
+    </div>
+    <p style="font-size: 20px; text-align: center;">
+      Everyone can see this post.
+    </p>
+    <template #footer>
+      <Button
+        label="Okay"
+        icon="pi pi-check"
+        @click="closePublitToolTip"
+        autofocus
+      />
+    </template>
+  </Dialog>
+  <!-- public tool tip -->
+
+  <!-- private tool tip -->
+  <Dialog
+    header="Post privacy (Private)"
+    v-model:visible="displayPrivateToolTip"
+    :style="editPostQuery"
+  >
+    <div class="privacy-icon-private">
+      <i class="pi pi-lock" style="fontSize: 4rem; text-align: center;"></i>
+    </div>
+    <p style="font-size: 20px; text-align: center;">
+      Only you can see this post.
+    </p>
+    <template #footer>
+      <Button
+        label="Okay"
+        icon="pi pi-check"
+        @click="closePrivateToolTip"
+        autofocus
+      />
+    </template>
+  </Dialog>
+  <!-- private tool tip -->
 </template>
 
 <script>
+import ConfirmDialog from "primevue/confirmdialog";
+import Chip from "primevue/chip";
+import Dialog from "primevue/dialog";
+import Checkbox from "primevue/checkbox";
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { format, formatDistanceToNow } from "date-fns";
 import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
@@ -263,21 +576,35 @@ import commentDelete from "@/composable/commentDelete.js";
 import delPost from "@/composable/delPost.js";
 import InputText from "primevue/inputtext";
 import useLogout from "../composable/useLogout";
-import { useStore } from "vuex"
+import { useStore } from "vuex";
+import { getPostById } from "@/composable/getPostById.js";
 
 export default {
   props: ["id"],
-  components: { Button, InputText },
+  components: { Button, InputText, Checkbox, Dialog, Chip, ConfirmDialog },
   setup(props) {
     const { user } = getUser();
     const { info } = getProfile("profiles", props.id);
     const { addPost } = userPost(props.id);
     const { status } = getPosts("posts", props.id);
+    const { getP, postP, updatePost, docDel } = getPostById();
     const router = useRouter();
-    const { docDel } = delPost();
     const { logout, error } = useLogout();
     const isLoadingCmt = ref(false);
-    const store = useStore()
+    const store = useStore();
+
+    // variable section
+    const checked = ref(false);
+    const checked2 = ref(false);
+    const checked3 = ref(false);
+    const checked4 = ref(false);
+    const postPrivacy = ref(null);
+    const displayMaximizable = ref(false);
+    const windowWidth = ref(window.innerWidth);
+    const editPostQuery = ref(null);
+    const displayPublicToolTip = ref(false);
+    const displayPrivateToolTip = ref(false);
+    // end variable section
 
     // comment section
     const seeComments = ref(true);
@@ -307,12 +634,16 @@ export default {
           dp: info.value.phofilePhoto,
           userId: props.id,
           post: input.value,
+          privacy: postPrivacy.value,
           like: 0,
           dislike: 0,
           likeId: [],
           dislikeId: [],
           createdAt: timestamp(),
         });
+        checked.value = false;
+        checked2.value = false;
+        postPrivacy.value = null;
       } else {
         console.log("Empty");
       }
@@ -323,7 +654,7 @@ export default {
     const formattedDocuments = computed(() => {
       if (status.value) {
         return status.value.map((doc) => {
-          let time = format(doc.createdAt.toDate(), "PPPPp");
+          let time = format(doc.createdAt.toDate(), "PPPp");
           return { ...doc, createdAt: time };
         });
       }
@@ -394,14 +725,14 @@ export default {
       router.push({ name: "FriendRequest" });
     };
     const frList = () => {
-      let payload = { name: "FriendList", back: "Friends"}
+      let payload = { name: "FriendList", back: "Friends" };
       store.commit("clickOn", payload);
       router.push({ name: "FriendList" });
     };
 
-    const deleteDoc = async (id) => {
-      console.log(id);
-      await docDel(id);
+    const deleteDoc = async () => {
+      await docDel();
+      displayMaximizable.value = false;
     };
 
     const signout = async () => {
@@ -411,6 +742,100 @@ export default {
       }
       router.push({ name: "Welcome" });
     };
+    const publicP = () => {
+      checked2.value = false;
+      checked.value = true;
+      if (checked.value == true) {
+        postPrivacy.value = "public";
+        console.log(postPrivacy.value);
+      }
+    };
+
+    const privateP = () => {
+      checked.value = false;
+      checked2.value = true;
+      if (checked2.value == true) {
+        postPrivacy.value = "private";
+        console.log(postPrivacy.value);
+      }
+    };
+
+    const publicPostF = () => {
+      checked4.value = false;
+      checked3.value = true;
+      if (checked3.value == true) {
+        postPrivacy.value = "public";
+        console.log(postPrivacy.value);
+      }
+    };
+
+    const privatePostF = () => {
+      checked4.value = true;
+      checked3.value = false;
+      if (checked4.value == true) {
+        postPrivacy.value = "private";
+        console.log(postPrivacy.value);
+      }
+    };
+
+    const postValue = ref(null);
+    const openMaximizable = (id) => {
+      displayMaximizable.value = true;
+      console.log(id);
+      getP(id);
+    };
+
+    const closeMaximizable = async () => {
+      await updatePost({
+        post: postValue.value,
+        privacy: postPrivacy.value,
+        // createdAt: timestamp()
+      });
+      displayMaximizable.value = false;
+    };
+
+    // watching value update for postP and postValue
+    watch(postP, (newPostP) => {
+      postValue.value = newPostP.post;
+    });
+    // watching value update for postP and postValue
+
+    // Dialog resize/responsive by screen size
+    // media query using code
+    onMounted(() => {
+      console.log(windowWidth.value);
+      let style = {
+        width: "50vw",
+      };
+      let style2 = {
+        width: "100vw",
+      };
+
+      if (windowWidth.value > 600) {
+        editPostQuery.value = style;
+      } else {
+        editPostQuery.value = style2;
+      }
+    });
+    // media query using code
+    // end Dialog resize/responsive by screen size
+
+    // post privacy tool tip dialog
+    const publicToolTip = () => {
+      displayPublicToolTip.value = true;
+    };
+    const privateToolTip = () => {
+      displayPrivateToolTip.value = true;
+    };
+
+    const closePublitToolTip = () => {
+      displayPublicToolTip.value = false;
+    };
+
+    const closePrivateToolTip = () => {
+      displayPrivateToolTip.value = false;
+    };
+    // post privacy tool tip dialog
 
     return {
       info,
@@ -441,6 +866,31 @@ export default {
 
       signout,
       isLoadingCmt,
+
+      checked,
+      checked2,
+      checked3,
+      checked4,
+      publicP,
+      privateP,
+
+      openMaximizable,
+      closeMaximizable,
+      displayMaximizable,
+      editPostQuery,
+
+      postP,
+      postValue,
+
+      publicToolTip,
+      privateToolTip,
+      closePublitToolTip,
+      displayPublicToolTip,
+      closePrivateToolTip,
+      displayPrivateToolTip,
+
+      publicPostF,
+      privatePostF,
     };
   },
 };
@@ -589,7 +1039,6 @@ it will be positioned auto left */
   line-height: 0;
 }
 .comment {
-  margin: 10px;
   margin-left: 20px;
   word-wrap: break-all;
   .commentName {
@@ -607,6 +1056,7 @@ it will be positioned auto left */
     color: gray;
   }
 }
+
 // end comments
 
 .fade-enter-active,
@@ -619,6 +1069,51 @@ it will be positioned auto left */
   opacity: 0;
 }
 
+.express {
+  display: flex;
+}
+.post-choice {
+  font-family: "Roboto", sans-serif;
+  margin-top: 10px;
+  label {
+    margin-right: 10px;
+  }
+  .cbox {
+    margin-right: 10px;
+  }
+}
+
+.edit-post-form {
+  display: flex;
+  flex-direction: column;
+  label {
+    margin-bottom: 10px;
+  }
+}
+
+.public-chip {
+  background-color: #33dfac;
+  color: white;
+}
+.private-chip {
+  background-color: #02060b;
+  color: white;
+}
+
+.privacy-icon-public {
+  margin: 10px;
+  text-align: center;
+  .pi-lock-open {
+    color: #335c67;
+  }
+}
+.privacy-icon-private {
+  margin: 10px;
+  text-align: center;
+  .pi-lock {
+    color: #e13834;
+  }
+}
 @media (max-width: 425px) {
   .place {
     max-width: 150px;
@@ -651,4 +1146,4 @@ it will be positioned auto left */
     font-size: 14px;
   }
 }
-</style>>
+</style>

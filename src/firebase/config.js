@@ -1,7 +1,7 @@
-import firebase from 'firebase/app'
-import 'firebase/firestore'
-import 'firebase/auth'
-import 'firebase/storage'
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDADPaaAvUiVhlvBZX_AidkXJZ90HTuZuc",
@@ -9,26 +9,26 @@ const firebaseConfig = {
   projectId: "live-chat-31739",
   storageBucket: "live-chat-31739.appspot.com",
   messagingSenderId: "286730120664",
-  appId: "1:286730120664:web:0579bb432f88a51efcd6ad"
+  appId: "1:286730120664:web:0579bb432f88a51efcd6ad",
 };
 
 //init firebase
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
-const projectAuth = firebase.auth()
+const projectAuth = firebase.auth();
 
-const projectFirebase = firebase.firestore()
+const projectFirebase = firebase.firestore();
 
-const projectFirestore = firebase.firestore()
+const projectFirestore = firebase.firestore();
 
-const projectStorage = firebase.storage()
+const projectStorage = firebase.storage();
 
-const timestamp = firebase.firestore.FieldValue.serverTimestamp
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 export {
-    projectAuth,
-    projectFirebase,
-    timestamp,
-    projectFirestore,
-    projectStorage
-}
+  projectAuth,
+  projectFirebase,
+  timestamp,
+  projectFirestore,
+  projectStorage,
+};

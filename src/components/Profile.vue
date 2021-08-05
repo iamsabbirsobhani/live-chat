@@ -621,6 +621,7 @@ export default {
     const editPostQuery = ref(null);
     const displayPublicToolTip = ref(false);
     const displayPrivateToolTip = ref(false);
+      const editPrivacy = ref(null)
     // end variable section
 
     // comment section
@@ -660,7 +661,9 @@ export default {
         });
         // checked.value = false;
         // checked2.value = false;
-        postPrivacy.value = null;
+        postPrivacy.value = `public`;
+        checked.value = true;
+        checked2.value = false;
       } else {
         console.log("Empty");
       }
@@ -781,8 +784,8 @@ export default {
       checked4.value = false;
       checked3.value = true;
       if (checked3.value == true) {
-        postPrivacy.value = "public";
-        console.log(postPrivacy.value);
+        editPrivacy.value = "public";
+        // console.log(postPrivacy.value);
       }
     };
 
@@ -790,8 +793,8 @@ export default {
       checked4.value = true;
       checked3.value = false;
       if (checked4.value == true) {
-        postPrivacy.value = "private";
-        console.log(postPrivacy.value);
+        editPrivacy.value = "private";
+        // console.log(postPrivacy.value);
       }
     };
 
@@ -806,19 +809,20 @@ export default {
     const closeMaximizable = async () => {
       await updatePost({
         post: postValue.value,
-        privacy: postPrivacy.value,
+        privacy: editPrivacy.value,
         // createdAt: timestamp()
       });
       displayMaximizable.value = false;
     };
-
     // watching value update for postP and postValue
     watch(postP, (newPostP) => {
       postValue.value = newPostP.post;
       if (newPostP.privacy == `public`) {
         checked3.value = true;
-      } else {
+        editPrivacy.value = `public`
+      } else if(newPostP.privacy == `private`) {
         checked4.value = true;
+        editPrivacy.value = `private`
       }
     });
     // watching value update for postP and postValue

@@ -81,7 +81,7 @@
             label="Not Set"
             class="p-mr-2 p-mb-2 custom-chip"
           />
-          <div class="feeling">
+          <div class="feeling" style=" margin-top: 10px;">
             <div class="feelinglikedislike">
               <Button
                 v-if="doc.likeId.includes(user.uid)"

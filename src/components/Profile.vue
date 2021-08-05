@@ -175,13 +175,21 @@
             <form>
               <div class="edit-post-form">
                 <label for="post">Post:</label>
-                <InputText
+                <!-- <InputText
                   type="text"
                   class="p-inputtext-lg"
                   placeholder="Input"
                   id="post"
                   v-model="postValue"
-                />
+                /> -->
+                <el-input
+                  type="textarea"
+                  autosize
+                  placeholder="Please input"
+                  v-model="postValue"
+                >
+                </el-input>
+                <!-- <Textarea v-model="postValue" :autoResize="true" rows="5" cols="30" /> -->
               </div>
               <div class="post-choice">
                 <label for="public">Public</label>
@@ -224,7 +232,7 @@
       </div>
       <p class="post">{{ doc.post }}</p>
 
-      <div style="display: flex">
+      <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
         <div>
           <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
 
@@ -557,6 +565,7 @@
 </template>
 
 <script>
+import Textarea from "primevue/textarea";
 import ConfirmDialog from "primevue/confirmdialog";
 import Chip from "primevue/chip";
 import Dialog from "primevue/dialog";
@@ -581,7 +590,15 @@ import { getPostById } from "@/composable/getPostById.js";
 
 export default {
   props: ["id"],
-  components: { Button, InputText, Checkbox, Dialog, Chip, ConfirmDialog },
+  components: {
+    Button,
+    InputText,
+    Checkbox,
+    Dialog,
+    Chip,
+    ConfirmDialog,
+    Textarea,
+  },
   setup(props) {
     const { user } = getUser();
     const { info } = getProfile("profiles", props.id);
@@ -981,8 +998,8 @@ export default {
 }
 
 .post {
-  max-width: 300px;
-  max-height: 200px;
+  // max-width: 300px;
+  // max-height: 200px;
   font-size: 16px;
 }
 

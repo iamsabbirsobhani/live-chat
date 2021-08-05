@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "live-chat-31739",
   storageBucket: "live-chat-31739.appspot.com",
   messagingSenderId: "286730120664",
-  appId: "1:286730120664:web:0579bb432f88a51efcd6ad",
+  appId: "1:286730120664:web:0579bb432f88a51efcd6ad"
 };
 
 //init firebase

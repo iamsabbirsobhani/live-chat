@@ -164,69 +164,6 @@
             class="p-button-rounded p-button-text"
             @click="openMaximizable(doc.id)"
           />
-          <Dialog
-            header="Edit Post"
-            v-model:visible="displayMaximizable"
-            :maximizable="true"
-            :modal="true"
-            :style="editPostQuery"
-            class="dialog-edit-post"
-          >
-            <form>
-              <div class="edit-post-form">
-                <label for="post">Post:</label>
-                <!-- <InputText
-                  type="text"
-                  class="p-inputtext-lg"
-                  placeholder="Input"
-                  id="post"
-                  v-model="postValue"
-                /> -->
-                <el-input
-                  type="textarea"
-                  autosize
-                  placeholder="Please input"
-                  v-model="postValue"
-                >
-                </el-input>
-                <!-- <Textarea v-model="postValue" :autoResize="true" rows="5" cols="30" /> -->
-              </div>
-              <div class="post-choice">
-                <label for="public">Public</label>
-                <Checkbox
-                  class="cbox"
-                  @click="publicPostF"
-                  value="public"
-                  v-model="checked3"
-                  :binary="true"
-                  id="public"
-                />
-                <label for="private">Private</label>
-                <Checkbox
-                  class="cbox"
-                  @click="privatePostF"
-                  value="private"
-                  v-model="checked4"
-                  :binary="true"
-                  id="public"
-                />
-              </div>
-            </form>
-            <template #footer>
-              <Button
-                label="Update"
-                icon="pi pi-check"
-                @click="closeMaximizable"
-              />
-              <Button
-                v-if="user.uid == doc.userId"
-                icon="pi pi pi-times"
-                label="Delete"
-                @click="deleteDoc"
-                class="p-button-danger"
-              />
-            </template>
-          </Dialog>
         </div>
         <!-- </el-tooltip> -->
       </div>
@@ -562,6 +499,67 @@
     </template>
   </Dialog>
   <!-- private tool tip -->
+
+  <!-- edit post dialog -->
+  <Dialog
+    header="Edit Post"
+    v-model:visible="displayMaximizable"
+    :maximizable="true"
+    :modal="true"
+    :style="editPostQuery"
+    class="dialog-edit-post"
+  >
+    <form>
+      <div class="edit-post-form">
+        <label for="post">Post:</label>
+        <!-- <InputText
+                  type="text"
+                  class="p-inputtext-lg"
+                  placeholder="Input"
+                  id="post"
+                  v-model="postValue"
+                /> -->
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="Please input"
+          v-model="postValue"
+        >
+        </el-input>
+        <!-- <Textarea v-model="postValue" :autoResize="true" rows="5" cols="30" /> -->
+      </div>
+      <div class="post-choice">
+        <label for="public">Public</label>
+        <Checkbox
+          class="cbox"
+          @click="publicPostF"
+          value="public"
+          v-model="checked3"
+          :binary="true"
+          id="public"
+        />
+        <label for="private">Private</label>
+        <Checkbox
+          class="cbox"
+          @click="privatePostF"
+          value="private"
+          v-model="checked4"
+          :binary="true"
+          id="public"
+        />
+      </div>
+    </form>
+    <template #footer>
+      <Button label="Update" icon="pi pi-check" @click="closeMaximizable" />
+      <Button
+        icon="pi pi pi-times"
+        label="Delete"
+        @click="deleteDoc"
+        class="p-button-danger"
+      />
+    </template>
+  </Dialog>
+  <!-- edit post dialog -->
 </template>
 
 <script>
@@ -621,7 +619,7 @@ export default {
     const editPostQuery = ref(null);
     const displayPublicToolTip = ref(false);
     const displayPrivateToolTip = ref(false);
-      const editPrivacy = ref(null)
+    const editPrivacy = ref(null);
     // end variable section
 
     // comment section
@@ -819,10 +817,10 @@ export default {
       postValue.value = newPostP.post;
       if (newPostP.privacy == `public`) {
         checked3.value = true;
-        editPrivacy.value = `public`
-      } else if(newPostP.privacy == `private`) {
+        editPrivacy.value = `public`;
+      } else if (newPostP.privacy == `private`) {
         checked4.value = true;
-        editPrivacy.value = `private`
+        editPrivacy.value = `private`;
       }
     });
     // watching value update for postP and postValue

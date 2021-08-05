@@ -611,11 +611,11 @@ export default {
     const store = useStore();
 
     // variable section
-    const checked = ref(false);
+    const checked = ref(true);
     const checked2 = ref(false);
     const checked3 = ref(false);
     const checked4 = ref(false);
-    const postPrivacy = ref(null);
+    const postPrivacy = ref("public");
     const displayMaximizable = ref(false);
     const windowWidth = ref(window.innerWidth);
     const editPostQuery = ref(null);
@@ -658,8 +658,8 @@ export default {
           dislikeId: [],
           createdAt: timestamp(),
         });
-        checked.value = false;
-        checked2.value = false;
+        // checked.value = false;
+        // checked2.value = false;
         postPrivacy.value = null;
       } else {
         console.log("Empty");
@@ -798,7 +798,8 @@ export default {
     const postValue = ref(null);
     const openMaximizable = (id) => {
       displayMaximizable.value = true;
-      console.log(id);
+      checked3.value = false;
+      checked4.value = false;
       getP(id);
     };
 
@@ -814,6 +815,11 @@ export default {
     // watching value update for postP and postValue
     watch(postP, (newPostP) => {
       postValue.value = newPostP.post;
+      if (newPostP.privacy == `public`) {
+        checked3.value = true;
+      } else {
+        checked4.value = true;
+      }
     });
     // watching value update for postP and postValue
 

@@ -69,6 +69,18 @@
             </div>
           </router-link>
           <p class="post">{{ doc.post }}</p>
+          <Chip
+            @click="publicToolTip"
+            icon="pi pi-lock-open"
+            v-if="doc.privacy == `public`"
+            label="Public"
+            class="p-mr-2 p-mb-2 custom-chip public-chip"
+          />
+          <Chip
+            v-if="doc.privacy == ``"
+            label="Not Set"
+            class="p-mr-2 p-mb-2 custom-chip"
+          />
           <div class="feeling">
             <div class="feelinglikedislike">
               <Button
@@ -230,6 +242,7 @@
 </template>
 
 <script>
+import Chip from "primevue/chip";
 import getUser from "@/composable/getUser.js";
 import getPosts from "@/composable/getPosts.js";
 import getUsers from "@/composable/getUsers.js";
@@ -249,7 +262,7 @@ import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 
 export default {
-  components: { Button, InputText },
+  components: { Button, InputText, Chip },
   setup() {
     const { user } = getUser();
     const { error, documents } = getUsers();
@@ -569,6 +582,11 @@ export default {
 
 .fa-heart {
   color: red;
+}
+
+.public-chip {
+  background-color: #33dfac;
+  color: white;
 }
 
 @media (max-width: 425px) {

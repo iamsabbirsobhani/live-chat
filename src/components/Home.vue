@@ -68,6 +68,7 @@
               </div>
             </div>
           </router-link>
+          <p v-if="doc.isEdited" class="edited-date">Edited: {{ doc.editedAt }}</p>
           <p class="post">{{ doc.post }}</p>
           <Chip
             @click="publicToolTip"
@@ -287,11 +288,25 @@ export default {
     const { likePost } = likeSystem();
     const { dislikePost } = dislikeSystem();
 
+    // const formattedDocuments = computed(() => {
+    //   if (statusHome.value) {
+    //     return statusHome.value.map((doc) => {
+    //       let time = format(doc.createdAt.toDate(), "PPPp");
+    //       return { ...doc, createdAt: time };
+    //     });
+    //   }
+    // });
+
     const formattedDocuments = computed(() => {
       if (statusHome.value) {
         return statusHome.value.map((doc) => {
           let time = format(doc.createdAt.toDate(), "PPPp");
-          return { ...doc, createdAt: time };
+          if (doc.isEdited) {
+            let ed = format(doc.editedAt.toDate(), "PPPp");
+            return { ...doc, createdAt: time, editedAt: ed };
+          } else {
+            return { ...doc, createdAt: time };
+          }
         });
       }
     });
@@ -450,6 +465,7 @@ export default {
 .post {
   font-size: 16px;
   font-family: "Roboto", sans-serif;
+  margin-top: 15px;
 }
 .name {
   display: flex;
@@ -587,6 +603,14 @@ export default {
 .public-chip {
   background-color: #33dfac;
   color: white;
+}
+
+.edited-date {
+  font-family: "Roboto", sans-serif;
+  color: rgb(179, 179, 179);
+  font-size: 11px;
+  float: right;
+  margin-top: 2px;
 }
 
 @media (max-width: 425px) {

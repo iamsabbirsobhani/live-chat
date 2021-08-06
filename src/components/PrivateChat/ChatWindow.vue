@@ -168,9 +168,9 @@
       <div v-if="type">
         <div v-if="type.typeTo == user.uid && type.isType" class="ticontainer">
           <div class="tiblock">
-            <div class="tidot"></div>
-            <div class="tidot"></div>
-            <div class="tidot"></div>
+            <div class="tidot1"></div>
+            <div class="tidot2"></div>
+            <div class="tidot3"></div>
           </div>
         </div>
       </div>
@@ -574,18 +574,32 @@ a {
   justify-content: center;
   display: flex;
   height: 17px;
-  background-color: #dee2e6;
+  // background-color: #dee2e6;
+  // background-color: #dee2e6;
+  border: 2px solid rgb(0, 132, 255);
+  background-color: rgb(250, 247, 247);
   width: 9%;
   padding: 5px;
   height: 30px;
   border-radius: 50px;
 }
 
-.ticontainer .tidot {
-  background-color: #90949c;
+.ticontainer {
+  // background-color: #90949c;
+  // background-color: #0256fd;
 }
 
-.tidot {
+.tidot1{
+  background-color: rgb(69, 165, 255);
+}
+.tidot2{
+  background-color: rgb(41, 152, 255);
+}
+.tidot3{
+  background-color: rgb(17, 140, 255);
+}
+
+.tidot1, .tidot2, .tidot3 {
   -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
   border-radius: 7px;
   display: inline-block;
@@ -606,13 +620,13 @@ a {
   }
 }
 
-.tidot:nth-child(1) {
+.tidot1:nth-child(1) {
   -webkit-animation-delay: 200ms;
 }
-.tidot:nth-child(2) {
+.tidot2:nth-child(2) {
   -webkit-animation-delay: 300ms;
 }
-.tidot:nth-child(3) {
+.tidot3:nth-child(3) {
   -webkit-animation-delay: 400ms;
 }
 /* end of facebook typing indicator */

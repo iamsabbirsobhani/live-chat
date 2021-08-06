@@ -142,7 +142,7 @@ const getPosts = (collection, id) => {
               let results = []
               // console.log('snapshot')
               snap.docs.forEach(doc => {
-                  doc.data().createdAt && results.push({
+                  doc.data().createdAt && doc.data().editedAt && results.push({
                       ...doc.data(),
                       id: doc.id
                   })

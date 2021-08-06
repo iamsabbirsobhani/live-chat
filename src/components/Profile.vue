@@ -85,6 +85,7 @@
     </div>
   </div>
 
+  <!-- post section -->
   <div v-if="id === user.uid" class="status">
     <form>
       <div class="express">
@@ -126,9 +127,51 @@
           :binary="true"
           id="public"
         />
+
+        <!-- <div class="image-upload">
+          <el-upload action="#" list-type="picture-card" :auto-upload="false">
+            <template #default>
+              <i class="el-icon-plus"></i>
+            </template>
+            <template #file="{file}">
+              <div>
+                <img
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url"
+                  alt=""
+                />
+                <span class="el-upload-list__item-actions">
+                  <span
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview(file)"
+                  >
+                    <i class="el-icon-zoom-in"></i>
+                  </span>
+                  <span
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleDownload(file)"
+                    ><i class="el-icon-download"></i>
+                  </span>
+                  <span
+                    v-if="!disabled"
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
+                  >
+                    <i class="el-icon-delete"></i>
+                  </span>
+                </span>
+              </div>
+            </template>
+          </el-upload>
+          <el-dialog v-model="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="" />
+          </el-dialog>
+        </div> -->
       </div>
     </form>
   </div>
+  <!-- end post section -->
 
   <!-- status -->
   <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
@@ -167,6 +210,7 @@
         </div>
         <!-- </el-tooltip> -->
       </div>
+      <p v-if="doc.isEdited" class="edited-date">Edited: {{ doc.editedAt }}</p>
       <p class="post">{{ doc.post }}</p>
 
       <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
@@ -295,7 +339,9 @@
       </transition>
     </el-card>
     <!-- <h3 v-else>Nothing</h3> -->
-    <di v-else-if="doc.post && doc.privacy == `public`">
+
+    <!-- public view on profile -->
+    <div v-else-if="doc.post && doc.privacy == `public`">
       <el-card shadow="always" style="border-radius: 10px">
         <div class="name">
           <el-avatar :size="40">
@@ -322,6 +368,11 @@
             </div>
           </el-tooltip>
         </div>
+
+        <p v-if="doc.isEdited" class="edited-date">
+          Edited: {{ doc.editedAt }}
+        </p>
+
         <p class="post">{{ doc.post }}</p>
 
         <div style="display: flex">
@@ -449,7 +500,9 @@
           <!-- end of comment section -->
         </transition>
       </el-card>
-    </di>
+    </div>
+    <!-- end public view on profile -->
+
   </div>
   <!-- status -->
 
@@ -512,13 +565,6 @@
     <form>
       <div class="edit-post-form">
         <label for="post">Post:</label>
-        <!-- <InputText
-                  type="text"
-                  class="p-inputtext-lg"
-                  placeholder="Input"
-                  id="post"
-                  v-model="postValue"
-                /> -->
         <el-input
           type="textarea"
           autosize
@@ -526,7 +572,6 @@
           v-model="postValue"
         >
         </el-input>
-        <!-- <Textarea v-model="postValue" :autoResize="true" rows="5" cols="30" /> -->
       </div>
       <div class="post-choice">
         <label for="public">Public</label>
@@ -656,6 +701,8 @@ export default {
           likeId: [],
           dislikeId: [],
           createdAt: timestamp(),
+          editedAt: timestamp(),
+          isEdited: false,
         });
         // checked.value = false;
         // checked2.value = false;
@@ -673,7 +720,12 @@ export default {
       if (status.value) {
         return status.value.map((doc) => {
           let time = format(doc.createdAt.toDate(), "PPPp");
-          return { ...doc, createdAt: time };
+          if (doc.isEdited) {
+            let ed = format(doc.editedAt.toDate(), "PPPp");
+            return { ...doc, createdAt: time, editedAt: ed };
+          } else {
+            return { ...doc, createdAt: time };
+          }
         });
       }
     });
@@ -808,7 +860,8 @@ export default {
       await updatePost({
         post: postValue.value,
         privacy: editPrivacy.value,
-        // createdAt: timestamp()
+        editedAt: timestamp(),
+        isEdited: true,
       });
       displayMaximizable.value = false;
     };
@@ -1009,6 +1062,7 @@ export default {
   // max-width: 300px;
   // max-height: 200px;
   font-size: 16px;
+  margin-top: 15px;
 }
 
 .nameDate {
@@ -1138,6 +1192,17 @@ it will be positioned auto left */
   .pi-lock {
     color: #e13834;
   }
+}
+
+.image-upload {
+  width: 100px;
+}
+
+.edited-date {
+  color: rgb(179, 179, 179);
+  font-size: 11px;
+  float: right;
+  margin-top: 5px;
 }
 @media (max-width: 425px) {
   .place {

@@ -68,5 +68,9 @@
     color: white;
     color: black;
     backdrop-filter: blur(6px);
+    margin-bottom: 3px;
+    word-break: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap;
     // font-weight: bold;
 }

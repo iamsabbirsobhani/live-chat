@@ -21,13 +21,12 @@ const { performLastSeen } = lastSeen();
 // Authintication guard
 const requiredAuth = async (to, from, next) => {
   let user = projectAuth.currentUser; //Checking if a user is authinticated or not
-  await performLastSeen(user.uid);
   // console.log('Current user is auth guard', user)
-
   if (!user) {
     //if user is not authinticated
     next({ name: "Welcome" }); //it will be redirected to 'Welcome' route
   } else {
+    await performLastSeen(user.uid);
     next(); //if user is authinticated, then it will be permitted to go to 'chatroom' route only.
   } //here next() means the route where we will place requiredAuth(), for this case we placed requiredAuth()
   //inside "routes" at '/chatroom's' path, So for this case if user is authenticated they can go to 'Chatroom'

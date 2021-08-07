@@ -221,7 +221,7 @@
         <!-- </el-tooltip> -->
       </div>
 
-      <div :class="{'post-edited-time': doc.isEdited}">
+      <div :class="{ 'post-edited-time': doc.isEdited }">
         <p v-if="doc.isEdited" class="edited-date">
           Edited: {{ doc.editedAt }}
         </p>
@@ -629,7 +629,7 @@ import Chip from "primevue/chip";
 import Dialog from "primevue/dialog";
 import Checkbox from "primevue/checkbox";
 import getProfile from "@/composable/getProfile.js";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { ref, computed, watch, onMounted } from "vue";
 import { format, formatDistanceToNow } from "date-fns";
 import Button from "primevue/button";
@@ -645,6 +645,9 @@ import InputText from "primevue/inputtext";
 import useLogout from "../composable/useLogout";
 import { useStore } from "vuex";
 import { getPostById } from "@/composable/getPostById.js";
+import { logOutCount } from "@/composable/logOutCount";
+import { profileVisitedBy } from "@/composable/profileVisitedBy";
+import { profile } from "@/composable/pageVisited";
 
 export default {
   props: ["id"],
@@ -664,6 +667,7 @@ export default {
     const { status } = getPosts("posts", props.id);
     const { getP, postP, updatePost, docDel } = getPostById();
     const router = useRouter();
+    const route = useRoute();
     const { logout, error } = useLogout();
     const isLoadingCmt = ref(false);
     const store = useStore();
@@ -768,6 +772,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
+      await profileVisitedBy();
       isLoadingCmt.value = true;
       docsid.value = docId;
       const docs = {
@@ -822,10 +827,13 @@ export default {
 
     const userActivity = () => {
       router.push({ name: "UserActivity" });
-    }
+    };
 
     const signout = async () => {
+      await logOutCount();
+
       await logout();
+
       if (!error.value) {
         console.log("Logged Out");
       }
@@ -899,8 +907,11 @@ export default {
 
     // Dialog resize/responsive by screen size
     // media query using code
-    onMounted(() => {
+
+    onMounted(async () => {
+      console.log(route.params.id, user.value.uid)
       console.log(windowWidth.value);
+      await profile();
       let style = {
         width: "50vw",
       };
@@ -988,7 +999,7 @@ export default {
 
       publicPostF,
       privatePostF,
-      userActivity
+      userActivity,
     };
   },
 };
@@ -1232,7 +1243,6 @@ it will be positioned auto left */
 .post-edited-time {
   margin-top: 30px;
 }
-
 
 @media (max-width: 425px) {
   .place {

@@ -17,7 +17,8 @@ import Navbar from "@/components/PrivateChat/Navbar.vue";
 import getUser from "@/composable/getUser";
 import getUsers from "@/composable/getUsers";
 import { useRouter } from "vue-router";
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
+
 export default {
   props: ['id', 'name', 'picture'],
   components: { Navbar, NewChatForm, Button },

@@ -254,7 +254,7 @@ import getUsers from "@/composable/getUsers.js";
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
 import Button from "primevue/button";
-import { computed, ref, onUpdated } from "vue";
+import { computed, ref, onUpdated, onMounted } from "vue";
 import { format, formatDistanceToNow } from "date-fns";
 import likeSystem from "@/composable/likeSystem.js";
 import dislikeSystem from "@/composable/dislikeSystem.js";
@@ -265,6 +265,7 @@ import colors from "@/composable/colors.js";
 import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
+import { home } from "@/composable/pageVisited";
 
 export default {
   components: { Button, InputText, Chip },
@@ -406,6 +407,10 @@ export default {
       fullscreenLoading.value = false;
       clickedShowMore.value = true;
     };
+
+    onMounted(async () => {
+      await home();
+    });
 
     // let i = 0;
     // onUpdated(() => {

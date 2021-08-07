@@ -82,7 +82,7 @@ import Button from "primevue/button";
 import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
 import colors from "@/composable/colors.js";
-
+import { privateMsgPage } from "@/composable/pageVisited";
 export default {
   props: ["userTo"],
   components: {
@@ -211,6 +211,9 @@ export default {
       myUploader(file.raw);
     };
 
+    onMounted(async() => {
+      await privateMsgPage();
+    })
     return {
       handleSumbit,
       error,

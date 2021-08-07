@@ -72,6 +72,7 @@ const routes = [
     path: "/profile/:id",
     name: "Profile",
     component: Profile,
+    beforeEnter: requiredAuth,
     props: true,
   },
   {

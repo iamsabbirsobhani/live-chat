@@ -48,6 +48,16 @@
                 icon="pi pi-user-plus"
                 >Friend Request</el-dropdown-item
               >
+
+              <!-- admin option -->
+              <el-dropdown-item
+                v-if="`MORuJJ0PWpb3inamywW5sSrHDGq2` == user.uid"
+                @click="userActivity"
+                icon="pi pi-file-o"
+                >User Activity</el-dropdown-item
+              >
+              <!-- admin option -->
+
               <el-dropdown-item @click="signout" icon="pi pi-sign-out"
                 >Log out</el-dropdown-item
               >
@@ -210,8 +220,13 @@
         </div>
         <!-- </el-tooltip> -->
       </div>
-      <p v-if="doc.isEdited" class="edited-date">Edited: {{ doc.editedAt }}</p>
-      <p class="post">{{ doc.post }}</p>
+
+      <div :class="{'post-edited-time': doc.isEdited}">
+        <p v-if="doc.isEdited" class="edited-date">
+          Edited: {{ doc.editedAt }}
+        </p>
+        <p class="post">{{ doc.post }}</p>
+      </div>
 
       <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
         <div>
@@ -369,11 +384,12 @@
           </el-tooltip>
         </div>
 
-        <p v-if="doc.isEdited" class="edited-date">
-          Edited: {{ doc.editedAt }}
-        </p>
-
-        <p class="post">{{ doc.post }}</p>
+        <div class="post-edited-time">
+          <p v-if="doc.isEdited" class="edited-date">
+            Edited: {{ doc.editedAt }}
+          </p>
+          <p class="post">{{ doc.post }}</p>
+        </div>
 
         <div style="display: flex">
           <div>
@@ -502,7 +518,6 @@
       </el-card>
     </div>
     <!-- end public view on profile -->
-
   </div>
   <!-- status -->
 
@@ -805,6 +820,10 @@ export default {
       displayMaximizable.value = false;
     };
 
+    const userActivity = () => {
+      router.push({ name: "UserActivity" });
+    }
+
     const signout = async () => {
       await logout();
       if (!error.value) {
@@ -969,6 +988,7 @@ export default {
 
       publicPostF,
       privatePostF,
+      userActivity
     };
   },
 };
@@ -1062,7 +1082,10 @@ export default {
   // max-width: 300px;
   // max-height: 200px;
   font-size: 16px;
-  margin-top: 15px;
+}
+
+.post.add {
+  margin-top: 25px;
 }
 
 .nameDate {
@@ -1199,11 +1222,18 @@ it will be positioned auto left */
 }
 
 .edited-date {
+  position: relative;
   color: rgb(179, 179, 179);
   font-size: 11px;
   float: right;
-  margin-top: 5px;
+  margin-top: -25px;
 }
+
+.post-edited-time {
+  margin-top: 30px;
+}
+
+
 @media (max-width: 425px) {
   .place {
     max-width: 150px;

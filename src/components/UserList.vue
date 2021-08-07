@@ -33,8 +33,8 @@
           <Button
             v-if="
               !(doc.userUid === user.uid) &&
-              !doc.friendList.includes(user.uid) &&
-              !doc.friendRequest.includes(user.uid)
+                !doc.friendList.includes(user.uid) &&
+                !doc.friendRequest.includes(user.uid)
             "
             @click="addFriends(doc.userUid, user.uid)"
             icon="pi pi-user-plus"

@@ -22,7 +22,7 @@ const getUsers = () => {
         let results = []
         // console.log('snapshot')
         snap.docs.forEach(doc => {
-            results.push({
+            doc.data().lastVisited && results.push({
                 ...doc.data(),
                 id: doc.id
             })

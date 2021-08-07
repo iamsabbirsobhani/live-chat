@@ -68,8 +68,12 @@
               </div>
             </div>
           </router-link>
-          <p v-if="doc.isEdited" class="edited-date">Edited: {{ doc.editedAt }}</p>
-          <p class="post">{{ doc.post }}</p>
+          <div class="post-edited-time">
+            <p v-if="doc.isEdited" class="edited-date">
+              Edited: {{ doc.editedAt }}
+            </p>
+            <p class="post">{{ doc.post }}</p>
+          </div>
           <Chip
             @click="publicToolTip"
             icon="pi pi-lock-open"
@@ -588,7 +592,7 @@ export default {
 .home-footer {
   text-align: center;
   // color: rgb(165, 165, 165);
-  color: #C1C8C7;
+  color: #c1c8c7;
   cursor: not-allowed;
   user-select: none;
   font-family: "Roboto", sans-serif;
@@ -605,14 +609,18 @@ export default {
   color: white;
 }
 
+.post-edited-time {
+  margin-top: 30px;
+}
+
 .edited-date {
   font-family: "Roboto", sans-serif;
+  position: relative;
   color: rgb(179, 179, 179);
   font-size: 11px;
   float: right;
-  margin-top: 2px;
+  margin-top: -25px;
 }
-
 @media (max-width: 425px) {
   .postcard {
     max-width: 320px;

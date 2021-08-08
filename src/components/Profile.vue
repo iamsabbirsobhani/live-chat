@@ -909,7 +909,7 @@ export default {
     // media query using code
 
     onMounted(async () => {
-      console.log(route.params.id, user.value.uid)
+      // console.log(route.params.id, user.value.uid)
       console.log(windowWidth.value);
       await profile();
       let style = {

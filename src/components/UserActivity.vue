@@ -113,25 +113,30 @@
   </div>
   <!-- primevue -->
 
-  <Dialog
-    header="Logs"
-    v-model:visible="displayMaximizable"
-    :style="{ width: '50vw' }"
-    :maximizable="true"
-    :modal="true"
-  >
-    <p class="p-m-0" v-for="l in formatedLogs" :key="l.id">
-      {{l}}
-    </p>
-    <template #footer>
-      <Button
-        label="Close"
-        icon="pi pi-times"
-        @click="closeMaximizable"
-        class="p-button-text"
-      />
-    </template>
-  </Dialog>
+  <div>
+    <Dialog
+      header="Logs"
+      v-model:visible="displayMaximizable"
+      :style="editPostQuery"
+      :maximizable="true"
+      :modal="true"
+    >
+      <div v-for="k in dddd" :key="k">
+        <p class="p-m-0">
+          {{ k }}
+        </p>
+      </div>
+
+      <template #footer>
+        <Button
+          label="Close"
+          icon="pi pi-times"
+          @click="closeMaximizable"
+          class="p-button-text"
+        />
+      </template>
+    </Dialog>
+  </div>
 </template>
 
 <script>
@@ -140,7 +145,7 @@ import Column from "primevue/column";
 import getUsers from "@/composable/getUsers";
 import getUser from "@/composable/getUser";
 import { format } from "date-fns";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 export default {
@@ -152,21 +157,15 @@ export default {
 
     // variable
     const displayMaximizable = ref(false);
+    let windowWidth = ref(window.innerWidth);
+    let editPostQuery = ref(null);
+    let dddd = [];
     // variable
+
 
     const formatedDoc = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
-          let time = format(doc.lastVisited.toDate(), "PPPPp");
-          return { ...doc, lastVisited: time };
-        });
-      }
-    });
-
-    const formatedLogs = computed(() => {
-      if (documents.value.logs) {
-        console.log(documents.value.logs)
-        return documents.value.logs.map((doc) => {
           let time = format(doc.lastVisited.toDate(), "PPPPp");
           return { ...doc, lastVisited: time };
         });
@@ -178,7 +177,16 @@ export default {
     };
 
     const openMaximizable = (id) => {
-      console.log(id)
+      documents.value.forEach((element) => {
+        if (element.id == id) {
+          dddd.length = 0;
+          for (let key in element.logs) {
+            let time = format(element.logs[key].toDate(), "PPPPp");
+            dddd[key] = time;
+          }
+          dddd.reverse()
+        }
+      });
       displayMaximizable.value = true;
     };
 
@@ -186,13 +194,28 @@ export default {
       displayMaximizable.value = false;
     };
 
+    onMounted(() => {
+      let style = {
+        width: "50vw",
+      };
+      let style2 = {
+        width: "100vw",
+      };
+
+      if (windowWidth.value > 600) {
+        editPostQuery.value = style;
+      } else {
+        editPostQuery.value = style2;
+      }
+    });
     return {
       formatedDoc,
       goBack,
       openMaximizable,
       closeMaximizable,
       displayMaximizable,
-      formatedLogs
+      dddd,
+      editPostQuery,
     };
   },
 };
@@ -231,6 +254,7 @@ export default {
 .p-button-info {
   margin-top: 5px;
 }
+
 @media (max-width: 475px) {
   .profile {
     flex-direction: column;

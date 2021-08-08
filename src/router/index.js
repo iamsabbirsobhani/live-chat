@@ -13,6 +13,7 @@ import Home from "../components/Home.vue";
 import UserActivity from "../components/UserActivity.vue";
 import { projectAuth } from "../firebase/config";
 import { lastSeen } from "@/composable/lastSeen";
+import { logs } from "@/composable/logs";
 import getUser from "@/composable/getUser";
 const { user } = getUser();
 
@@ -26,6 +27,7 @@ const requiredAuth = async (to, from, next) => {
     //if user is not authinticated
     next({ name: "Welcome" }); //it will be redirected to 'Welcome' route
   } else {
+    await logs();
     await performLastSeen(user.uid);
     next(); //if user is authinticated, then it will be permitted to go to 'chatroom' route only.
   } //here next() means the route where we will place requiredAuth(), for this case we placed requiredAuth()

@@ -54,6 +54,11 @@
         <div>
           {{ slotProps.data.lastVisited }}
         </div>
+        <Button
+          label="Logs"
+          @click="openMaximizable(slotProps.data.userUid)"
+          class="p-button-outlined p-button-info"
+        />
       </template>
     </Column>
 
@@ -107,6 +112,26 @@
     </DataTable>
   </div>
   <!-- primevue -->
+
+  <Dialog
+    header="Logs"
+    v-model:visible="displayMaximizable"
+    :style="{ width: '50vw' }"
+    :maximizable="true"
+    :modal="true"
+  >
+    <p class="p-m-0" v-for="l in formatedLogs" :key="l.id">
+      {{l}}
+    </p>
+    <template #footer>
+      <Button
+        label="Close"
+        icon="pi pi-times"
+        @click="closeMaximizable"
+        class="p-button-text"
+      />
+    </template>
+  </Dialog>
 </template>
 
 <script>
@@ -115,14 +140,19 @@ import Column from "primevue/column";
 import getUsers from "@/composable/getUsers";
 import getUser from "@/composable/getUser";
 import { format } from "date-fns";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import Dialog from "primevue/dialog";
 export default {
-  components: { DataTable, Column },
+  components: { DataTable, Column, Dialog },
   setup() {
     const { documents } = getUsers();
     const { user } = getUser();
     const router = useRouter();
+
+    // variable
+    const displayMaximizable = ref(false);
+    // variable
 
     const formatedDoc = computed(() => {
       if (documents.value) {
@@ -133,11 +163,37 @@ export default {
       }
     });
 
+    const formatedLogs = computed(() => {
+      if (documents.value.logs) {
+        console.log(documents.value.logs)
+        return documents.value.logs.map((doc) => {
+          let time = format(doc.lastVisited.toDate(), "PPPPp");
+          return { ...doc, lastVisited: time };
+        });
+      }
+    });
+
     const goBack = () => {
       router.push({ name: `Profile`, params: { id: user.value.uid } });
     };
 
-    return { formatedDoc, goBack };
+    const openMaximizable = (id) => {
+      console.log(id)
+      displayMaximizable.value = true;
+    };
+
+    const closeMaximizable = () => {
+      displayMaximizable.value = false;
+    };
+
+    return {
+      formatedDoc,
+      goBack,
+      openMaximizable,
+      closeMaximizable,
+      displayMaximizable,
+      formatedLogs
+    };
   },
 };
 </script>
@@ -172,7 +228,9 @@ export default {
 .page-visited {
   margin-top: 50px;
 }
-
+.p-button-info {
+  margin-top: 5px;
+}
 @media (max-width: 475px) {
   .profile {
     flex-direction: column;

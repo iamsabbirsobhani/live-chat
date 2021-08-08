@@ -265,7 +265,7 @@ import colors from "@/composable/colors.js";
 import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
-import { home } from "@/composable/pageVisited";
+import { home, messagePageCount } from "@/composable/pageVisited";
 
 export default {
   components: { Button, InputText, Chip },
@@ -389,7 +389,8 @@ export default {
       dislikePost(postIdt, reactert);
     };
 
-    const messages = (uid) => {
+    const messages = async (uid) => {
+      await messagePageCount();
       let payload = { name: "Messages", back: "Messages" };
       store.commit("clickOn", payload);
       router.push({ name: "Messages", params: { id: uid } });

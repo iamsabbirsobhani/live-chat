@@ -218,7 +218,7 @@ import Button from "primevue/button";
 import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
 import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
-
+import { profileUpdateField } from "@/composable/profileUpdateField";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 export default {
   props: ["userTo"],
@@ -337,11 +337,13 @@ export default {
       oldIdOther = id;
     };
 
-    const chatDel = (id, img, docName) => {
+    const chatDel = async (id, img, docName) => {
       if (!img) {
+        await profileUpdateField({key: "chatDeleted"})
         performDelete(id, { url: false, name: docName });
       }
       if (img) {
+        await profileUpdateField({key: "imgDeleted"})
         performDelete(id, { url: true, name: docName });
       }
     };

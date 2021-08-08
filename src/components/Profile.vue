@@ -647,7 +647,16 @@ import { useStore } from "vuex";
 import { getPostById } from "@/composable/getPostById.js";
 import { logOutCount } from "@/composable/logOutCount";
 import { profileVisitedBy } from "@/composable/profileVisitedBy";
-import { profile } from "@/composable/pageVisited";
+import {
+  profile,
+  chatRoom,
+  coverAndProfilePhoto,
+  editProfilePage,
+  userListPage,
+  friendListPageCount,
+  friendRequestPageCount,
+} from "@/composable/pageVisited";
+import { profileUpdateField } from "@/composable/profileUpdateField";
 
 export default {
   props: ["id"],
@@ -723,6 +732,7 @@ export default {
           editedAt: timestamp(),
           isEdited: false,
         });
+        await profileUpdateField({ key: "totalPostCount" });
         // checked.value = false;
         // checked2.value = false;
         postPrivacy.value = `public`;
@@ -794,27 +804,33 @@ export default {
       await commentDel(id);
     };
 
-    const chatroom = () => {
+    const chatroom = async () => {
+      await chatRoom();
       router.push({ name: "Chatroom" });
     };
 
-    const editProfile = () => {
+    const editProfile = async () => {
+      await editProfilePage();
       router.push({ name: "EditProfile" });
     };
 
-    const UserList = () => {
+    const UserList = async () => {
+      await userListPage();
       router.push({ name: "UserList" });
     };
     const home = () => {
       router.push({ name: "Home" });
     };
-    const photos = () => {
+    const photos = async () => {
+      await coverAndProfilePhoto();
       router.push({ name: "UpdateCoverAndDP" });
     };
-    const frReq = () => {
+    const frReq = async () => {
+      await friendRequestPageCount();
       router.push({ name: "FriendRequest" });
     };
-    const frList = () => {
+    const frList = async () => {
+      await friendListPageCount();
       let payload = { name: "FriendList", back: "Friends" };
       store.commit("clickOn", payload);
       router.push({ name: "FriendList" });
@@ -822,6 +838,7 @@ export default {
 
     const deleteDoc = async () => {
       await docDel();
+      await profileUpdateField({ key: "totalPostDelete" });
       displayMaximizable.value = false;
     };
 

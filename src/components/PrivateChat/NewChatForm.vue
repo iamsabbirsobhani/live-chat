@@ -83,6 +83,7 @@ import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
 import colors from "@/composable/colors.js";
 import { privateMsgPage } from "@/composable/pageVisited";
+import { profileUpdateField } from "@/composable/profileUpdateField";
 export default {
   props: ["userTo"],
   components: {
@@ -142,6 +143,7 @@ export default {
           deletedAt: null,
         };
         await addDoc(chat);
+        await profileUpdateField({key: "chatSendCount"})
         isLoading.value = false
         newModel.value.msg = null;
         if (!error.value) {
@@ -186,6 +188,7 @@ export default {
     const myUploader = async (file) => {
       if (file) {
         await uploadImage(file);
+        await profileUpdateField({key: "imgUploaded"})
       }
 
       const chat = {

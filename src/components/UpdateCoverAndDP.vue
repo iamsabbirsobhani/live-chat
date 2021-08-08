@@ -79,6 +79,7 @@ import { ref } from "vue";
 import userProfileStorage from "@/composable/userProfileStorage.js";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
+import { profileUpdateField } from "@/composable/profileUpdateField";
 export default {
   props: ["id"],
   setup(props) {
@@ -100,6 +101,7 @@ export default {
           coverPhoto: urlCover.value,
           phofilePhoto: urlProfile.value,
         });
+        await profileUpdateField({key: "dpChanged"});
         router.push({ name: "Profile" });
       }
       isLoading.value = false;

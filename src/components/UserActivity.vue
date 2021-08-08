@@ -1,23 +1,33 @@
 <template>
-  <!-- elementplus -->
-  <!-- <el-table
-      :data="formatedDoc"
-      style="width: 100%">
-      <el-table-column
-        prop="userName"
-        label="User Name"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="lastVisited"
-        label="Last Visited"
-        width="180">
-      </el-table-column>
-    </el-table>  -->
-  <!-- elementplus -->
-
   <el-page-header class="page-head" @back="goBack" content="profile">
   </el-page-header>
+
+  <!-- elementplus -->
+  <div class="el-table">
+    <h3 style="margin: 10px; padding: 5px;">User Actions</h3>
+    <el-table
+      :data="formatedDoc"
+      style="width: 100%; font-family: Roboto, sans-serif;"
+    >
+      <el-table-column prop="userName" label="User Name" width="180">
+      </el-table-column>
+      <el-table-column prop="totalPostCount" label="Total Posted" width="180">
+      </el-table-column>
+      <el-table-column prop="totalPostDelete" label="Deleted Post" width="180">
+      </el-table-column>
+      <el-table-column prop="chatSendCount" label="Message Sent" width="180">
+      </el-table-column>
+      <el-table-column prop="imgUploaded" label="Image Sent" width="180">
+      </el-table-column>
+      <el-table-column prop="chatDeleted" label="Message Deleted" width="180">
+      </el-table-column>
+      <el-table-column prop="imgDeleted" label="Image Deleted" width="180">
+      </el-table-column>
+      <el-table-column prop="dpChanged" label="Cover & Dp Changed" width="180">
+      </el-table-column>
+    </el-table>
+  </div>
+  <!-- elementplus -->
 
   <!-- primevue -->
   <DataTable :value="formatedDoc" responsiveLayout="scroll">
@@ -75,7 +85,7 @@
     </Column>
   </DataTable>
 
-  <div class="page-visited">
+  <!-- <div class="page-visited">
     <DataTable :value="formatedDoc" responsiveLayout="scroll">
       <template #header>
         <div class="table-header">
@@ -110,21 +120,90 @@
         </template>
       </Column>
     </DataTable>
-  </div>
+  </div> -->
   <!-- primevue -->
+
+  <!-- elementplus -->
+  <div class="el-table">
+    <h3 style="margin: 10px; padding: 5px;">Page Visited</h3>
+    <el-table
+      :data="formatedDoc"
+      style="width: 100%; font-family: Roboto, sans-serif;"
+    >
+      <el-table-column prop="userName" label="User Name" width="180">
+      </el-table-column>
+      <el-table-column prop="pageVisited.home" label="Home Page" width="180">
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.profile"
+        label="Profile Page"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.messagePage"
+        label="Message Page"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.privateMsg"
+        label="Private Chat Room"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.chatRoomPage"
+        label="Public Chat Room"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.editProfile"
+        label="Edit Profile"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.coverp"
+        label="Cover & Profile Photos"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.userList"
+        label="User List"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.friendList"
+        label="Friend List"
+        width="180"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="pageVisited.friendRequest"
+        label="Friend Request"
+        width="180"
+      >
+      </el-table-column>
+    </el-table>
+  </div>
+  <!-- elementplus -->
 
   <div>
     <Dialog
-      header="Logs"
+      header="Logs (20 MAX)"
       v-model:visible="displayMaximizable"
       :style="editPostQuery"
       :maximizable="true"
       :modal="true"
     >
       <div v-for="k in dddd" :key="k">
-        <p class="p-m-0">
-          {{ k }}
-        </p>
+        <!-- <p class="p-m-0"> -->
+        <Chip class="logtime" :label="k" icon="pi pi-clock" />
+        <!-- </p> -->
       </div>
 
       <template #footer>
@@ -140,6 +219,7 @@
 </template>
 
 <script>
+import Chip from "primevue/chip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import getUsers from "@/composable/getUsers";
@@ -149,7 +229,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 export default {
-  components: { DataTable, Column, Dialog },
+  components: { DataTable, Column, Dialog, Chip },
   setup() {
     const { documents } = getUsers();
     const { user } = getUser();
@@ -161,7 +241,6 @@ export default {
     let editPostQuery = ref(null);
     let dddd = [];
     // variable
-
 
     const formatedDoc = computed(() => {
       if (documents.value) {
@@ -182,9 +261,9 @@ export default {
           dddd.length = 0;
           for (let key in element.logs) {
             let time = format(element.logs[key].toDate(), "PPPPp");
-            dddd[key] = time;
+            dddd[key] = `[${key}] ${time}`;
           }
-          dddd.reverse()
+          dddd.reverse();
         }
       });
       displayMaximizable.value = true;
@@ -255,6 +334,14 @@ export default {
   margin-top: 5px;
 }
 
+.logtime {
+  margin-top: 10px;
+}
+
+.el-table {
+  // margin: 10px auto;
+  font-family: "Roboto", sans-serif;
+}
 @media (max-width: 475px) {
   .profile {
     flex-direction: column;

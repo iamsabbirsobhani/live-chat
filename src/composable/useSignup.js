@@ -60,6 +60,7 @@ const signup = async (email, password, displayname) => {
       friendRequest: 0,
       messagePage: 0,
     };
+    const isDark = false
 
     const account = {
       userUid,
@@ -88,7 +89,8 @@ const signup = async (email, password, displayname) => {
       dpChanged,
       imgDeleted,
       imgUploaded,
-      pageVisited
+      pageVisited,
+      isDark
     };
 
     projectFirestore

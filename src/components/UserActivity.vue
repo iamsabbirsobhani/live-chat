@@ -1,95 +1,47 @@
 <template>
   <el-page-header class="page-head" @back="goBack" content="profile">
   </el-page-header>
+  <div  style="background-color: black;">
+    <!-- elementplus -->
+    <div class="el-table">
+      <h3 style="margin: 10px; padding: 5px;">User Actions</h3>
+      <el-table
+        :data="formatedDoc"
+        style="width: 100%; font-family: Roboto, sans-serif;"
+      >
+        <el-table-column prop="userName" label="User Name" width="180">
+        </el-table-column>
+        <el-table-column prop="totalPostCount" label="Total Posted" width="180">
+        </el-table-column>
+        <el-table-column
+          prop="totalPostDelete"
+          label="Deleted Post"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column prop="chatSendCount" label="Message Sent" width="180">
+        </el-table-column>
+        <el-table-column prop="imgUploaded" label="Image Sent" width="180">
+        </el-table-column>
+        <el-table-column prop="chatDeleted" label="Message Deleted" width="180">
+        </el-table-column>
+        <el-table-column prop="imgDeleted" label="Image Deleted" width="180">
+        </el-table-column>
+        <el-table-column
+          prop="dpChanged"
+          label="Cover & Dp Changed"
+          width="180"
+        >
+        </el-table-column>
+      </el-table>
+    </div>
+    <!-- elementplus -->
 
-  <!-- elementplus -->
-  <div class="el-table">
-    <h3 style="margin: 10px; padding: 5px;">User Actions</h3>
-    <el-table
-      :data="formatedDoc"
-      style="width: 100%; font-family: Roboto, sans-serif;"
-    >
-      <el-table-column prop="userName" label="User Name" width="180">
-      </el-table-column>
-      <el-table-column prop="totalPostCount" label="Total Posted" width="180">
-      </el-table-column>
-      <el-table-column prop="totalPostDelete" label="Deleted Post" width="180">
-      </el-table-column>
-      <el-table-column prop="chatSendCount" label="Message Sent" width="180">
-      </el-table-column>
-      <el-table-column prop="imgUploaded" label="Image Sent" width="180">
-      </el-table-column>
-      <el-table-column prop="chatDeleted" label="Message Deleted" width="180">
-      </el-table-column>
-      <el-table-column prop="imgDeleted" label="Image Deleted" width="180">
-      </el-table-column>
-      <el-table-column prop="dpChanged" label="Cover & Dp Changed" width="180">
-      </el-table-column>
-    </el-table>
-  </div>
-  <!-- elementplus -->
-
-  <!-- primevue -->
-  <DataTable :value="formatedDoc" responsiveLayout="scroll">
-    <template #header>
-      <div class="table-header">
-        User Activity
-      </div>
-    </template>
-    <Column field="name" header="Name">
-      <template #body="slotProps">
-        <div class="profile">
-          <img
-            :src="slotProps.data.phofilePhoto"
-            :alt="slotProps.data.userName"
-            class="product-image"
-          />
-          <p>{{ slotProps.data.userName }}</p>
-        </div>
-      </template>
-    </Column>
-
-    <!-- <Column header="Profile Photo">
-      <template #body="slotProps">
-        <img
-          :src="slotProps.data.phofilePhoto"
-          :alt="slotProps.data.userName"
-          class="product-image"
-        />
-      </template>
-    </Column> -->
-
-    <Column field="lastvisited" header="Last Visited">
-      <template #body="slotProps">
-        <div>
-          {{ slotProps.data.lastVisited }}
-        </div>
-        <Button
-          label="Logs"
-          @click="openMaximizable(slotProps.data.userUid)"
-          class="p-button-outlined p-button-info"
-        />
-      </template>
-    </Column>
-
-    <Column field="totallogin" header="Total Login">
-      <template #body="slotProps">
-        <div>{{ slotProps.data.loginCount }} times.</div>
-      </template>
-    </Column>
-
-    <Column field="totallogout" header="Total Logout">
-      <template #body="slotProps">
-        <div>{{ slotProps.data.logoutCount }} times.</div>
-      </template>
-    </Column>
-  </DataTable>
-
-  <!-- <div class="page-visited">
+    <!-- primevue -->
     <DataTable :value="formatedDoc" responsiveLayout="scroll">
       <template #header>
         <div class="table-header">
-          Page Visited
+          User Activity
         </div>
       </template>
       <Column field="name" header="Name">
@@ -104,128 +56,149 @@
           </div>
         </template>
       </Column>
-      <Column field="home" header="Home Page">
+
+      <!-- <Column header="Profile Photo">
+      <template #body="slotProps">
+        <img
+          :src="slotProps.data.phofilePhoto"
+          :alt="slotProps.data.userName"
+          class="product-image"
+        />
+      </template>
+    </Column> -->
+
+      <Column field="lastvisited" header="Last Visited">
         <template #body="slotProps">
-          <div>{{ slotProps.data.pageVisited.home }} times.</div>
+          <div>
+            {{ slotProps.data.lastVisited }}
+          </div>
+          <Button
+            label="Logs"
+            @click="openMaximizable(slotProps.data.userUid)"
+            class="p-button-outlined p-button-info"
+          />
         </template>
       </Column>
-      <Column field="profile" header="Profile Page">
+
+      <Column field="totallogin" header="Total Login">
         <template #body="slotProps">
-          <div>{{ slotProps.data.pageVisited.profile }} times.</div>
+          <div>{{ slotProps.data.loginCount }} times.</div>
         </template>
       </Column>
-      <Column field="privatechat" header="Private Chat Page">
+
+      <Column field="totallogout" header="Total Logout">
         <template #body="slotProps">
-          <div>{{ slotProps.data.pageVisited.privateMsg }} times.</div>
+          <div>{{ slotProps.data.logoutCount }} times.</div>
         </template>
       </Column>
     </DataTable>
-  </div> -->
-  <!-- primevue -->
+    <!-- primevue -->
 
-  <!-- elementplus -->
-  <div class="el-table">
-    <h3 style="margin: 10px; padding: 5px;">Page Visited</h3>
-    <el-table
-      :data="formatedDoc"
-      style="width: 100%; font-family: Roboto, sans-serif;"
-    >
-      <el-table-column prop="userName" label="User Name" width="180">
-      </el-table-column>
-      <el-table-column prop="pageVisited.home" label="Home Page" width="180">
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.profile"
-        label="Profile Page"
-        width="180"
+    <!-- elementplus -->
+    <div class="el-table">
+      <h3 style="margin: 10px; padding: 5px;">Page Visited</h3>
+      <el-table
+        :data="formatedDoc"
+        style="width: 100%; font-family: Roboto, sans-serif;"
       >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.messagePage"
-        label="Message Page"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.privateMsg"
-        label="Private Chat Room"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.chatRoomPage"
-        label="Public Chat Room"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.editProfile"
-        label="Edit Profile"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.coverp"
-        label="Cover & Profile Photos"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.userList"
-        label="User List"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.friendList"
-        label="Friend List"
-        width="180"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="pageVisited.friendRequest"
-        label="Friend Request"
-        width="180"
-      >
-      </el-table-column>
-    </el-table>
-  </div>
-  <!-- elementplus -->
+        <el-table-column prop="userName" label="User Name" width="180">
+        </el-table-column>
+        <el-table-column prop="pageVisited.home" label="Home Page" width="180">
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.profile"
+          label="Profile Page"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.messagePage"
+          label="Message Page"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.privateMsg"
+          label="Private Chat Room"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.chatRoomPage"
+          label="Public Chat Room"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.editProfile"
+          label="Edit Profile"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.coverp"
+          label="Cover & Profile Photos"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.userList"
+          label="User List"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.friendList"
+          label="Friend List"
+          width="180"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="pageVisited.friendRequest"
+          label="Friend Request"
+          width="180"
+        >
+        </el-table-column>
+      </el-table>
+    </div>
+    <!-- elementplus -->
 
-  <div>
-    <Dialog
-      header="Logs (100 MAX)"
-      v-model:visible="displayMaximizable"
-      :style="editPostQuery"
-      :maximizable="true"
-      :modal="true"
-    >
-      <div v-for="k in dddd" :key="k">
-        <!-- <p class="p-m-0"> -->
-        <Chip class="logtime" :label="k" icon="pi pi-clock" />
-        <!-- </p> -->
-      </div>
+    <div>
+      <Dialog
+        header="Logs (100 MAX)"
+        v-model:visible="displayMaximizable"
+        :style="editPostQuery"
+        :maximizable="true"
+        :modal="true"
+      >
+        <div v-for="k in dddd" :key="k">
+          <!-- <p class="p-m-0"> -->
+          <Chip class="logtime" :label="k" icon="pi pi-clock" />
+          <!-- </p> -->
+        </div>
 
-      <template #footer>
-        <Button
-          label="Close"
-          icon="pi pi-times"
-          @click="closeMaximizable"
-          class="p-button-text"
-        />
-      </template>
-    </Dialog>
+        <template #footer>
+          <Button
+            label="Close"
+            icon="pi pi-times"
+            @click="closeMaximizable"
+            class="p-button-text"
+          />
+        </template>
+      </Dialog>
+    </div>
   </div>
 </template>
 
 <script>
+import { ElMessage } from "element-plus";
 import Chip from "primevue/chip";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import getUsers from "@/composable/getUsers";
 import getUser from "@/composable/getUser";
 import { format } from "date-fns";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 export default {

@@ -71,7 +71,7 @@
 <script>
 import getProfile from "@/composable/getProfile.js";
 import { useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import getUsers from "@/composable/getUsers.js";
 import getUser from "@/composable/getUser.js";
 import unfriendSelf from "@/composable/PrivateChat/unfriendSelf.js";
@@ -79,6 +79,7 @@ import unfriendOther from "@/composable/PrivateChat/unfriendOther.js";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
+import { useStore } from "vuex";
 
 export default {
   props: ["id"],
@@ -95,6 +96,8 @@ export default {
     // unfriend
     const { doUnfriendSelf } = unfriendSelf("profiles");
     const { doUnfriendOther } = unfriendOther("profiles");
+
+    const store = useStore();
 
     const confirmPosition = (position, useruid, docuserUid) => {
       confirm.require({
@@ -145,6 +148,10 @@ export default {
           picture: dp,
         },
       });
+
+      if (store.getters.isDark) {
+        document.body.style.backgroundColor = "black";
+      }
     };
 
     const unfriendPopup = () => {
@@ -156,6 +163,10 @@ export default {
         !info.value.friendList.length
         ? false
         : true;
+    });
+
+    onMounted(() => {
+      document.body.style.backgroundColor = "white";
     });
 
     return {

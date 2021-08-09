@@ -1,10 +1,9 @@
-<template >
-  <div class="chat-windows chatMessages" ref="messages">
+<template>
+  <div class="chat-windows " :class="{chatMessagesDark : isDark, chatMessages: !isDark}" ref="messages">
     <div v-if="error">{{ error }}</div>
     <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
       <!-- self user -->
-
       <div v-for="doc in formattedDocuments" :key="doc.id">
         <div v-if="doc.to == userTo && doc.userId == user.uid">
           <div class="single" style="margin-bottom: 4px; margin-top: 4px">
@@ -17,15 +16,15 @@
               <div
                 v-if="
                   doc.message !== `${doc.name} unsent a message` &&
-                  doc.message !== `${doc.name} unsent an image`
+                    doc.message !== `${doc.name} unsent an image`
                 "
                 style="max-width: 100%; text-align: end"
               >
                 <Chip
                   style="text-align: start"
-                  v-if="doc.message"
                   :label="doc.message"
-                  class="p-mr-2 p-mb-2 custom-chip"
+                  v-if="doc.message"
+                  class="p-mr-2 p-mb-2 custom-chip self-solid-text"
                 />
               </div>
               <div style="max-width: 100%; text-align: end" v-else>
@@ -33,8 +32,8 @@
                   style="text-align: start"
                   v-if="
                     doc.message &&
-                    doc.userId === user.uid &&
-                    doc.imgUrl !== null
+                      doc.userId === user.uid &&
+                      doc.imgUrl !== null
                   "
                   label="You unsent a message"
                   class="p-mr-2 p-mb-2 unsentChat"
@@ -89,8 +88,8 @@
                   <span
                     v-if="
                       user.uid === doc.userId &&
-                      doc.message !== `${doc.name} unsent a message` &&
-                      doc.message !== `${doc.name} unsent an image`
+                        doc.message !== `${doc.name} unsent a message` &&
+                        doc.message !== `${doc.name} unsent an image`
                     "
                     class="chatDelete"
                     @click="chatDel(doc.id, doc.imgUrl, doc.name)"
@@ -113,7 +112,7 @@
           <div
             v-if="
               doc.message !== `${doc.name} unsent a message` &&
-              doc.message !== `${doc.name} unsent an image`
+                doc.message !== `${doc.name} unsent an image`
             "
             style="max-width: 90%"
             class="pvtOtherUser"
@@ -220,6 +219,8 @@ import ScrollPanel from "primevue/scrollpanel";
 import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 import { profileUpdateField } from "@/composable/profileUpdateField";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
+import { mapGetters } from "vuex";
+
 export default {
   props: ["userTo"],
   components: { Dialog, Button, Chip, ScrollPanel, Tag },
@@ -250,7 +251,7 @@ export default {
     // based on its dependencies. ... If we want to add a bit of
     //functionality each time something changes, or respond to a particular
     //change, we could watch a property and apply some logic.
-    const backStyle = ref(null)
+    const backStyle = ref(null);
     const formattedDocuments = computed(() => {
       if (documents.value) {
         return documents.value.map((doc) => {
@@ -260,7 +261,12 @@ export default {
           if (doc.createdAt && !doc.deletedAt) {
             if (timeAgo.includes("less")) {
               return { ...doc, createdAt: `Just now` };
-            } else if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
+            } else if (
+              !timeAgo.includes("hour") &&
+              !timeAgo.includes("day") &&
+              !timeAgo.includes("month") &&
+              !timeAgo.includes("year")
+            ) {
               return { ...doc, createdAt: `${timeAgo} ago` };
             } else {
               return { ...doc, createdAt: `${timeFormat}` };
@@ -271,7 +277,12 @@ export default {
           if (doc.createdAt && doc.deletedAt) {
             let timeAgoDel = formatDistanceToNow(doc.deletedAt.toDate());
             let timeFormatDel = format(doc.deletedAt.toDate(), "PPp");
-            if (!timeAgo.includes("hour") && !timeAgo.includes("day") && !timeAgo.includes("month") && !timeAgo.includes("year")) {
+            if (
+              !timeAgo.includes("hour") &&
+              !timeAgo.includes("day") &&
+              !timeAgo.includes("month") &&
+              !timeAgo.includes("year")
+            ) {
               return {
                 ...doc,
                 createdAt: `${timeAgo} ago`,
@@ -339,11 +350,11 @@ export default {
 
     const chatDel = async (id, img, docName) => {
       if (!img) {
-        await profileUpdateField({key: "chatDeleted"})
+        await profileUpdateField({ key: "chatDeleted" });
         performDelete(id, { url: false, name: docName });
       }
       if (img) {
-        await profileUpdateField({key: "imgDeleted"})
+        await profileUpdateField({ key: "imgDeleted" });
         performDelete(id, { url: true, name: docName });
       }
     };
@@ -365,6 +376,9 @@ export default {
       idsOther,
       chatDel,
     };
+  },
+  computed: {
+    ...mapGetters(["isDark"]),
   },
 };
 </script>
@@ -416,7 +430,7 @@ export default {
   font-weight: bold;
   margin-right: 6px;
 }
-.chatMessages {
+.chatMessages, .chatMessagesDark {
   max-height: 485px;
   overflow: auto;
 }
@@ -465,11 +479,21 @@ a {
   // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   background-color: #f5f5f5;
+  // background-color:black;
 }
 
 .chatMessages::-webkit-scrollbar {
   width: 5px;
   background-color: #f5f5f5;
+}
+
+.chatMessagesDark::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color:black;
+}
+.chatMessagesDark::-webkit-scrollbar {
+  width: 5px;
+  background-color:black;
 }
 
 .chatMessages::-webkit-scrollbar-thumb {
@@ -591,17 +615,19 @@ a {
   // background-color: #0256fd;
 }
 
-.tidot1{
+.tidot1 {
   background-color: rgb(69, 165, 255);
 }
-.tidot2{
+.tidot2 {
   background-color: rgb(41, 152, 255);
 }
-.tidot3{
+.tidot3 {
   background-color: rgb(17, 140, 255);
 }
 
-.tidot1, .tidot2, .tidot3 {
+.tidot1,
+.tidot2,
+.tidot3 {
   -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
   border-radius: 7px;
   display: inline-block;
@@ -636,7 +662,7 @@ a {
 .chat-windows {
   padding: 3px;
 }
-.chatMessages {
+.chatMessages, .chatMessagesDark {
   padding: 3px;
 }
 .cwindows {
@@ -649,7 +675,7 @@ a {
     overflow: hidden;
     display: block;
   }
-  .chatMessages {
+  .chatMessages, .chatMessagesDark {
     // max-height: 390px;
     max-height: 520px;
     overflow: auto;

@@ -54,7 +54,7 @@
 <script>
 import { mapGetters, useStore } from "vuex";
 import getProfile from "@/composable/getProfile.js";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import getUsers from "@/composable/getUsers.js";
 import getUser from "@/composable/getUser.js";
 import unfriendSelf from "@/composable/PrivateChat/unfriendSelf.js";
@@ -63,6 +63,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+
 export default {
   props: ["id"],
   setup(props) {
@@ -84,6 +85,10 @@ export default {
           picture: dp,
         },
       });
+      console.log(store.getters.isDark);
+      if (store.getters.isDark) {
+        document.body.style.backgroundColor = "black";
+      }
     };
 
     const goBack = () => {
@@ -95,6 +100,11 @@ export default {
         !info.value.friendList.length
         ? false
         : true;
+    });
+
+    onMounted(() => {
+      // for dark mode
+      document.body.style.backgroundColor = "white";
     });
 
     return { goBack, documents, info, privateChat, user, hasMsg };

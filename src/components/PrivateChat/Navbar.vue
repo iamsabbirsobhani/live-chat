@@ -1,12 +1,24 @@
 <template>
-  <div id="start" v-if="user">
-    <el-page-header
-      style="margin: 10px; color: black"
-      class="pghd"
-      @back="goBack"
-      :content="getBack"
+  <div id="start" v-if="user" style="color: black;" :style="getStyle">
+    <div
+      style="font-family: Roboto, sans-serif; display: flex; align-items: center; justify-content: space-between;"
     >
-    </el-page-header>
+      <el-page-header
+        style="margin: 10px; "
+        class="pghd"
+        @back="goBack"
+        :style="getStyle"
+      >
+      </el-page-header>
+      {{ getBack }}
+      <ToggleButton
+        style="margin-left: 15px;"
+        v-model="checked1"
+        @click="darkM"
+        onIcon="pi pi-sun"
+        offIcon="pi pi-moon"
+      />
+    </div>
     <div>
       <p style="margin: 10px">
         <router-link
@@ -18,6 +30,7 @@
             :label="info.userName"
             icon="pi pi-user"
             :image="info.phofilePhoto"
+            @click="profileDark"
           />
         </router-link>
       </p>
@@ -26,7 +39,8 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import ToggleButton from "primevue/togglebutton";
+import { onMounted, ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
@@ -34,7 +48,7 @@ import Menubar from "primevue/menubar";
 import Menu from "primevue/menu";
 import useLogout from "@/composable/useLogout";
 import getUser from "@/composable/getUser";
-import deleteCollection from "@/composable/delChat.js";
+import userEditProfileInfo from "@/composable/userEditProfileInfo";
 import getProfile from "@/composable/getProfile.js";
 import Chip from "primevue/chip";
 import { useRouter } from "vue-router";
@@ -42,14 +56,17 @@ import { mapGetters, useStore } from "vuex";
 
 export default {
   props: ["userTo", "documents", "name", "picture"],
-  components: { Menubar, Button, Menu, Dialog, Chip },
+  components: { Menubar, Button, Menu, Dialog, Chip, ToggleButton },
   setup(props) {
     const { user } = getUser();
+    const { addDoc } = userEditProfileInfo();
     const store = useStore();
 
     const { info } = getProfile("profiles", props.userTo);
+    const { info: userDarkMode } = getProfile("profiles", user.value.uid);
 
     const router = useRouter();
+    const checked1 = ref(false);
 
     onMounted(() => {
       let currentPathObject = router.currentRoute.value;
@@ -62,6 +79,14 @@ export default {
         let payload = { name: "FriendList", back: "Friends" };
         store.commit("clickOn", payload);
       }
+
+      if (store.getters.isDark) {
+        checked1.value = store.getters.isDark;
+        document.body.style.backgroundColor = "black";
+      }
+      if (!store.getters.isDark) {
+        checked1.value = store.getters.isDark;
+      }
     });
 
     const goBack = () => {
@@ -69,16 +94,57 @@ export default {
         name: store.getters.getRoute,
         params: { id: user.value.uid },
       });
+      console.log(store.getters.isDark);
+      document.body.style.backgroundColor = "white";
     };
+
+    // dark mode
+
+
+    // for remember dark mode choice
+    watch(userDarkMode, (newUserDarkMode) => {
+      console.log(newUserDarkMode.isDark);
+      if (newUserDarkMode.isDark) {
+        checked1.value = true;
+        darkM();
+      }
+    });
+    // for remember dark mode choice
+
+    const darkM = () => {
+      // checked1.value = true
+      if (checked1.value) {
+        let payload = { background: "black", border: "black", color: "white" };
+        addDoc(user.value.uid, { isDark: true });
+        store.commit("darkMode", payload);
+        store.commit("isDark", true);
+        document.body.style.backgroundColor = "black";
+      } else {
+        addDoc(user.value.uid, { isDark: false });
+        store.commit("isDark", false);
+        let payload = { background: "none", color: "black" };
+        store.commit("darkMode", payload);
+        document.body.style.backgroundColor = "white";
+        // checked1.value = false
+      }
+    };
+
+    const profileDark = () => {
+      document.body.style.backgroundColor = "white";
+    };
+    // dark mode
 
     return {
       user,
       goBack,
       info,
+      darkM,
+      checked1,
+      profileDark,
     };
   },
   computed: {
-    ...mapGetters(["getBack"]),
+    ...mapGetters(["getStyle", "getBack"]),
   },
 };
 </script>

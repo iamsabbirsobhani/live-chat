@@ -1,9 +1,17 @@
 <template>
-  <Navbar @delete="deletes" :userTo="id" :documents="documents" :name="name" :picture="picture" />
-  <NewChatForm :userTo="id"/>
-  <ConfirmPopup></ConfirmPopup>
-  <div class="card">
-    <Toast />
+  <div style="background: none;" :style="getStyle">
+    <Navbar
+      @delete="deletes"
+      :userTo="id"
+      :documents="documents"
+      :name="name"
+      :picture="picture"
+    />
+    <NewChatForm :userTo="id" />
+    <ConfirmPopup></ConfirmPopup>
+    <div class="card">
+      <Toast />
+    </div>
   </div>
 </template>
 
@@ -17,10 +25,11 @@ import Navbar from "@/components/PrivateChat/Navbar.vue";
 import getUser from "@/composable/getUser";
 import getUsers from "@/composable/getUsers";
 import { useRouter } from "vue-router";
-import { onMounted, watch } from "vue";
+import { watch } from "vue";
+import { mapGetters } from "vuex";
 
 export default {
-  props: ['id', 'name', 'picture'],
+  props: ["id", "name", "picture"],
   components: { Navbar, NewChatForm, Button },
   setup() {
     const { user } = getUser();
@@ -46,9 +55,10 @@ export default {
     };
     return { deletes, documents };
   },
+  computed: {
+    ...mapGetters(["getStyle"]),
+  },
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

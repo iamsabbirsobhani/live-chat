@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSumbit">
+  <form @submit.prevent="handleSumbit" >
     <div class="pvtChatbox">
       <ChatWindow :userTo="userTo" class="cwindows" />
       <div class="typeStatus">

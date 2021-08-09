@@ -14,8 +14,8 @@ const logs = async () => {
             indx = colRef.data().index + 1;
         }
         timeStamp = timestamp();
-        console.log(new Date());
-        console.log(timestamp());
+        // console.log(new Date());
+        // console.log(timestamp());
         if(indx >= 100) {
             results = {0: timestamp()}
             indx = 0

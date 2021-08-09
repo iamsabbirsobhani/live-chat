@@ -19,6 +19,7 @@ const profileUpdateField = async (field) => {
       .update({
         [field.key]: count
       });
+    count = 0;
   } catch (error) {
       console.log(error);
   }

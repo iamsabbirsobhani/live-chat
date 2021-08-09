@@ -134,6 +134,7 @@ export default {
       // end empty/blank text field send button
 
       if (!isEmptyOrSpaces(newModel.value.msg)) {
+        await profileUpdateField({key: "chatSendCount"})
         const chat = {
           name: user.value.displayName,
           message: newModel.value.msg,
@@ -143,7 +144,6 @@ export default {
           deletedAt: null,
         };
         await addDoc(chat);
-        await profileUpdateField({key: "chatSendCount"})
         isLoading.value = false
         newModel.value.msg = null;
         if (!error.value) {

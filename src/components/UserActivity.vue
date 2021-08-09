@@ -1,7 +1,7 @@
 <template>
   <el-page-header class="page-head" @back="goBack" content="profile">
   </el-page-header>
-  <div  style="background-color: black;">
+  <div style="background-color: black;">
     <!-- elementplus -->
     <div class="el-table">
       <h3 style="margin: 10px; padding: 5px;">User Actions</h3>
@@ -32,6 +32,8 @@
           label="Cover & Dp Changed"
           width="180"
         >
+        </el-table-column>
+        <el-table-column prop="isDark" label="Dark Mode" width="180">
         </el-table-column>
       </el-table>
     </div>

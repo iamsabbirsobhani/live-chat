@@ -43,7 +43,6 @@ const signup = async (email, password, displayname) => {
     const logs = { 0: timestamp() };
     const totalPostCount = 0;
     const totalPostDelete = 0;
-
     const chatDeleted = 0;
     const chatSendCount = 0;
     const dpChanged = 0;

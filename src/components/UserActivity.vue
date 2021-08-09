@@ -194,7 +194,7 @@
 
   <div>
     <Dialog
-      header="Logs (20 MAX)"
+      header="Logs (100 MAX)"
       v-model:visible="displayMaximizable"
       :style="editPostQuery"
       :maximizable="true"

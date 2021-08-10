@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+
 export default createStore({
     state: {
         route: null,
@@ -27,7 +28,7 @@ export default createStore({
         },
         color: (state) => {
             return state.color
-        }
+        },
     },
     mutations: {
         clickOn (state, payload) {

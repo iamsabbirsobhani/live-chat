@@ -62,12 +62,38 @@ const routes = [
     name: "Welcome",
     component: Welcome,
     beforeEnter: requiredNoAuth, //users have to face "beforeEnter" key, before they want to come to this route
+    meta: {
+      title: 'Live Chat - Welcome',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Welcome page of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Welcome page of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/chatroom",
     name: "Chatroom",
     component: Chatroom,
     beforeEnter: requiredAuth, //users have to face "beforeEnter" key, before they want to come to this route
+    meta: {
+      title: 'Chatroom - Public Chat',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Public chatroom of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Public chatroom of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/profile/:id",
@@ -75,6 +101,26 @@ const routes = [
     component: Profile,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: `Profile`,
+      metaTags: [
+        {
+          name: 'description',
+          content: 'User profile of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'User profile of our Live Chat app.'
+        }
+      ],
+      // we can change meta theme color as well
+      metaTags: [
+        {
+          name: `theme-color`,
+          content: '#319197'
+        },
+      ]
+    }
   },
   {
     path: "/profile/:id/editprofile",
@@ -82,6 +128,19 @@ const routes = [
     component: EditProfile,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Edit Profile',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Edit data profile of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Edit data profile of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/profile/:id/friendrequest",
@@ -89,6 +148,19 @@ const routes = [
     component: FriendRequest,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Friend Request',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'See friend request of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'See friend request of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/profile/friendlist/:id",
@@ -96,6 +168,19 @@ const routes = [
     component: FriendList,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Friend List',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'See friend list of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'See friend list of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/home/messages/:id",
@@ -103,6 +188,19 @@ const routes = [
     component: Messages,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Messages',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'See active private chat of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'See active private chatof our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/:route/:routeTwo/privatechat/:id",
@@ -110,6 +208,19 @@ const routes = [
     component: PrivateChat,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Private Chat',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'See private chat of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'See private chat of our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/userlist",
@@ -117,6 +228,20 @@ const routes = [
     component: UserList,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'User List',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'See user list of our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'See user list of our Live Chat app.'
+        }
+      ]
+    }
+
   },
   {
     path: "/home",
@@ -124,6 +249,19 @@ const routes = [
     component: Home,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Home',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Home page our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Home page our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/useractivity",
@@ -131,6 +269,19 @@ const routes = [
     component: UserActivity,
     beforeEnter: adminPage,
     props: true,
+    meta: {
+      title: 'User Activity',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'For Admin only user activity our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'For Admin only user activity our Live Chat app.'
+        }
+      ]
+    }
   },
   {
     path: "/profile/:id/updatecoveranddp",
@@ -138,12 +289,81 @@ const routes = [
     component: UpdateCoverAndDP,
     beforeEnter: requiredAuth,
     props: true,
+    meta: {
+      title: 'Update cover and dp',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Update users profile photo and cover photo our Live Chat app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Update users profile photo and cover photo our Live Chat app.'
+        }
+      ]
+    }
   },
+
 ];
+
+
+
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
+
+// This callback runs before every route change, including on page load.
+router.beforeEach((to, from, next) => {
+  let user = projectAuth.currentUser;
+  // This goes through the matched routes from last to first, finding the closest route with a title.
+  // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
+  // `/nested`'s will be chosen.
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+  // Find the nearest route element with meta tags.
+  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+
+  const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+
+  // If a route with a title was found, set the document (page) title to that value.
+  if(nearestWithTitle) {
+    if(nearestWithTitle.meta.title.includes("Profile")) {
+      document.title = `${user.displayName} | ${nearestWithTitle.meta.title}`;
+    } else {
+      document.title = nearestWithTitle.meta.title;
+    }
+    // console.log(nearestWithTitle.meta.title)
+  } else if(previousNearestWithMeta) {
+    document.title = previousNearestWithMeta.meta.title;
+  }
+
+  // Remove any stale meta tags from the document using the key attribute we set below.
+  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
+
+  // Skip rendering meta tags if there are none.
+  if(!nearestWithMeta) return next();
+
+  // Turn the meta tag definitions into actual elements in the head.
+  nearestWithMeta.meta.metaTags.map(tagDef => {
+    const tag = document.createElement('meta');
+
+    Object.keys(tagDef).forEach(key => {
+      tag.setAttribute(key, tagDef[key]);
+    });
+
+    // We use this to track which meta tags we create so we don't interfere with other ones.
+    tag.setAttribute('data-vue-router-controlled', '');
+
+    return tag;
+  })
+  // Add the meta tags to the document head.
+  .forEach(tag => document.head.appendChild(tag));
+
+  next();
+});
+
 
 export default router;

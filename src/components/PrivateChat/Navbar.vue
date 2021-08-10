@@ -96,6 +96,12 @@ export default {
       });
       console.log(store.getters.isDark);
       document.body.style.backgroundColor = "white";
+
+      // for address theme
+      let meta = document.createElement("meta");
+      meta.name = "theme-color";
+      meta.content = "white";
+      document.getElementsByTagName("head")[0].appendChild(meta);
     };
 
     // dark mode
@@ -106,6 +112,8 @@ export default {
       if (newUserDarkMode.isDark) {
         checked1.value = true;
         darkM();
+
+      // for address theme
         let meta = document.createElement("meta");
         meta.name = "theme-color";
         meta.content = "black";
@@ -134,6 +142,12 @@ export default {
 
     const profileDark = () => {
       document.body.style.backgroundColor = "white";
+
+      // for address theme
+      let meta = document.createElement("meta");
+      meta.name = "theme-color";
+      meta.content = "white";
+      document.getElementsByTagName("head")[0].appendChild(meta);
     };
     // dark mode
 

@@ -411,6 +411,9 @@ export default {
 
     onMounted(async () => {
       await home();
+
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+
     });
 
     // let i = 0;

@@ -105,6 +105,19 @@ export default {
     onMounted(() => {
       // for dark mode
       document.body.style.backgroundColor = "white";
+      // for address theme
+      // let meta3 = document.createElement("meta");
+      // meta3.name = "theme-color";
+      // meta3.content = "white";
+      // document.getElementsByTagName("head")[0].append(meta3);
+
+      // document.querySelector("[name=`theme`]").remove();
+
+      // let meta2 = document.createElement("meta");
+      // meta2.name = "theme-color";
+      // meta2.content = "white";
+      // document.getElementsByTagName("head")[0].append(meta2);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
     });
 
     return { goBack, documents, info, privateChat, user, hasMsg };

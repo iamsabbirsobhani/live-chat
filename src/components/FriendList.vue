@@ -167,6 +167,8 @@ export default {
 
     onMounted(() => {
       document.body.style.backgroundColor = "white";
+
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
     });
 
     return {

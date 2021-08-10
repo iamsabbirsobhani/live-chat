@@ -944,6 +944,8 @@ export default {
 
       // for dark mode
       document.body.style.backgroundColor = "white";
+
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
     });
     // media query using code
     // end Dialog resize/responsive by screen size

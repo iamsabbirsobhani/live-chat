@@ -96,12 +96,6 @@ export default {
       });
       console.log(store.getters.isDark);
       document.body.style.backgroundColor = "white";
-
-      // for address theme
-      let meta = document.createElement("meta");
-      meta.name = "theme-color";
-      meta.content = "white";
-      document.getElementsByTagName("head")[0].appendChild(meta);
     };
 
     // dark mode
@@ -112,12 +106,12 @@ export default {
       if (newUserDarkMode.isDark) {
         checked1.value = true;
         darkM();
-
-      // for address theme
-        let meta = document.createElement("meta");
-        meta.name = "theme-color";
-        meta.content = "black";
-        document.getElementsByTagName("head")[0].appendChild(meta);
+        // for address theme
+        // let meta = document.createElement("meta");
+        // meta.name = "theme-color";
+        // meta.content = "black";
+        // document.getElementsByTagName("head")[0].appendChild(meta);
+        document.querySelector('meta[name="theme-color"]').setAttribute('content',  'black');
       }
     });
     // for remember dark mode choice
@@ -136,6 +130,7 @@ export default {
         let payload = { background: "none", color: "black" };
         store.commit("darkMode", payload);
         document.body.style.backgroundColor = "white";
+        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
         // checked1.value = false
       }
     };
@@ -144,10 +139,11 @@ export default {
       document.body.style.backgroundColor = "white";
 
       // for address theme
-      let meta = document.createElement("meta");
-      meta.name = "theme-color";
-      meta.content = "white";
-      document.getElementsByTagName("head")[0].appendChild(meta);
+      // let meta2 = document.createElement("meta");
+      // meta2.name = "theme-color";
+      // meta2.content = "white";
+      // document.getElementsByTagName("head")[0].append(meta2);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
     };
     // dark mode
 

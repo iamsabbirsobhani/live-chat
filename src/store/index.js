@@ -4,7 +4,8 @@ export default createStore({
         route: null,
         back: null,
         style: {},
-        dark: false
+        dark: false,
+        color: "black"
         // background: "black"
     },
     getters: {
@@ -24,6 +25,9 @@ export default createStore({
             // console.log(state.back)
             return state.dark
         },
+        color: (state) => {
+            return state.color
+        }
     },
     mutations: {
         clickOn (state, payload) {

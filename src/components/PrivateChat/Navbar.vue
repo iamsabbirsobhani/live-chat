@@ -100,13 +100,21 @@ export default {
 
     // dark mode
 
-
     // for remember dark mode choice
     watch(userDarkMode, (newUserDarkMode) => {
       console.log(newUserDarkMode.isDark);
       if (newUserDarkMode.isDark) {
         checked1.value = true;
         darkM();
+        let meta = document.createElement("meta");
+        meta.name = "theme-color";
+        meta.content = "black";
+        document.getElementsByTagName("head")[0].appendChild(meta);
+      } else {
+        let meta2 = document.createElement("meta");
+        meta2.name = "theme-color";
+        meta2.content = "red";
+        document.getElementsByTagName("head")[0].appendChild(meta2);
       }
     });
     // for remember dark mode choice

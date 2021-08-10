@@ -38,7 +38,7 @@ const requiredAuth = async (to, from, next) => {
 // Once user logged out, only then user can see the "sign in"/"root"/"sign up" page again.
 
 const adminPage = (to, from, next) => {
-  if(user.value.uid !== `MORuJJ0PWpb3inamywW5sSrHDGq2`) {
+  if(user.value.uid !== `oJStHj6xShPbVyEFpwmK1B1rjAk2`) {
     next({ name: "Home" });
   } else {
     next();

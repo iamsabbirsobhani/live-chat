@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleSumbit" >
+  <form @submit.prevent="handleSumbit">
     <div class="pvtChatbox">
       <ChatWindow :userTo="userTo" class="cwindows" />
       <div class="typeStatus">
@@ -7,8 +7,18 @@
       </div>
     </div>
     <div class="type">
-      <Button v-if="!isLoading" type="submit" icon="pi pi-send" class="send-button"/>
-      <Button v-else type="submit" icon="pi pi-spin pi-spinner" class="send-button"/>
+      <Button
+        v-if="!isLoading"
+        type="submit"
+        icon="pi pi-send"
+        class="send-button"
+      />
+      <Button
+        v-else
+        type="submit"
+        icon="pi pi-spin pi-spinner"
+        class="send-button"
+      />
       <el-input
         placeholder="type..."
         v-model.msg="newModel.msg"
@@ -16,7 +26,7 @@
         v-model.typest="newModel.typest"
       ></el-input>
 
-        <!-- @keypress.enter.prevent="handleSumbit" -->
+      <!-- @keypress.enter.prevent="handleSumbit" -->
       <div class="files">
         <el-upload
           class="upload-demo"
@@ -104,7 +114,7 @@ export default {
     const displayConfirmation = ref(false);
 
     // variable
-    const isLoading = ref(false)
+    const isLoading = ref(false);
     // end variable
 
     // binding multiple "v-model" within one html element
@@ -121,7 +131,7 @@ export default {
     });
 
     const handleSumbit = async () => {
-      isLoading.value = true
+      isLoading.value = true;
 
       // checking if the "newModel.value.msg" has any value
       function isEmptyOrSpaces(str) {
@@ -130,7 +140,9 @@ export default {
       // end of checking if the "newModel.value.msg" has any value
 
       // empty/blank text field send button
-      if (isEmptyOrSpaces(newModel.value.msg)) { isLoading.value = false }
+      if (isEmptyOrSpaces(newModel.value.msg)) {
+        isLoading.value = false;
+      }
       // end empty/blank text field send button
 
       if (!isEmptyOrSpaces(newModel.value.msg)) {
@@ -143,9 +155,9 @@ export default {
           deletedAt: null,
         };
         await addDoc(chat);
-        isLoading.value = false
+        isLoading.value = false;
         newModel.value.msg = null;
-        await profileUpdateField({key: "chatSendCount"})
+        await profileUpdateField({ key: "chatSendCount" });
         if (!error.value) {
           newModel.value.msg = "";
         }
@@ -188,7 +200,7 @@ export default {
     const myUploader = async (file) => {
       if (file) {
         await uploadImage(file);
-        await profileUpdateField({key: "imgUploaded"})
+        await profileUpdateField({ key: "imgUploaded" });
       }
 
       const chat = {
@@ -214,9 +226,9 @@ export default {
       myUploader(file.raw);
     };
 
-    onMounted(async() => {
+    onMounted(async () => {
       await privateMsgPage();
-    })
+    });
     return {
       handleSumbit,
       error,
@@ -226,7 +238,7 @@ export default {
       handleAvatarSuccess,
       url,
       newModel,
-      isLoading
+      isLoading,
     };
   },
 };

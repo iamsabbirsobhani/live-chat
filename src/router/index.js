@@ -102,8 +102,8 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: `Profile`,
-      metaTags: [
+      title: `Profile`, // rendered as <title>Profile</title>
+      metaTags: [ // these will be rendered like <meta name="" content="">
         {
           name: 'description',
           content: 'User profile of our Live Chat app.'
@@ -111,15 +111,12 @@ const routes = [
         {
           property: 'og:description',
           content: 'User profile of our Live Chat app.'
-        }
-      ],
-      // we can change meta theme color as well
-      metaTags: [
+        },
         {
           name: `theme-color`,
           content: '#319197'
         },
-      ]
+      ],
     }
   },
   {

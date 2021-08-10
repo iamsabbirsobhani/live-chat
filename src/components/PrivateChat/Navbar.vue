@@ -110,11 +110,6 @@ export default {
         meta.name = "theme-color";
         meta.content = "black";
         document.getElementsByTagName("head")[0].appendChild(meta);
-      } else {
-        let meta2 = document.createElement("meta");
-        meta2.name = "theme-color";
-        meta2.content = "red";
-        document.getElementsByTagName("head")[0].appendChild(meta2);
       }
     });
     // for remember dark mode choice

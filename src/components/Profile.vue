@@ -119,25 +119,32 @@
         ></el-button>
       </div>
       <div class="post-choice">
-        <label for="public">Public</label>
-        <Checkbox
-          class="cbox"
-          @click="publicP"
-          value="public"
-          v-model="checked"
-          :binary="true"
-          id="public"
+        <div>
+          <label for="public">Public</label>
+          <Checkbox
+            class="cbox"
+            @click="publicP"
+            value="public"
+            v-model="checked"
+            :binary="true"
+            id="public"
+          />
+          <label for="private">Private</label>
+          <Checkbox
+            class="cbox"
+            @click="privateP"
+            value="private"
+            v-model="checked2"
+            :binary="true"
+            id="public"
+          />
+        </div>
+        <Button
+          @click="openEditor = true"
+          label="Editor"
+          class="p-button-help"
+          icon="far fa-edit"
         />
-        <label for="private">Private</label>
-        <Checkbox
-          class="cbox"
-          @click="privateP"
-          value="private"
-          v-model="checked2"
-          :binary="true"
-          id="public"
-        />
-
         <!-- <div class="image-upload">
           <el-upload action="#" list-type="picture-card" :auto-upload="false">
             <template #default>
@@ -181,6 +188,11 @@
       </div>
     </form>
   </div>
+  <!-- is editor is empty show error-->
+  <div class="empty">
+    <p>{{ errorEditor }}</p>
+  </div>
+  <!-- is editor is empty show error-->
   <!-- end post section -->
 
   <!-- status -->
@@ -225,10 +237,16 @@
         <p v-if="doc.isEdited" class="edited-date">
           Edited: {{ doc.editedAt }}
         </p>
-        <p class="post">{{ doc.post }}</p>
+        <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
+        <div v-else class="post">
+          <p>{{ doc.post }}</p>
+        </div>
       </div>
 
-      <div style="display: flex; margin-bottom: 10px; margin-top: 10px;">
+      <div
+        class="userPost"
+        style="display: flex; margin-bottom: 10px; margin-top: 10px;"
+      >
         <div>
           <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
 
@@ -384,12 +402,17 @@
           </el-tooltip>
         </div>
 
+        <!-- Post -->
         <div class="post-edited-time">
           <p v-if="doc.isEdited" class="edited-date">
             Edited: {{ doc.editedAt }}
           </p>
-          <p class="post">{{ doc.post }}</p>
+          <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
+          <div v-else>
+            <p class="post">{{ doc.post }}</p>
+          </div>
         </div>
+        <!-- Post -->
 
         <div style="display: flex">
           <div>
@@ -588,7 +611,7 @@
         >
         </el-input>
       </div>
-      <div class="post-choice">
+      <div class="post-choice-edit">
         <label for="public">Public</label>
         <Checkbox
           class="cbox"
@@ -620,6 +643,64 @@
     </template>
   </Dialog>
   <!-- edit post dialog -->
+
+  <Dialog
+    header="Add new post"
+    v-model:visible="openEditor"
+    :style="editPostQuery"
+    :maximizable="true"
+    :modal="true"
+  >
+    <Editor v-model="input" editorStyle="height: 320px" />
+    <div style="margin-top: 10px;">
+      <form style="display: flex;">
+        <!-- <el-button
+          v-if="isLoadingStatus"
+          type="primary"
+          :loading="true"
+        ></el-button> -->
+        <Button
+          v-if="isLoadingStatus"
+          icon="pi pi-spin pi-spinner"
+          label="Post"
+          class="p-button-outlined"
+        />
+        <Button
+          v-else
+          @click="postByEditor"
+          label="Post"
+          class="p-button-outlined"
+        />
+        <!-- <el-button
+          v-else
+
+          class="el-button"
+          type="primary"
+          icon="el-icon-position"
+        ></el-button> -->
+        <div class="post-choice">
+          <label for="public" style="margin-left: 10px;">Public</label>
+          <Checkbox
+            class="cbox"
+            @click="publicP"
+            value="public"
+            v-model="checked"
+            :binary="true"
+            id="public"
+          />
+          <label for="private" style="margin-left: 10px;">Private</label>
+          <Checkbox
+            class="cbox"
+            @click="privateP"
+            value="private"
+            v-model="checked2"
+            :binary="true"
+            id="public"
+          />
+        </div>
+      </form>
+    </div>
+  </Dialog>
 </template>
 
 <script>
@@ -647,6 +728,7 @@ import { useStore } from "vuex";
 import { getPostById } from "@/composable/getPostById.js";
 import { logOutCount } from "@/composable/logOutCount";
 import { profileVisitedBy } from "@/composable/profileVisitedBy";
+import Editor from "primevue/editor";
 import {
   profile,
   chatRoom,
@@ -668,6 +750,7 @@ export default {
     Chip,
     ConfirmDialog,
     Textarea,
+    Editor,
   },
   setup(props) {
     const { user } = getUser();
@@ -693,6 +776,8 @@ export default {
     const displayPublicToolTip = ref(false);
     const displayPrivateToolTip = ref(false);
     const editPrivacy = ref(null);
+    const openEditor = ref(false);
+    let errorEditor = ref("");
     // end variable section
 
     // comment section
@@ -718,6 +803,7 @@ export default {
       }
       // end of checking if the "input.value" has any value
       if (!isEmptyOrSpaces(input.value)) {
+        errorEditor.value = null;
         await addPost({
           userName: user.value.displayName,
           dp: info.value.phofilePhoto,
@@ -731,6 +817,7 @@ export default {
           createdAt: timestamp(),
           editedAt: timestamp(),
           isEdited: false,
+          postByEditor: false,
         });
         await profileUpdateField({ key: "totalPostCount" });
         // checked.value = false;
@@ -740,6 +827,77 @@ export default {
         checked2.value = false;
       } else {
         console.log("Empty");
+        postPrivacy.value = `public`;
+        checked.value = true;
+        checked2.value = false;
+        errorEditor.value = `Empty editor, please write something before post.`;
+      }
+      input.value = null;
+      isLoadingStatus.value = false;
+    };
+
+    const postByEditor = async () => {
+      isLoadingStatus.value = true;
+
+      // checking if the "input.value" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      // end of checking if the "input.value" has any value
+
+      // if input has image
+      // try catch for handling TypeError when empty editor post
+      try {
+        errorEditor.value = null;
+        if (input.value.includes("img")) {
+          let ind = input.value.indexOf("img") + 4;
+          let str = input.value;
+          // method taken from https://stackoverflow.com/questions/4313841/insert-a-string-at-a-specific-index by user113716
+          String.prototype.splice = function(idx, rem, str) {
+            return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+          };
+          input.value = str.splice(
+            ind,
+            0,
+            `style="display: block;max-width: 280px; overflow: hidden; max-height: 400px; margin: auto;"`
+          );
+          // method taken from https://stackoverflow.com/questions/4313841/insert-a-string-at-a-specific-index by user113716
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      // if input has image
+      if (!isEmptyOrSpaces(input.value)) {
+        errorEditor.value = null;
+        await addPost({
+          userName: user.value.displayName,
+          dp: info.value.phofilePhoto,
+          userId: props.id,
+          post: input.value,
+          privacy: postPrivacy.value,
+          like: 0,
+          dislike: 0,
+          likeId: [],
+          dislikeId: [],
+          createdAt: timestamp(),
+          editedAt: timestamp(),
+          isEdited: false,
+          postByEditor: true,
+        });
+        await profileUpdateField({ key: "totalPostCount" });
+        // checked.value = false;
+        // checked2.value = false;
+        postPrivacy.value = `public`;
+        checked.value = true;
+        checked2.value = false;
+        openEditor.value = false;
+      } else {
+        console.log("Empty");
+        openEditor.value = false;
+        postPrivacy.value = `public`;
+        checked.value = true;
+        checked2.value = false;
+        errorEditor.value = `Empty editor, please write something before post.`;
       }
       input.value = null;
       isLoadingStatus.value = false;
@@ -930,7 +1088,7 @@ export default {
       console.log(windowWidth.value);
       await profile();
       let style = {
-        width: "50vw",
+        width: "60vw",
       };
       let style2 = {
         width: "100vw",
@@ -945,7 +1103,9 @@ export default {
       // for dark mode
       document.body.style.backgroundColor = "white";
 
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#DFE4E0");
     });
     // media query using code
     // end Dialog resize/responsive by screen size
@@ -1022,6 +1182,9 @@ export default {
       publicPostF,
       privatePostF,
       userActivity,
+      openEditor,
+      postByEditor,
+      errorEditor,
     };
   },
 };
@@ -1206,8 +1369,25 @@ it will be positioned auto left */
 
 .express {
   display: flex;
+  margin-bottom: 10px;
 }
+
 .post-choice {
+  display: flex;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+  // margin-top: 10px;
+  label {
+    margin-right: 10px;
+  }
+  .cbox {
+    margin-right: 10px;
+  }
+}
+
+.post-choice-edit {
+  display: flex;
+  align-items: center;
   font-family: "Roboto", sans-serif;
   margin-top: 10px;
   label {
@@ -1266,6 +1446,21 @@ it will be positioned auto left */
   margin-top: 30px;
 }
 
+.userPost {
+  p {
+    img {
+      width: 500px;
+    }
+  }
+}
+
+.sdf {
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  display: block;
+  border-radius: 10px;
+}
 @media (max-width: 425px) {
   .place {
     max-width: 150px;
@@ -1296,6 +1491,10 @@ it will be positioned auto left */
   .postReact {
     color: rgb(121, 121, 121);
     font-size: 14px;
+  }
+  .empty {
+    width: 300px;
+    margin: auto;
   }
 }
 </style>

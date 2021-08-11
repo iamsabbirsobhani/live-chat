@@ -69,12 +69,19 @@
               </div>
             </div>
           </router-link>
+
+          <!-- post -->
           <div class="post-edited-time">
             <p v-if="doc.isEdited" class="edited-date">
               Edited: {{ doc.editedAt }}
             </p>
-            <p class="post">{{ doc.post }}</p>
+            <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
+            <div v-else class="post">
+              <p>{{ doc.post }}</p>
+            </div>
           </div>
+          <!-- post -->
+
           <Chip
             @click="publicToolTip"
             icon="pi pi-lock-open"
@@ -413,8 +420,9 @@ export default {
     onMounted(async () => {
       await home();
 
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
-
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#DFE4E0");
     });
 
     // let i = 0;
@@ -428,7 +436,7 @@ export default {
 
     const metaProfileName = (name) => {
       store.commit("setMetaProfileName", name);
-    }
+    };
 
     return {
       goBack,
@@ -455,7 +463,7 @@ export default {
       fullscreenLoading,
       showMoreBtn,
       clickedShowMore,
-      metaProfileName
+      metaProfileName,
     };
   },
 };

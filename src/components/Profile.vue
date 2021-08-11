@@ -611,6 +611,8 @@
         >
         </el-input>
       </div>
+    </form>
+    <template #footer>
       <div class="post-choice-edit">
         <label for="public">Public</label>
         <Checkbox
@@ -630,9 +632,6 @@
           :binary="true"
           id="public"
         />
-      </div>
-    </form>
-    <template #footer>
       <Button label="Update" icon="pi pi-check" @click="closeMaximizable" />
       <Button
         icon="pi pi pi-times"
@@ -640,6 +639,7 @@
         @click="deleteDoc"
         class="p-button-danger"
       />
+      </div>
     </template>
   </Dialog>
   <!-- edit post dialog -->

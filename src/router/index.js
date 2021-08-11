@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, onBeforeRouteUpdate } from "vue-router";
 import Welcome from "../views/Welcome.vue";
 import Chatroom from "../views/Chatroom.vue";
 import Profile from "../components/Profile.vue";
@@ -16,6 +16,12 @@ import { lastSeen } from "@/composable/lastSeen";
 import { logs } from "@/composable/logs";
 import getUser from "@/composable/getUser";
 const { user } = getUser();
+import {getSingleDoc} from "@/composable/getSingleDoc.js";
+let { getDoc } = getSingleDoc();
+
+// import getProfile from "@/composable/getProfile.js";
+import store from "../store"
+// import {  useStore } from "vuex";
 
 const { performLastSeen } = lastSeen();
 
@@ -304,17 +310,20 @@ const routes = [
 ];
 
 
-
-
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
 // This callback runs before every route change, including on page load.
-router.beforeEach((to, from, next) => {
+router.beforeEach( async (to, from, next) => {
+// const store = useStore();
   let user = projectAuth.currentUser;
+  let doc;
+  if(to.params.id){
+    doc = await getDoc({collection: "profiles", docId: to.params.id})
+  }
+  // console.log(d.userName);
   // This goes through the matched routes from last to first, finding the closest route with a title.
   // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
   // `/nested`'s will be chosen.
@@ -327,7 +336,9 @@ router.beforeEach((to, from, next) => {
 
   // If a route with a title was found, set the document (page) title to that value.
   if(nearestWithTitle) {
-    if(nearestWithTitle.meta.title.includes("Profile")) {
+    if(nearestWithTitle.meta.title.includes("Profile") && user.displayName != doc.userName) {
+      document.title = `${doc.userName} | ${nearestWithTitle.meta.title}`;
+    } else if (nearestWithTitle.meta.title.includes("Profile")) {
       document.title = `${user.displayName} | ${nearestWithTitle.meta.title}`;
     } else {
       document.title = nearestWithTitle.meta.title;

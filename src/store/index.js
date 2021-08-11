@@ -6,7 +6,8 @@ export default createStore({
         back: null,
         style: {},
         dark: false,
-        color: "black"
+        color: "black",
+        otherProfileName: null,
         // background: "black"
     },
     getters: {
@@ -29,6 +30,9 @@ export default createStore({
         color: (state) => {
             return state.color
         },
+        getMetaName: (state) => {
+            return state.otherProfileName
+        }
     },
     mutations: {
         clickOn (state, payload) {
@@ -40,6 +44,9 @@ export default createStore({
         },
         isDark(state, payload) {
             state.dark = payload
+        },
+        setMetaProfileName(state, payload) {
+            state.otherProfileName = payload
         }
     },
     actions: {},

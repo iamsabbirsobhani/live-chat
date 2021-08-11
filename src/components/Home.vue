@@ -57,6 +57,7 @@
           <router-link
             style="text-decoration: none; margin: 0px"
             :to="{ name: 'Profile', params: { id: doc.userId } }"
+            @click="metaProfileName(doc.userName)"
           >
             <div class="name">
               <el-avatar :size="40">
@@ -425,6 +426,10 @@ export default {
     //   i++;
     // });
 
+    const metaProfileName = (name) => {
+      store.commit("setMetaProfileName", name);
+    }
+
     return {
       goBack,
       user,
@@ -450,6 +455,7 @@ export default {
       fullscreenLoading,
       showMoreBtn,
       clickedShowMore,
+      metaProfileName
     };
   },
 };

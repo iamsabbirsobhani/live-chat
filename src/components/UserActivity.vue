@@ -167,7 +167,7 @@
 
     <div>
       <Dialog
-        header="Logs (100 MAX)"
+        header="Logs (50 MAX)"
         v-model:visible="displayMaximizable"
         :style="editPostQuery"
         :maximizable="true"

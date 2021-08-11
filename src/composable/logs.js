@@ -16,7 +16,7 @@ const logs = async () => {
         timeStamp = timestamp();
         // console.log(new Date());
         // console.log(timestamp());
-        if(indx >= 200) {
+        if(indx >= 50) {
             results = {0: timestamp()}
             indx = 0
         } else {

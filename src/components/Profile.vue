@@ -698,14 +698,9 @@
     :maximizable="true"
     :modal="true"
   >
-    <Editor v-if="openEditor" v-model="input" editorStyle="height: 320px" />
+    <QuillEditor v-if="openEditor" style="height: 320px;" contentType="html" v-model:content="input" toolbar="full" theme="snow" />
     <div style="margin-top: 10px;">
       <form style="display: flex;">
-        <!-- <el-button
-          v-if="isLoadingStatus"
-          type="primary"
-          :loading="true"
-        ></el-button> -->
         <Button
           v-if="isLoadingStatus"
           icon="pi pi-spin pi-spinner"
@@ -718,13 +713,6 @@
           label="Post"
           class="p-button-outlined"
         />
-        <!-- <el-button
-          v-else
-
-          class="el-button"
-          type="primary"
-          icon="el-icon-position"
-        ></el-button> -->
         <div class="post-choice">
           <label for="public" style="margin-left: 10px;">Public</label>
           <Checkbox
@@ -775,7 +763,6 @@ import { useStore } from "vuex";
 import { getPostById } from "@/composable/getPostById.js";
 import { logOutCount } from "@/composable/logOutCount";
 import { profileVisitedBy } from "@/composable/profileVisitedBy";
-import Editor from "primevue/editor";
 import {
   profile,
   chatRoom,
@@ -797,7 +784,6 @@ export default {
     Chip,
     ConfirmDialog,
     Textarea,
-    Editor,
   },
   setup(props) {
     const { user } = getUser();
@@ -867,8 +853,6 @@ export default {
           postByEditor: false,
         });
         await profileUpdateField({ key: "totalPostCount" });
-        // checked.value = false;
-        // checked2.value = false;
         postPrivacy.value = `public`;
         checked.value = true;
         checked2.value = false;
@@ -891,19 +875,18 @@ export default {
         return str === null || str.match(/^ *$/) !== null;
       }
       // end of checking if the "input.value" has any value
-
       // if input has image
       // try catch for handling TypeError when empty editor post
       try {
         errorEditor.value = null;
         if (input.value.includes("img")) {
           let ind = input.value.indexOf("img") + 4;
-          let str = input.value;
+          let stri = input.value;
           // method taken from https://stackoverflow.com/questions/4313841/insert-a-string-at-a-specific-index by user113716
           String.prototype.splice = function(idx, rem, str) {
             return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
           };
-          input.value = str.splice(
+          input.value = stri.splice(
             ind,
             0,
             `style="display: block;max-width: 280px; overflow: hidden; max-height: 400px; margin: auto;"`
@@ -932,8 +915,6 @@ export default {
           postByEditor: true,
         });
         await profileUpdateField({ key: "totalPostCount" });
-        // checked.value = false;
-        // checked2.value = false;
         postPrivacy.value = `public`;
         checked.value = true;
         checked2.value = false;

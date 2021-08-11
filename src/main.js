@@ -32,6 +32,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 library.add(far);
 import { dom } from "@fortawesome/fontawesome-svg-core";
 dom.watch();
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import { projectAuth } from './firebase/config'
 
@@ -44,6 +46,7 @@ projectAuth.onAuthStateChanged(() => {
         app.component('ConfirmPopup', ConfirmPopup)
         app.use(router)
         app.use(ToastService)
+        app.component('QuillEditor', QuillEditor)
         app.use(store)
         app.use(vueDebounce)
         app.use(PrimeVue, {ripple: true})

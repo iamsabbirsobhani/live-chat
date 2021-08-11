@@ -613,7 +613,49 @@
       </div>
     </form>
     <template #footer>
-      <div class="post-choice-edit">
+      <div v-if="windowWidth <= 475" class="post-choice-edit-footer-mobile">
+        <div class="post-choice-checkbox">
+          <div style="display: flex; align-items: center;">
+          <label for="public">Public</label>
+          <Checkbox
+            class="edit-cbox-footer-public cbox"
+            @click="publicPostF"
+            value="public"
+            v-model="checked3"
+            :binary="true"
+            id="public"
+          />
+          </div>
+          <div style="display: flex; align-items: center;">
+          <label for="private">Private</label>
+          <Checkbox
+            class="edit-cbox-footer-private cbox"
+            @click="privatePostF"
+            value="private  "
+            v-model="checked4"
+            :binary="true"
+            id="public"
+          />
+        </div>
+        </div>
+        <div class="post-choice-button">
+          <Button
+            style="margin-top: 10px;"
+            label="Update"
+            icon="pi pi-check"
+            @click="closeMaximizable"
+          />
+          <Button
+            style="margin-top: 10px;"
+            icon="pi pi pi-times"
+            label="Delete "
+            @click="deleteDoc"
+            class="p-button-danger"
+          />
+        </div>
+      </div>
+
+      <div v-else class="post-choice-edit-footer">
         <label for="public">Public</label>
         <Checkbox
           class="cbox"
@@ -632,13 +674,18 @@
           :binary="true"
           id="public"
         />
-      <Button label="Update" icon="pi pi-check" @click="closeMaximizable" />
-      <Button
-        icon="pi pi pi-times"
-        label="Delete"
-        @click="deleteDoc"
-        class="p-button-danger"
-      />
+        <Button
+          style="margin-left: 10px;"
+          label="Update"
+          icon="pi pi-check"
+          @click="closeMaximizable"
+        />
+        <Button
+          icon="pi pi pi-times"
+          label="Delete"
+          @click="deleteDoc"
+          class="p-button-danger"
+        />
       </div>
     </template>
   </Dialog>
@@ -1185,6 +1232,7 @@ export default {
       openEditor,
       postByEditor,
       errorEditor,
+      windowWidth,
     };
   },
 };
@@ -1397,6 +1445,19 @@ it will be positioned auto left */
     margin-right: 10px;
   }
 }
+.post-choice-edit-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-family: "Roboto", sans-serif;
+  margin-top: 10px;
+  label {
+    margin-right: 10px;
+  }
+  .cbox {
+    margin-right: 10px;
+  }
+}
 
 .edit-post-form {
   display: flex;
@@ -1454,13 +1515,13 @@ it will be positioned auto left */
   }
 }
 
-.sdf {
-  width: 300px;
-  height: 400px;
-  overflow: hidden;
-  display: block;
-  border-radius: 10px;
-}
+// .sdf {
+//   width: 300px;
+//   height: 400px;
+//   overflow: hidden;
+//   display: block;
+//   border-radius: 10px;
+// }
 @media (max-width: 425px) {
   .place {
     max-width: 150px;
@@ -1495,6 +1556,26 @@ it will be positioned auto left */
   .empty {
     width: 300px;
     margin: auto;
+  }
+  .post-choice-edit-footer-mobile{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .post-choice-checkbox {
+    margin: 10px;
+  }
+  .edit-cbox-footer-public {
+    margin: 10px;
+    label {
+      margin: 10px;
+    }
+  }
+  .edit-cbox-footer-private {
+    margin: 10px;
+    label {
+      margin: 10px;
+    }
   }
 }
 </style>

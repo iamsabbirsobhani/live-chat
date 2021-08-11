@@ -13,14 +13,12 @@ const getPostById = () => {
         docId = id
         docRef = projectFirestore.collection("posts").doc(docId);
         docRef.get().then(doc => {
-            console.log(doc.data());
             postP.value = doc.data();
         }).catch(error => {
             console.log("Error msg: ", error);
         });
     }
     const updatePost = async (post) => {
-        console.log(docId)
         try {
             await projectFirestore.collection("posts").doc(docId).update(post)
         } catch(error) {

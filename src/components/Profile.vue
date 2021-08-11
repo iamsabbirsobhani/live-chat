@@ -616,27 +616,27 @@
       <div v-if="windowWidth <= 475" class="post-choice-edit-footer-mobile">
         <div class="post-choice-checkbox">
           <div style="display: flex; align-items: center;">
-          <label for="public">Public</label>
-          <Checkbox
-            class="edit-cbox-footer-public cbox"
-            @click="publicPostF"
-            value="public"
-            v-model="checked3"
-            :binary="true"
-            id="public"
-          />
+            <label for="public">Public</label>
+            <Checkbox
+              class="edit-cbox-footer-public cbox"
+              @click="publicPostF"
+              value="public"
+              v-model="checked3"
+              :binary="true"
+              id="public"
+            />
           </div>
           <div style="display: flex; align-items: center;">
-          <label for="private">Private</label>
-          <Checkbox
-            class="edit-cbox-footer-private cbox"
-            @click="privatePostF"
-            value="private  "
-            v-model="checked4"
-            :binary="true"
-            id="public"
-          />
-        </div>
+            <label for="private">Private</label>
+            <Checkbox
+              class="edit-cbox-footer-private cbox"
+              @click="privatePostF"
+              value="private  "
+              v-model="checked4"
+              :binary="true"
+              id="public"
+            />
+          </div>
         </div>
         <div class="post-choice-button">
           <Button
@@ -698,7 +698,7 @@
     :maximizable="true"
     :modal="true"
   >
-    <Editor v-model="input" editorStyle="height: 320px" />
+    <Editor v-if="openEditor" v-model="input" editorStyle="height: 320px" />
     <div style="margin-top: 10px;">
       <form style="display: flex;">
         <!-- <el-button
@@ -1066,7 +1066,6 @@ export default {
       checked.value = true;
       if (checked.value == true) {
         postPrivacy.value = "public";
-        console.log(postPrivacy.value);
       }
     };
 
@@ -1075,7 +1074,6 @@ export default {
       checked2.value = true;
       if (checked2.value == true) {
         postPrivacy.value = "private";
-        console.log(postPrivacy.value);
       }
     };
 
@@ -1132,7 +1130,7 @@ export default {
 
     onMounted(async () => {
       // console.log(route.params.id, user.value.uid)
-      console.log(windowWidth.value);
+      // console.log(windowWidth.value);
       await profile();
       let style = {
         width: "60vw",
@@ -1514,14 +1512,6 @@ it will be positioned auto left */
     }
   }
 }
-
-// .sdf {
-//   width: 300px;
-//   height: 400px;
-//   overflow: hidden;
-//   display: block;
-//   border-radius: 10px;
-// }
 @media (max-width: 425px) {
   .place {
     max-width: 150px;
@@ -1557,7 +1547,7 @@ it will be positioned auto left */
     width: 300px;
     margin: auto;
   }
-  .post-choice-edit-footer-mobile{
+  .post-choice-edit-footer-mobile {
     display: flex;
     align-items: center;
     justify-content: space-between;

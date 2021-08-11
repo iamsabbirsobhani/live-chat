@@ -318,10 +318,13 @@ const router = createRouter({
 // This callback runs before every route change, including on page load.
 router.beforeEach( async (to, from, next) => {
 // const store = useStore();
-  let user = projectAuth.currentUser;
-  let doc;
-  if(to.params.id){
+
+let user = projectAuth.currentUser;
+let doc;
+if(to.params.id && to.params.id != user.uid){
+    document.title = `Live Chat loading...`;
     doc = await getDoc({collection: "profiles", docId: to.params.id})
+    console.log("got")
   }
   // console.log(d.userName);
   // This goes through the matched routes from last to first, finding the closest route with a title.
@@ -336,7 +339,7 @@ router.beforeEach( async (to, from, next) => {
 
   // If a route with a title was found, set the document (page) title to that value.
   if(nearestWithTitle) {
-    if(nearestWithTitle.meta.title.includes("Profile") && user.displayName != doc.userName) {
+    if(nearestWithTitle.meta.title.includes("Profile") && user.uid != to.params.id) {
       document.title = `${doc.userName} | ${nearestWithTitle.meta.title}`;
     } else if (nearestWithTitle.meta.title.includes("Profile")) {
       document.title = `${user.displayName} | ${nearestWithTitle.meta.title}`;

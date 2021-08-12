@@ -35,6 +35,8 @@
         </el-table-column>
         <el-table-column prop="isDark" label="Dark Mode" width="180">
         </el-table-column>
+        <el-table-column prop="editorUsed" label="Quill Editor Opened" width="180">
+        </el-table-column>
       </el-table>
     </div>
     <!-- elementplus -->

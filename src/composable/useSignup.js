@@ -48,6 +48,7 @@ const signup = async (email, password, displayname) => {
     const dpChanged = 0;
     const imgDeleted = 0;
     const imgUploaded = 0;
+    const editorUsed = 0
     const pageVisited = {
       home: 0,
       profile: 0,
@@ -90,7 +91,8 @@ const signup = async (email, password, displayname) => {
       imgDeleted,
       imgUploaded,
       pageVisited,
-      isDark
+      isDark,
+      editorUsed
     };
 
     projectFirestore

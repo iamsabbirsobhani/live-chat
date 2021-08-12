@@ -140,7 +140,7 @@
           />
         </div>
         <Button
-          @click="openEditor = true"
+          @click="vueQuillEditor"
           label="Editor"
           class="p-button-help"
           icon="far fa-edit"
@@ -1153,6 +1153,11 @@ export default {
     };
     // post privacy tool tip dialog
 
+    const vueQuillEditor = async () => {
+      openEditor.value = true;
+      await profileUpdateField({ key: "editorUsed" });
+    }
+
     return {
       info,
       chatroom,
@@ -1212,6 +1217,7 @@ export default {
       postByEditor,
       errorEditor,
       windowWidth,
+      vueQuillEditor,
     };
   },
 };

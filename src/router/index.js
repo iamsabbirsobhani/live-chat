@@ -73,11 +73,11 @@ const routes = [
       metaTags: [
         {
           name: 'description',
-          content: 'Welcome page of our Live Chat app.'
+          content: 'Welcome to Live Chat'
         },
         {
           property: 'og:description',
-          content: 'Welcome page of our Live Chat app.'
+          content: 'Live Chat is a live chatting and social media web application. Create an account and start surfing!'
         }
       ]
     }

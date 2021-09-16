@@ -77,7 +77,8 @@
             </p>
             <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
             <div v-else class="post">
-              <p>{{ doc.post }}</p>
+              <!-- <p>{{ doc.post }}</p> -->
+              <p v-html="doc.post"></p>
             </div>
           </div>
           <!-- post -->
@@ -493,6 +494,7 @@ export default {
   font-size: 16px;
   font-family: "Roboto", sans-serif;
   margin-top: 15px;
+  word-break: break-all;
 }
 .name {
   display: flex;

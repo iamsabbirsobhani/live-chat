@@ -239,7 +239,9 @@
         </p>
         <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
         <div v-else class="post">
-          <p>{{ doc.post }}</p>
+          <!-- <p>{{ doc.post }}</p> -->
+          <p v-html="doc.post"></p>
+          <!-- <div v-html="doc.post"></div> -->
         </div>
       </div>
 
@@ -698,7 +700,14 @@
     :maximizable="true"
     :modal="true"
   >
-    <QuillEditor v-if="openEditor" style="height: 320px;" contentType="html" v-model:content="input" toolbar="full" theme="snow" />
+    <QuillEditor
+      v-if="openEditor"
+      style="height: 320px;"
+      contentType="html"
+      v-model:content="input"
+      toolbar="full"
+      theme="snow"
+    />
     <div style="margin-top: 10px;">
       <form style="display: flex;">
         <Button
@@ -1156,7 +1165,7 @@ export default {
     const vueQuillEditor = async () => {
       openEditor.value = true;
       await profileUpdateField({ key: "editorUsed" });
-    }
+    };
 
     return {
       info,
@@ -1227,6 +1236,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+
 
 .profile {
   //  font-family: 'Roboto', sans-serif;
@@ -1311,6 +1321,7 @@ export default {
   // max-width: 300px;
   // max-height: 200px;
   font-size: 16px;
+  word-break: break-all;
 }
 
 .post.add {

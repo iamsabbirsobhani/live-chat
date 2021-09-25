@@ -19,6 +19,7 @@
         icon="pi pi-spin pi-spinner"
         class="send-button"
       />
+
       <el-input
         placeholder="type..."
         v-model.msg="newModel.msg"
@@ -28,6 +29,11 @@
 
       <!-- @keypress.enter.prevent="handleSumbit" -->
       <div class="files">
+        <ProgressBar
+          v-if="isProgress"
+          :value="progress"
+          style="margin-bottom: 10px; width: 100%;"
+        />
         <el-upload
           class="upload-demo"
           action="#"
@@ -44,7 +50,10 @@
           ></el-button>
         </el-upload>
       </div>
-      <ProgressSpinner v-if="isProgress" style="margin-right: 10px; width: 60px; height: 60px;"/>
+      <ProgressSpinner
+        v-if="isProgress"
+        style="margin-right: 10px; width: 60px; height: 60px;"
+      />
     </div>
 
     <!-- Primevue Error Popup -->
@@ -79,6 +88,7 @@
 
 <script>
 import ProgressSpinner from "primevue/progressspinner";
+import ProgressBar from "primevue/progressbar";
 import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import Typing from "@/components/Typing.vue";
@@ -107,13 +117,14 @@ export default {
     Dialog,
     FileUpload,
     ProgressSpinner,
+    ProgressBar,
   },
   setup(props) {
     const toast = useToast();
     const { user } = getUser();
     const { addDoc, error } = useCollection("privateChat");
     const { addDocType } = userTypingSetFlag();
-    const { url, uploadImage } = useStorage();
+    const { url, uploadImage, progress } = useStorage();
     const displayConfirmation = ref(false);
 
     // variable
@@ -200,15 +211,12 @@ export default {
       displayConfirmation.value = false;
     };
 
-    const isProgress = ref(false)
+    const isProgress = ref(false);
 
     const myUploader = async (file) => {
       if (file) {
-        isProgress.value = true;
-        await uploadImage(file);
         await profileUpdateField({ key: "imgUploaded" });
         console.log("Uploaded!!");
-        isProgress.value = false;
       }
 
       const chat = {
@@ -216,10 +224,13 @@ export default {
         userId: user.value.uid,
         to: props.userTo,
         createdAt: timestamp(),
-        imgUrl: url.value,
+        // imgUrl: url.value,
+        imgUrl: file,
         deletedAt: null,
       };
       await addDoc(chat);
+
+      isProgress.value = false;
 
       toast.add({
         severity: "info",
@@ -227,11 +238,18 @@ export default {
         detail: "File Uploaded",
         life: 3000,
       });
-      file.value = null;
+      file = null;
     };
 
-    const handleAvatarSuccess = (file) => {
-      myUploader(file.raw);
+    watch(url, (newUrl) => {
+      // console.log("Watch: ", newUrl);
+      myUploader(newUrl);
+    });
+
+    const handleAvatarSuccess = async (file) => {
+      isProgress.value = true;
+      await uploadImage(file.raw);
+      // myUploader(file.raw);
     };
 
     onMounted(async () => {
@@ -247,7 +265,8 @@ export default {
       url,
       newModel,
       isLoading,
-      isProgress
+      isProgress,
+      progress,
     };
   },
 };

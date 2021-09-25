@@ -51,7 +51,8 @@
               </div>
               <!-- element-plus Image Preview -->
               <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
-                <div v-if="doc.imgUrl.includes(`mp4`)">
+                <!-- <div v-if="doc.imgUrl.includes(`mp4`) || doc.imgUrl.includes(`MP4`) || doc.imgUrl.includes(`MKV`) || doc.imgUrl.includes(`mkv`)"> -->
+                <div v-if="doc.imgUrl.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp/)">
                   <video :style="styleObject" controls>
                     <source :src="doc.imgUrl" type="video/mp4" />
                     Your browser does not support the video tag.
@@ -142,7 +143,8 @@
 
             <!-- element-plus Image Preview -->
             <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
-              <div v-if="doc.imgUrl.includes(`mp4`)">
+              <!-- <div v-if="doc.imgUrl.includes(`mp4`) || doc.imgUrl.includes(`MP4`) || doc.imgUrl.includes(`MKV`) || doc.imgUrl.includes(`mkv`)"> -->
+              <div v-if="doc.imgUrl.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp/)">
                 <video :style="styleObject" width="280" height="240" controls>
                   <source :src="doc.imgUrl" type="video/mp4" />
                   Your browser does not support the video tag.

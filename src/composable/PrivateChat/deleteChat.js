@@ -21,7 +21,7 @@ const deleteChat = () => {
         .collection("chat")
         .doc(docId)
         .update({
-          message: `${img.name} unsent an image`,
+          message: `${img.name} unsent an image or a video`,
           imgUrl: null,
           deletedAt: timestamp(),
         });

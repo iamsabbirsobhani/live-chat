@@ -32,7 +32,7 @@
           class="upload-demo"
           action="#"
           :on-change="handleAvatarSuccess"
-          accept="image/*"
+          accept="image/*,video/*"
           :auto-upload="false"
           :limit="1"
         >
@@ -44,6 +44,7 @@
           ></el-button>
         </el-upload>
       </div>
+      <ProgressSpinner v-if="isProgress" style="margin-right: 10px; width: 60px; height: 60px;"/>
     </div>
 
     <!-- Primevue Error Popup -->
@@ -77,6 +78,7 @@
 </template>
 
 <script>
+import ProgressSpinner from "primevue/progressspinner";
 import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import Typing from "@/components/Typing.vue";
@@ -104,6 +106,7 @@ export default {
     Typing,
     Dialog,
     FileUpload,
+    ProgressSpinner,
   },
   setup(props) {
     const toast = useToast();
@@ -197,10 +200,15 @@ export default {
       displayConfirmation.value = false;
     };
 
+    const isProgress = ref(false)
+
     const myUploader = async (file) => {
       if (file) {
+        isProgress.value = true;
         await uploadImage(file);
         await profileUpdateField({ key: "imgUploaded" });
+        console.log("Uploaded!!");
+        isProgress.value = false;
       }
 
       const chat = {
@@ -239,6 +247,7 @@ export default {
       url,
       newModel,
       isLoading,
+      isProgress
     };
   },
 };
@@ -289,7 +298,7 @@ export default {
   justify-content: space-around;
   flex-direction: row-reverse;
   align-items: center;
-  max-width: 400px;
+  max-width: 450px;
   margin: 20px auto;
 }
 .files {
@@ -314,7 +323,7 @@ export default {
   }
   .type {
     display: flex;
-    max-width: 300px;
+    max-width: 320px;
     margin: 10px auto;
   }
   .files {

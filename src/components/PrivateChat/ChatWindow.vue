@@ -1,5 +1,9 @@
 <template>
-  <div class="chat-windows " :class="{chatMessagesDark : isDark, chatMessages: !isDark}" ref="messages">
+  <div
+    class="chat-windows "
+    :class="{ chatMessagesDark: isDark, chatMessages: !isDark }"
+    ref="messages"
+  >
     <div v-if="error">{{ error }}</div>
     <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
@@ -16,7 +20,7 @@
               <div
                 v-if="
                   doc.message !== `${doc.name} unsent a message` &&
-                    doc.message !== `${doc.name} unsent an image`
+                    doc.message !== `${doc.name} unsent an image or a video`
                 "
                 style="max-width: 100%; text-align: end"
               >
@@ -41,13 +45,21 @@
                 <Chip
                   style="text-align: start"
                   v-else
-                  label="You unsent an image"
+                  label="You unsent an image or a video"
                   class="p-mr-2 p-mb-2 unsentChat"
                 />
               </div>
               <!-- element-plus Image Preview -->
               <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
+                <div v-if="doc.imgUrl.includes(`mp4`)">
+                  <video :style="styleObject" controls>
+                    <source :src="doc.imgUrl" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+
                 <el-image
+                  v-else
                   class="images"
                   :src="doc.imgUrl"
                   :preview-src-list="esourceList"
@@ -89,7 +101,7 @@
                     v-if="
                       user.uid === doc.userId &&
                         doc.message !== `${doc.name} unsent a message` &&
-                        doc.message !== `${doc.name} unsent an image`
+                        doc.message !== `${doc.name} unsent an image or a video`
                     "
                     class="chatDelete"
                     @click="chatDel(doc.id, doc.imgUrl, doc.name)"
@@ -112,7 +124,7 @@
           <div
             v-if="
               doc.message !== `${doc.name} unsent a message` &&
-                doc.message !== `${doc.name} unsent an image`
+                doc.message !== `${doc.name} unsent an image or a video`
             "
             style="max-width: 90%"
             class="pvtOtherUser"
@@ -127,9 +139,17 @@
             <div v-else>
               <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
             </div>
+
             <!-- element-plus Image Preview -->
             <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
+              <div v-if="doc.imgUrl.includes(`mp4`)">
+                <video :style="styleObject" width="280" height="240" controls>
+                  <source :src="doc.imgUrl" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
               <el-image
+                v-else
                 class="images"
                 :src="doc.imgUrl"
                 :preview-src-list="esourceList"
@@ -359,6 +379,23 @@ export default {
       }
     };
 
+    const windWidth = ref(null);
+    const styleObject = ref(null);
+    onMounted(() => {
+      windWidth.value = window.innerWidth;
+      if (windWidth.value > 600) {
+        styleObject.value = {
+          width: `310px`,
+          height: `240px`,
+        };
+      } else if (600 > windWidth.value) {
+        styleObject.value = {
+          width: `280px`,
+          height: `240px`,
+        };
+      }
+    });
+
     return {
       error,
       documents,
@@ -375,6 +412,7 @@ export default {
       shoOther,
       idsOther,
       chatDel,
+      styleObject,
     };
   },
   computed: {
@@ -430,7 +468,8 @@ export default {
   font-weight: bold;
   margin-right: 6px;
 }
-.chatMessages, .chatMessagesDark {
+.chatMessages,
+.chatMessagesDark {
   max-height: 485px;
   overflow: auto;
 }
@@ -489,11 +528,11 @@ a {
 
 .chatMessagesDark::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color:black;
+  background-color: black;
 }
 .chatMessagesDark::-webkit-scrollbar {
   width: 5px;
-  background-color:black;
+  background-color: black;
 }
 
 .chatMessages::-webkit-scrollbar-thumb {
@@ -662,7 +701,8 @@ a {
 .chat-windows {
   padding: 3px;
 }
-.chatMessages, .chatMessagesDark {
+.chatMessages,
+.chatMessagesDark {
   padding: 3px;
 }
 .cwindows {
@@ -675,7 +715,8 @@ a {
     overflow: hidden;
     display: block;
   }
-  .chatMessages, .chatMessagesDark {
+  .chatMessages,
+  .chatMessagesDark {
     // max-height: 390px;
     max-height: 520px;
     overflow: auto;

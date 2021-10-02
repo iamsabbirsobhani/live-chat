@@ -9,7 +9,7 @@
   <h3 style="text-align: center; font-family: Roboto, sans-serif">Messages</h3>
 
   <div v-if="documents">
-    <div v-for="doc in documents" :key="doc.userUid">
+    <div v-for="doc in formatedDoc" :key="doc.userUid">
       <div v-for="fr in info.friendList" :key="fr.id">
         <div v-if="doc.id === fr">
           <div class="users">
@@ -21,7 +21,10 @@
                 <el-avatar class="img" :size="60">
                   <img :src="doc.phofilePhoto" />
                 </el-avatar>
-                <h4>{{ doc.userName }}</h4>
+                <div>
+                  <h4>{{ doc.userName }}</h4>
+                  <h4 class="last-seen" v-if="user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`">{{ doc.lastVisited }}</h4>
+                </div>
               </div>
             </router-link>
             <div class="friend">
@@ -63,6 +66,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+import { format } from "date-fns";
 
 export default {
   props: ["id"],
@@ -95,6 +99,15 @@ export default {
       router.push({ name: "Home" });
     };
 
+    const formatedDoc = computed(() => {
+      if (documents.value) {
+        return documents.value.map((doc) => {
+          let time = format(doc.lastVisited.toDate(), "PPp");
+          return { ...doc, lastVisited: time };
+        });
+      }
+    });
+
     const hasMsg = computed(() => {
       return Array.isArray(info.value.friendList) &&
         !info.value.friendList.length
@@ -117,10 +130,12 @@ export default {
       // meta2.name = "theme-color";
       // meta2.content = "white";
       // document.getElementsByTagName("head")[0].append(meta2);
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#DFE4E0");
     });
 
-    return { goBack, documents, info, privateChat, user, hasMsg };
+    return { goBack, documents, info, privateChat, user, hasMsg, formatedDoc };
   },
   computed: {
     ...mapGetters(["getRoute"]),
@@ -144,6 +159,14 @@ export default {
   margin-bottom: 15px;
   text-decoration: none;
   padding: 10px;
+  h4 {
+    margin: 5px;
+  }
+  .last-seen {
+    color: gray;
+    font-size: 14px;
+    font-weight: 400;
+  }
 }
 .users:hover {
   transform: scale(1.02);
@@ -157,7 +180,7 @@ export default {
 }
 @media (max-width: 475px) {
   .users {
-    max-width: 320px;
+    max-width: 330px;
   }
 }
 </style>

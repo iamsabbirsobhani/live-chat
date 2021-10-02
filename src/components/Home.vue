@@ -1,5 +1,4 @@
 <template>
-  <Toast />
   <el-menu
     :default-active="activeIndex"
     class="el-menu-demo"
@@ -26,36 +25,25 @@
         </router-link>
       </el-menu-item>
     </el-tooltip>
-    <!-- <el-tooltip
+    <el-tooltip
       class="item"
       effect="dark"
       content="Click Messages to check inbox"
       placement="left"
-    > -->
+    >
       <el-menu-item index="2">
         <Button
-          v-if="user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`"
           @click="messages(user.uid)"
           label="Messages"
           class="p-button-raised p-button-secondary p-button-text"
         />
-        <Button
-          v-else
-          icon="fas fa-exclamation-triangle"
-          label="Messages"
-          class="p-button-danger"
-          @click="showError"
-        />
       </el-menu-item>
-    <!-- </el-tooltip> -->
+    </el-tooltip>
   </el-menu>
 
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
-
-  <SiteDeletion/>
-
   <div v-if="formattedDocuments">
     <div v-for="doc in formattedDocuments" :key="doc.userUid" class="postcard">
       <!-- :class="{ borderCard: !seeComments  && doc.id === seeCommentsDocId}" -->
@@ -112,21 +100,17 @@
               <Button
                 v-if="doc.likeId.includes(user.uid)"
                 @click.stop="like(doc.id, user.uid)"
-                style="color: red"
-                icon="fas fa-heart"
-                class="p-button-rounded p-button-text likeButton p-button-danger"
+                icon="fas fa-thumbs-up"
+                class="p-button-rounded p-button-text likeButton "
               />
-                <!-- icon="fas fa-thumbs-up" -->
               <Button
                 v-else
                 @click.stop="like(doc.id, user.uid)"
-                style="color: red"
-                icon="far fa-heart"
-                class="p-button-rounded p-button-text likeButton p-button-danger"
+                icon="far fa-thumbs-up"
+                class="p-button-rounded p-button-text likeButton "
               />
-                <!-- icon="far fa-thumbs-up" -->
               <p>{{ doc.like }}</p>
-              <!-- <Button
+              <Button
                 v-if="doc.dislikeId.includes(user.uid)"
                 @click.stop="dislike(doc.id, user.uid)"
                 style="color: red"
@@ -139,17 +123,16 @@
                 style="color: red"
                 icon="far fa-thumbs-down"
                 class="p-button-rounded p-button-danger p-button-text"
-              /> -->
-              <!-- <p style="display: inline">{{ doc.dislike }}</p> -->
+              />
+              <p style="display: inline">{{ doc.dislike }}</p>
             </div>
             <!-- comments -->
             <div style="cursor: pointer; font-family: Roboto, sans-serif">
               <p
                 v-if="seeComments"
                 class="seeComment"
-                @click="showError"
+                @click="seeComment(doc.id, seeCommentsDocId)"
               >
-                <!-- @click="seeComment(doc.id, seeCommentsDocId)" -->
                 See Comments
               </p>
               <p
@@ -292,11 +275,9 @@ import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 import { home, messagePageCount } from "@/composable/pageVisited";
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
-import SiteDeletion from './SiteDeletion.vue';
+
 export default {
-  components: { Button, InputText, Chip, Toast, SiteDeletion },
+  components: { Button, InputText, Chip },
   setup() {
     const { user } = getUser();
     const { error, documents } = getUsers();
@@ -304,7 +285,6 @@ export default {
     const router = useRouter();
     const isLoading = ref(false);
     const store = useStore();
-    const toast = useToast();
 
     // comment section
     const seeComments = ref(true);
@@ -459,15 +439,6 @@ export default {
       store.commit("setMetaProfileName", name);
     };
 
-    const showError = () => {
-      toast.add({
-        severity: "error",
-        summary: "Error Message",
-        detail: "All of the services have been suspended due to the complete closure of this site.",
-        life: 8000,
-      });
-    };
-
     return {
       goBack,
       user,
@@ -494,7 +465,6 @@ export default {
       showMoreBtn,
       clickedShowMore,
       metaProfileName,
-      showError,
     };
   },
 };

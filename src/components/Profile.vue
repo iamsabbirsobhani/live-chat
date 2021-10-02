@@ -1,5 +1,4 @@
 <template>
-  <Toast />
   <div class="profile">
     <div class="profile-card">
       <div class="cover">
@@ -19,10 +18,7 @@
               <el-dropdown-item @click="home" icon="el-icon-house"
                 >Home</el-dropdown-item
               >
-              <el-dropdown-item
-                @click="chatroom"
-                v-if="user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`"
-                icon="el-icon-chat-dot-round"
+              <el-dropdown-item @click="chatroom" icon="el-icon-chat-dot-round"
                 >Chatroom</el-dropdown-item
               >
               <el-dropdown-item
@@ -41,9 +37,7 @@
                 >User List</el-dropdown-item
               >
               <el-dropdown-item
-                v-if="
-                  id == user.uid && user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
-                "
+                v-if="id == user.uid"
                 @click="frList"
                 icon="pi pi-user"
                 >Friend List</el-dropdown-item
@@ -256,7 +250,7 @@
         style="display: flex; margin-bottom: 10px; margin-top: 10px;"
       >
         <div>
-          <p class="postReact" v-if="doc.like > 0">Loved by {{ doc.like }}</p>
+          <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
 
           <p class="postReact" v-if="doc.dislike > 0">
             Disliked by {{ doc.dislike }}
@@ -290,12 +284,9 @@
             margin-left: auto;
           "
         >
-          <p v-if="seeComments"
-           class="seeComment"
-            @click="showError">
+          <p v-if="seeComments" class="seeComment" @click="seeComment(doc.id)">
             See Comments
           </p>
-            <!-- @click="seeComment(doc.id)"> -->
           <p
             v-if="closeComments && doc.id === seeCommentsDocId"
             class="closeComment"
@@ -427,7 +418,7 @@
 
         <div style="display: flex">
           <div>
-            <p class="postReact" v-if="doc.like > 0">Loved by {{ doc.like }}</p>
+            <p class="postReact" v-if="doc.like > 0">Liked by {{ doc.like }}</p>
 
             <p class="postReact" v-if="doc.dislike > 0">
               Disliked by {{ doc.dislike }}
@@ -460,9 +451,8 @@
             <p
               v-if="seeComments"
               class="seeComment"
-              @click="showError"
+              @click="seeComment(doc.id)"
             >
-              <!-- @click="seeComment(doc.id)" -->
               See Comments
             </p>
             <p
@@ -792,8 +782,7 @@ import {
   friendRequestPageCount,
 } from "@/composable/pageVisited";
 import { profileUpdateField } from "@/composable/profileUpdateField";
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
+
 export default {
   props: ["id"],
   components: {
@@ -804,7 +793,6 @@ export default {
     Chip,
     ConfirmDialog,
     Textarea,
-    Toast,
   },
   setup(props) {
     const { user } = getUser();
@@ -817,7 +805,6 @@ export default {
     const { logout, error } = useLogout();
     const isLoadingCmt = ref(false);
     const store = useStore();
-    const toast = useToast();
 
     // variable section
     const checked = ref(true);
@@ -1180,16 +1167,6 @@ export default {
       await profileUpdateField({ key: "editorUsed" });
     };
 
-    const showError = () => {
-      toast.add({
-        severity: "error",
-        summary: "Error Message",
-        detail:
-          "All of the services have been suspended due to the complete closure of this site.",
-        life: 8000,
-      });
-    };
-
     return {
       info,
       chatroom,
@@ -1250,8 +1227,6 @@ export default {
       errorEditor,
       windowWidth,
       vueQuillEditor,
-
-      showError,
     };
   },
 };
@@ -1261,6 +1236,7 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+
 
 .profile {
   //  font-family: 'Roboto', sans-serif;

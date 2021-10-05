@@ -117,6 +117,7 @@
                 icon="fas fa-thumbs-down"
                 class="p-button-rounded p-button-danger p-button-text"
               />
+
               <Button
                 v-else
                 @click.stop="dislike(doc.id, user.uid)"

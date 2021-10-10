@@ -8,7 +8,7 @@
       </div>
     </el-card>
 
-    <el-skeleton v-else :style="styleObject" />
+    <el-skeleton v-else :style="styleObject" class="skeleton"/>
 
     <el-card :style="styleObject" v-if="quotesText" class="box-card box-two">
       <h3>Quotes</h3>
@@ -18,7 +18,7 @@
       </div>
     </el-card>
 
-    <el-skeleton :style="styleObject" v-else />
+    <el-skeleton class="skeleton" :style="styleObject" v-else />
 
     <!-- <el-card v-for="art in articles" :key="art" class="box-card"> -->
     <!-- <div class="text item"> -->
@@ -135,6 +135,9 @@ h3 {
 p {
   font-family: "Patua One", cursive;
   // color: olivedrab;
+}
+.skeleton {
+    margin: auto;
 }
 
 // .text {

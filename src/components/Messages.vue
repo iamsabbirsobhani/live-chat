@@ -23,7 +23,7 @@
                 </el-avatar>
                 <div>
                   <h4>{{ doc.userName }}</h4>
-                  <h4 class="last-seen" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">{{ doc.lastVisited }}</h4>
+                  <h4 class="last-seen" v-if="user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`">{{ doc.lastVisited }}</h4>
                 </div>
               </div>
             </router-link>

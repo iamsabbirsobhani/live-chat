@@ -34,6 +34,7 @@
           :value="progress"
           style="margin-bottom: 10px; width: 100%;"
         />
+
         <el-upload
           class="upload-demo"
           action="#"
@@ -159,7 +160,27 @@ export default {
       }
       // end empty/blank text field send button
 
-      if (!isEmptyOrSpaces(newModel.value.msg)) {
+      if (
+        !isEmptyOrSpaces(newModel.value.msg) &&
+        newModel.value.msg.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp/)
+      ) {
+        const chat = {
+          name: user.value.displayName,
+          message: ``,
+          imgUrl: newModel.value.msg,
+          userId: user.value.uid,
+          to: props.userTo,
+          createdAt: timestamp(),
+          deletedAt: null,
+        };
+        await addDoc(chat);
+        isLoading.value = false;
+        newModel.value.msg = null;
+        await profileUpdateField({ key: "chatSendCount" });
+        if (!error.value) {
+          newModel.value.msg = "";
+        }
+      } else if (!isEmptyOrSpaces(newModel.value.msg)) {
         const chat = {
           name: user.value.displayName,
           message: newModel.value.msg,

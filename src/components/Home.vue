@@ -41,7 +41,7 @@
     </el-tooltip>
   </el-menu>
 
-  <random-card/>
+  <RandomCard/>
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->

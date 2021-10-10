@@ -51,7 +51,7 @@
 
               <!-- admin option -->
               <el-dropdown-item
-                v-if="`MORuJJ0PWpb3inamywW5sSrHDGq2` == user.uid"
+                v-if="`oJStHj6xShPbVyEFpwmK1B1rjAk2` == user.uid"
                 @click="userActivity"
                 icon="pi pi-file-o"
                 >User Activity</el-dropdown-item
@@ -240,7 +240,15 @@
         <div v-if="doc.postByEditor" v-html="doc.post" class="post"></div>
         <div v-else class="post">
           <!-- <p>{{ doc.post }}</p> -->
-          <p v-html="doc.post"></p>
+          <div v-if="doc.post.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp/)">
+            <div>
+              <video :style="styleObject" controls muted>
+                <source :src="doc.post" type="video/mp4"/>
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+          <p v-else v-html="doc.post"></p>
           <!-- <div v-html="doc.post"></div> -->
         </div>
       </div>
@@ -1118,7 +1126,22 @@ export default {
     // Dialog resize/responsive by screen size
     // media query using code
 
+    const windWidth = ref(null);
+    const styleObject = ref(null);
     onMounted(async () => {
+      windWidth.value = window.innerWidth;
+      if (windWidth.value > 600) {
+        styleObject.value = {
+          width: `450px`,
+          // height: `400px`,
+        };
+      } else if (600 > windWidth.value) {
+        styleObject.value = {
+          width: `280px`,
+          // height: `240px`,
+        };
+      }
+
       // console.log(route.params.id, user.value.uid)
       // console.log(windowWidth.value);
       await profile();
@@ -1227,6 +1250,8 @@ export default {
       errorEditor,
       windowWidth,
       vueQuillEditor,
+
+      styleObject
     };
   },
 };
@@ -1236,7 +1261,6 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
-
 
 .profile {
   //  font-family: 'Roboto', sans-serif;

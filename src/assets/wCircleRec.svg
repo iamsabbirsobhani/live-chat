@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500" height="500" viewBox="0 0 500 500" xml:space="preserve">
+<desc>Created with Fabric.js 4.6.0</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 165.45 289.5)" id="IXNXXCCtOJD-mLoYxGCs-"  >
+<linearGradient id="SVGID_302" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="123.34801762114529" y1="-2.1292217327459753" x2="-80.61674008810573" y2="171.14537444933922">
+<stop offset="0%" style="stop-color:#FFFFFF;stop-opacity: 1"/>
+<stop offset="50%" style="stop-color:#CDF0FF;stop-opacity: 1"/>
+<stop offset="100%" style="stop-color:#C2E8FF;stop-opacity: 1"/>
+</linearGradient>
+<path style="stroke: rgb(198,172,66); stroke-opacity: 0; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_302); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-50, -50)" d="M 0 21.213203435596423 C 5.168947270126592e-15 9.497474683058329 9.497474683058329 9.722157417646593e-15 21.213203435596423 0 L 78.78679656440357 0 L 78.78679656440357 0 C 90.50252531694167 -7.173814858237197e-16 100 9.497474683058325 100 21.213203435596423 L 100 78.78679656440357 L 100 78.78679656440357 C 100 90.50252531694167 90.50252531694167 100 78.78679656440357 100 L 21.213203435596427 100 L 21.213203435596427 100 C 9.497474683058329 100 -1.962109585316772e-15 90.50252531694167 0 78.78679656440357 Z" stroke-linecap="round" />
+</g>
+<g transform="matrix(1 0 0 1 434.86 130.5)" id="L1lDy6peKXHAIeAfIF-dW"  >
+<path style="stroke: rgb(218,184,192); stroke-opacity: 0; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(231,255,253); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-50, -50)" d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 Z" stroke-linecap="round" />
+</g>
+</svg>

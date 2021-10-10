@@ -25,12 +25,12 @@
         </router-link>
       </el-menu-item>
     </el-tooltip>
-    <el-tooltip
+    <!-- <el-tooltip
       class="item"
       effect="dark"
       content="Click Messages to check inbox"
       placement="left"
-    >
+    > -->
       <el-menu-item index="2">
         <Button
           @click="messages(user.uid)"
@@ -38,7 +38,7 @@
           class="p-button-raised p-button-secondary p-button-text"
         />
       </el-menu-item>
-    </el-tooltip>
+    <!-- </el-tooltip> -->
   </el-menu>
 
   <RandomCard/>

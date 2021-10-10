@@ -1,5 +1,11 @@
 <template>
   <div class="rand-card">
+    <el-card :style="styleObject" class="box-card card-weather">
+      <div class="text item">
+        <WeatherCard />
+      </div>
+    </el-card>
+
     <el-card :style="styleObject" v-if="jokes" class="box-card">
       <h3>Jokes</h3>
       <div class="text item">
@@ -8,7 +14,7 @@
       </div>
     </el-card>
 
-    <el-skeleton v-else :style="styleObject" class="skeleton"/>
+    <el-skeleton v-else :style="styleObject" class="skeleton" />
 
     <el-card :style="styleObject" v-if="quotesText" class="box-card box-two">
       <h3>Quotes</h3>
@@ -45,8 +51,9 @@
 
 <script>
 import { onMounted, ref } from "vue";
-
+import WeatherCard from "../subComponent/WeatherCard.vue";
 export default {
+  components: { WeatherCard },
   setup() {
     const jokes = ref(null);
     const quotesText = ref(null);
@@ -131,13 +138,14 @@ export default {
 h3 {
   font-family: "Patua One", cursive;
   color: orangered;
+  //   text-align: center;
 }
 p {
   font-family: "Patua One", cursive;
   // color: olivedrab;
 }
 .skeleton {
-    margin: auto;
+  margin: auto;
 }
 
 // .text {
@@ -167,9 +175,16 @@ p {
 }
 
 .box-two {
-    background-image: url("../assets/quotesCircle.svg");
+  background-image: url("../assets/quotesCircle.svg");
   background-repeat: no-repeat;
   background-position: -380% 37%;
+  background-color: rgba(75, 228, 164, 0.055);
+}
+
+.card-weather {
+  background-image: url("../assets/wCircleRec.svg");
+  background-repeat: no-repeat;
+  background-position: -120% 35%;
   background-color: rgba(75, 228, 164, 0.055);
 }
 .box-two {
@@ -209,6 +224,13 @@ p {
   }
   .box-two {
     background-position: 100% 40%;
+  }
+
+  .card-weather {
+    background-image: url("../assets/wCircleRec.svg");
+    background-repeat: no-repeat;
+    background-position: 70% 30%;
+    background-color: rgba(75, 228, 164, 0.055);
   }
 }
 </style>

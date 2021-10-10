@@ -20,7 +20,9 @@
       <h3>Quotes</h3>
       <div class="text item">
         <p>{{ quotesText }}</p>
-        <p>{{ quotesAuthor }}</p>
+        <p>
+          <span> - {{ quotesAuthor }}</span>
+        </p>
       </div>
     </el-card>
 
@@ -143,6 +145,7 @@ h3 {
 p {
   font-family: "Patua One", cursive;
   // color: olivedrab;
+  font-size: 20px;
 }
 .skeleton {
   margin: auto;
@@ -191,6 +194,11 @@ p {
   h3 {
     color: gray;
   }
+  span {
+    color: gray;
+    font-weight: normal !important;
+    font-size: 16px;
+  }
 }
 // .time {
 //   font-size: 13px;
@@ -220,16 +228,16 @@ p {
 // }
 @media (max-width: 600px) {
   .box-card {
-    background-position: 90% 40%;
+    background-position: 80% 25%;
   }
   .box-two {
-    background-position: 100% 40%;
+    background-position: 90% 25%;
   }
 
   .card-weather {
     background-image: url("../assets/wCircleRec.svg");
     background-repeat: no-repeat;
-    background-position: 70% 30%;
+    background-position: 67% 30%;
     background-color: rgba(75, 228, 164, 0.055);
   }
 }

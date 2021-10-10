@@ -41,6 +41,7 @@
     </el-tooltip>
   </el-menu>
 
+  <random-card/>
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
@@ -276,9 +277,10 @@ import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 import { home, messagePageCount } from "@/composable/pageVisited";
+import RandomCard  from '@/components/RandomCard'
 
 export default {
-  components: { Button, InputText, Chip },
+  components: { Button, InputText, Chip, RandomCard },
   setup() {
     const { user } = getUser();
     const { error, documents } = getUsers();

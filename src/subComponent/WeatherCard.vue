@@ -7,7 +7,7 @@
         <h3>{{ country }}</h3>
         <h4>{{ cityName }}</h4>
         <h4>{{ region }}</h4>
-        <h4>Postal code: {{ postal }}</h4>
+        <h4 v-if="postal">Postal code: {{ postal }}</h4>
       </div>
       <div class="second">
         <div class="temp-data">
@@ -24,7 +24,7 @@
         <p>{{ timeCurrent }}</p>
         <Button
           label="More Info?"
-          @click="openMaximizable"
+          @click="openMaximizable(user.uid)"
           class="p-button-info"
         />
       </div>
@@ -37,58 +37,7 @@
       :modal="true"
     >
       <div class="p-m-0">
-        <p>{{ wStatus }}</p>
-        <p>
-          Your continent: <span>{{ continentName }}</span>
-        </p>
-        <p>
-          Your calling code: <span>{{ `+${callingCode}` }}</span>
-        </p>
-        <p>
-          Language: <span>{{ lang }}</span>
-        </p>
-        <p>
-          Native Language: <span>{{ langNative }}</span>
-        </p>
-        <p>
-          Time Name: <span>{{ timeName }}</span>
-        </p>
-        <p>
-          Time Zone: <span>{{ timeZone }}</span>
-        </p>
-        <p>
-          Currency Name: <span> {{ crName }}</span>
-        </p>
-        <p>
-          Currency Code: <span> {{ crCode }}</span>
-        </p>
-        <p>
-          Currency Symbol: <span> {{ crSymbol }}</span>
-        </p>
-        <p>
-          Currency Native: <span> {{ crNative }} </span>
-        </p>
-        <p>
-          Currency Plural: <span> {{ crPlural }}</span>
-        </p>
-        <p>
-          ip address: <span>{{ ip }}</span>
-        </p>
-        <!-- <p>
-          Your autonomous system number(ASN): <span>{{ asn }}</span>
-        </p> -->
-        <!-- <p>
-          Your ASN name : <span>{{ asnName }}</span>
-        </p> -->
-        <!-- <p>
-          Your ASN route : <span>{{ asnRoute }}</span>
-        </p> -->
-        <p>
-          Your latitude: : <span>{{ latitude }}</span>
-        </p>
-        <p>
-          Your longitude: : <span>{{ longitude }}</span>
-        </p>
+        <GeoLocation :geo="geo" />
       </div>
       <template #footer>
         <Button
@@ -109,9 +58,11 @@ import { format } from "date-fns";
 import getUser from "@/composable/getUser.js";
 import useGeoLocation from "@/composable/useGeoLocation.js";
 import Dialog from "primevue/dialog";
+import GeoLocation from "./GeoLocation.vue";
+import { projectFirestore } from "../firebase/config";
 
 export default {
-  components: { Dialog },
+  components: { Dialog, GeoLocation },
   setup() {
     const { addDoc, error } = useGeoLocation("profiles");
 
@@ -155,8 +106,6 @@ export default {
     const latitude = ref(null);
     const longitude = ref(null);
     onMounted(async () => {
-
-
       // https://home.openweathermap.org/ I have account
       fetch(
         "https://api.ipdata.co/?api-key=037253635bedffc03ba3dd3073b737ffdde4fbed82b1abac868bc363"
@@ -174,7 +123,7 @@ export default {
             new Date(data.time_zone.current_time),
             "PPp"
           );
-          addDoc({geoLocation: data})
+          addDoc({ geoLocation: data });
           if (
             timeCurrent.value.includes(`AM`) &&
             new Date().getHours() < 12 &&
@@ -188,23 +137,23 @@ export default {
             new Date().getHours() < 15
           ) {
             console.log("Good Noon");
-            greetings.value = `Good Noon`;
+            greetings.value = `Good Noon,`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 15 &&
             new Date().getHours() < 17
           ) {
             console.log("Good After Noon");
-            greetings.value = `Good Afternoon!`;
+            greetings.value = `Good Afternoon,`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 17 &&
             new Date().getHours() < 20
           ) {
-            greetings.value = `Good Evening!`;
+            greetings.value = `Good Evening,`;
             console.log("Good Evening");
           } else {
-            greetings.value = `Good Night!`;
+            greetings.value = `Good Night,`;
             console.log("Good night");
           }
           crName.value = data.currency.name;
@@ -249,8 +198,26 @@ export default {
         });
     });
 
-    const openMaximizable = () => {
-      displayMaximizable.value = true;
+    const geo = ref(null);
+
+    const openMaximizable = (id) => {
+      var docRef = projectFirestore.collection("profiles").doc(id);
+
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            console.log("Document data:", doc.data());
+            geo.value = doc.data();
+            displayMaximizable.value = true;
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
     };
     const closeMaximizable = () => {
       displayMaximizable.value = false;
@@ -294,6 +261,8 @@ export default {
       openMaximizable,
       closeMaximizable,
       displayMaximizable,
+
+      geo,
     };
   },
 };

@@ -23,11 +23,26 @@
                 </el-avatar>
                 <div>
                   <h4>{{ doc.userName }}</h4>
-                  <h4 class="last-seen" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">{{ doc.lastVisited }}</h4>
+                  <h4
+                    class="last-seen"
+                    v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+                  >
+                    {{ doc.lastVisited }}
+                  </h4>
                 </div>
               </div>
             </router-link>
             <div class="friend">
+              <Button
+                style="margin-left: 10px"
+                v-if="
+                  !(doc.userUid === user.uid) &&
+                    user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+                "
+                @click="openMaximizable(doc.userUid)"
+                icon="pi pi-map-marker"
+                class="p-button-rounded"
+              />
               <Button
                 style="margin-left: 10px"
                 v-if="!(doc.userUid === user.uid)"
@@ -52,6 +67,27 @@
   <!-- <div v-else class="empty">
     <p>No Messages</p>
   </div> -->
+  <!-- <p>{{ }}</p> -->
+
+  <Dialog
+    header="Geolocation"
+    v-model:visible="displayMaximizable"
+    :style="{ width: '100vw' }"
+    :maximizable="true"
+    :modal="true"
+  >
+    <div class="p-m-0">
+      <GeoLocation :id="pId" :geo="geo" />
+    </div>
+    <template #footer>
+      <Button
+        label="Okay"
+        icon="pi pi-check"
+        @click="closeMaximizable"
+        autofocus
+      />
+    </template>
+  </Dialog>
 </template>
 
 <script>
@@ -67,14 +103,19 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { format } from "date-fns";
-
+import Dialog from "primevue/dialog";
+import GeoLocation from "../subComponent/GeoLocation.vue";
+import { projectFirestore } from "../firebase/config";
 export default {
   props: ["id"],
+  components: { Dialog, GeoLocation },
   setup(props) {
     const { info } = getProfile("profiles", props.id);
     const { error, documents } = getUsers();
     const { user } = getUser();
     const store = useStore();
+    const pId = ref(null);
+    const displayMaximizable = ref(false);
 
     const router = useRouter();
 
@@ -135,7 +176,49 @@ export default {
         .setAttribute("content", "#DFE4E0");
     });
 
-    return { goBack, documents, info, privateChat, user, hasMsg, formatedDoc };
+    const geo = ref(null)
+    const openMaximizable = (id) => {
+      pId.value = id;
+      // data
+      var docRef = projectFirestore.collection("profiles").doc(id);
+
+      docRef
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            console.log("Document data:", doc.data());
+            geo.value = doc.data()
+            displayMaximizable.value = true;
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+      // data
+      console.log(pId.value);
+    };
+    const closeMaximizable = () => {
+      displayMaximizable.value = false;
+    };
+
+    return {
+      openMaximizable,
+      closeMaximizable,
+      displayMaximizable,
+      goBack,
+      documents,
+      info,
+      privateChat,
+      user,
+      hasMsg,
+      formatedDoc,
+
+      pId,
+      geo
+    };
   },
   computed: {
     ...mapGetters(["getRoute"]),
@@ -180,7 +263,7 @@ export default {
 }
 @media (max-width: 475px) {
   .users {
-    max-width: 330px;
+    max-width: 350px;
   }
 }
 </style>

@@ -62,6 +62,7 @@ const signup = async (email, password, displayname) => {
       messagePage: 0,
     };
     const isDark = false
+    const geoLocation = null
 
     const account = {
       userUid,
@@ -92,7 +93,8 @@ const signup = async (email, password, displayname) => {
       imgUploaded,
       pageVisited,
       isDark,
-      editorUsed
+      editorUsed,
+      geoLocation
     };
 
     projectFirestore

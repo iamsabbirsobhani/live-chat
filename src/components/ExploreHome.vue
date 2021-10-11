@@ -7,8 +7,7 @@
     content="Home"
   >
   </el-page-header>
-  <!-- v-if="password == userPassword"  -->
-  <div class="explore-home">
+  <div v-if="password == userPassword" class="explore-home">
     <h3 style="text-align: center;">
       Explore Home
     </h3>
@@ -38,9 +37,9 @@
       </TabView>
     </div>
   </div>
-  <!-- <div v-else>
-    <p>Unauthorise Access</p>
-  </div> -->
+  <div v-else>
+    <p>Unauthorised access</p>
+  </div>
 </template>
 
 <script>

@@ -175,7 +175,6 @@ export default {
             "PPp"
           );
           addDoc({geoLocation: data})
-          console.log(new Date().getHours())
           if (
             timeCurrent.value.includes(`AM`) &&
             new Date().getHours() < 12 &&
@@ -243,7 +242,7 @@ export default {
           wIcon.value = data.weather.icon;
           sunrise.value = format(new Date(data.sys.sunrise), "PPp");
           sunset.value = format(new Date(data.sys.senset), "PPp");
-          console.log(data);
+          // console.log(data);
         })
         .catch((error) => {
           console.log(error);

@@ -115,7 +115,7 @@ export default {
         .then((data) => {
           // enter you logic when the fetch is successful
           //   console.log(data[0].text, data[0].author);
-          console.log(data.articles);
+          // console.log(data.articles);
           article.value = data.articles;
         })
         .catch((error) => {

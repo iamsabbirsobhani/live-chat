@@ -19,11 +19,11 @@
           width="180"
         >
         </el-table-column>
-        <el-table-column prop="chatSendCount" label="Message Sent" width="180">
+        <el-table-column prop="chatSendCount" label="Message Sent(deprecated)" width="180">
         </el-table-column>
         <el-table-column prop="imgUploaded" label="Image Sent" width="180">
         </el-table-column>
-        <el-table-column prop="chatDeleted" label="Message Deleted" width="180">
+        <el-table-column prop="chatDeleted" label="Message Deleted(deprecated)" width="180">
         </el-table-column>
         <el-table-column prop="imgDeleted" label="Image Deleted" width="180">
         </el-table-column>
@@ -202,7 +202,7 @@ import Column from "primevue/column";
 import getUsers from "@/composable/getUsers";
 import getUser from "@/composable/getUser";
 import { format } from "date-fns";
-import { computed, onMounted, reactive, ref, toRefs } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Dialog from "primevue/dialog";
 export default {

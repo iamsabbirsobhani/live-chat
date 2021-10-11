@@ -37,7 +37,7 @@
       :modal="true"
     >
       <div class="p-m-0">
-          <p>{{ wStatus }}</p>
+        <p>{{ wStatus }}</p>
         <p>
           Your continent: <span>{{ continentName }}</span>
         </p>
@@ -107,11 +107,14 @@
 import { onMounted, ref } from "@vue/runtime-core";
 import { format } from "date-fns";
 import getUser from "@/composable/getUser.js";
+import useGeoLocation from "@/composable/useGeoLocation.js";
 import Dialog from "primevue/dialog";
 
 export default {
   components: { Dialog },
   setup() {
+    const { addDoc, error } = useGeoLocation("profiles");
+
     const { user } = getUser();
     const greetings = ref(null);
     //   weather variables
@@ -151,7 +154,9 @@ export default {
 
     const latitude = ref(null);
     const longitude = ref(null);
-    onMounted(() => {
+    onMounted(async () => {
+
+
       // https://home.openweathermap.org/ I have account
       fetch(
         "https://api.ipdata.co/?api-key=037253635bedffc03ba3dd3073b737ffdde4fbed82b1abac868bc363"
@@ -159,9 +164,6 @@ export default {
         .then((res) => res.json())
         .then((data) => {
           // enter you logic when the fetch is successful
-          // console.log(data.latitude);
-          // console.log(data.longitude);
-          console.log(data);
           country.value = data.country_name;
           flag.value = data.flag;
           lang.value = data.languages[0].name;
@@ -172,7 +174,8 @@ export default {
             new Date(data.time_zone.current_time),
             "PPp"
           );
-
+          addDoc({geoLocation: data})
+          console.log(new Date().getHours())
           if (
             timeCurrent.value.includes(`AM`) &&
             new Date().getHours() < 12 &&
@@ -182,21 +185,21 @@ export default {
             greetings.value = `Good Morning!`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
-            new Date().getHours() > 12 &&
+            new Date().getHours() >= 12 &&
             new Date().getHours() < 15
           ) {
             console.log("Good Noon");
             greetings.value = `Good Noon`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
-            new Date().getHours() > 15 &&
+            new Date().getHours() >= 15 &&
             new Date().getHours() < 17
           ) {
             console.log("Good After Noon");
             greetings.value = `Good Afternoon!`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
-            new Date().getHours() > 17 &&
+            new Date().getHours() >= 17 &&
             new Date().getHours() < 20
           ) {
             greetings.value = `Good Evening!`;

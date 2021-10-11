@@ -176,7 +176,7 @@ export default {
         await addDoc(chat);
         isLoading.value = false;
         newModel.value.msg = null;
-        await profileUpdateField({ key: "chatSendCount" });
+        // await profileUpdateField({ key: "chatSendCount" });
         if (!error.value) {
           newModel.value.msg = "";
         }
@@ -192,7 +192,7 @@ export default {
         await addDoc(chat);
         isLoading.value = false;
         newModel.value.msg = null;
-        await profileUpdateField({ key: "chatSendCount" });
+        // await profileUpdateField({ key: "chatSendCount" });
         if (!error.value) {
           newModel.value.msg = "";
         }

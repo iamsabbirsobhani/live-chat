@@ -223,15 +223,7 @@
 <script>
 import Chip from "primevue/chip";
 import Tag from "primevue/tag";
-import {
-  computed,
-  onBeforeMount,
-  onBeforeUpdate,
-  onMounted,
-  onUpdated,
-  ref,
-  watch,
-} from "vue";
+import { computed, onMounted, onUpdated, ref, watch } from "vue";
 import { formatDistanceToNow, format } from "date-fns";
 import getCollection from "@/composable/PrivateChat/getCollection";
 import Dialog from "primevue/dialog";
@@ -372,7 +364,7 @@ export default {
 
     const chatDel = async (id, img, docName) => {
       if (!img) {
-        await profileUpdateField({ key: "chatDeleted" });
+        // await profileUpdateField({ key: "chatDeleted" });
         performDelete(id, { url: false, name: docName });
       }
       if (img) {

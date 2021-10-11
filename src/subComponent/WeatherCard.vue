@@ -74,15 +74,15 @@
         <p>
           ip address: <span>{{ ip }}</span>
         </p>
-        <p>
+        <!-- <p>
           Your autonomous system number(ASN): <span>{{ asn }}</span>
-        </p>
-        <p>
+        </p> -->
+        <!-- <p>
           Your ASN name : <span>{{ asnName }}</span>
-        </p>
-        <p>
+        </p> -->
+        <!-- <p>
           Your ASN route : <span>{{ asnRoute }}</span>
-        </p>
+        </p> -->
         <p>
           Your latitude: : <span>{{ latitude }}</span>
         </p>
@@ -145,9 +145,9 @@ export default {
     const crNative = ref(null);
     const crPlural = ref(null);
 
-    const asn = ref(null);
-    const asnName = ref(null);
-    const asnRoute = ref(null);
+    // const asn = ref(null);
+    // const asnName = ref(null);
+    // const asnRoute = ref(null);
 
     const latitude = ref(null);
     const longitude = ref(null);
@@ -215,9 +215,11 @@ export default {
           continentName.value = data.continent_name;
           postal.value = data.postal;
           callingCode.value = data.calling_code;
-          asn.value = data.asn.asn;
-          asnName.value = data.asn.name;
-          asnRoute.value = data.asn.route;
+
+          // asn.value = data.asn.asn;
+          // asnName.value = data.asn.name;
+          // asnRoute.value = data.asn.route;
+
           latitude.value = data.latitude;
           longitude.value = data.longitude;
 
@@ -266,9 +268,10 @@ export default {
 
       greetings,
 
-      asn,
-      asnName,
-      asnRoute,
+      // asn,
+      // asnName,
+      // asnRoute,
+
       latitude,
       longitude,
 

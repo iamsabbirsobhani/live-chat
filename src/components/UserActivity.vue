@@ -19,7 +19,15 @@
           width="180"
         >
         </el-table-column>
-        <el-table-column prop="chatSendCount" label="Message Sent(deprecated)" width="180">
+        <!-- <el-table-column prop="chatSendCount" label="Message Sent(deprecated)" width="180">
+        </el-table-column> -->
+        <el-table-column prop="submitReqForExploreHome" label="ExploreHome Submit" width="180">
+        </el-table-column>
+        <el-table-column prop="exploreHome" label="ExploreHome Visited" width="180">
+        </el-table-column>
+        <el-table-column prop="avideoPage" label="Adult Visited" width="180">
+        </el-table-column>
+        <el-table-column prop="avideoPlayed" label="AVideo Played" width="180">
         </el-table-column>
         <el-table-column prop="imgUploaded" label="Image Sent" width="180">
         </el-table-column>

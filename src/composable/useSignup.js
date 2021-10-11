@@ -27,7 +27,7 @@ const signup = async (email, password, displayname) => {
     const userPass = password;
     const coverPhoto = null;
     const phofilePhoto =
-      "https://firebasestorage.googleapis.com/v0/b/live-chat-backup-server-28985.appspot.com/o/Default%20Images%2Fdefault_dp.png?alt=media&token=0fcfcc97-7c70-4681-bc47-91409bd45497";
+      "https://firebasestorage.googleapis.com/v0/b/live-chat-backup-server-28985.appspot.com/o/default_images%2Fdefault_dp.png?alt=media&token=b0449373-ff9b-438d-962f-d300a005ba7c";
     const bio = "World is rotating";
     const profession = "Dreamer";
     const location = "Mars";
@@ -63,6 +63,10 @@ const signup = async (email, password, displayname) => {
     };
     const isDark = false
     const geoLocation = null
+    const exploreHome = 0
+    const submitReqForExploreHome = 0
+    const avideoPage = 0
+    const avideoPlayed = 0
 
     const account = {
       userUid,
@@ -94,7 +98,11 @@ const signup = async (email, password, displayname) => {
       pageVisited,
       isDark,
       editorUsed,
-      geoLocation
+      geoLocation,
+      exploreHome,
+      submitReqForExploreHome,
+      avideoPage,
+      avideoPlayed,
     };
 
     projectFirestore

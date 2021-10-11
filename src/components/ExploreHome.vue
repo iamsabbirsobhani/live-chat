@@ -17,7 +17,7 @@
           <Videos />
         </TabPanel>
         <TabPanel header="Adult">
-          <AVideos />
+          <AVideos/>
         </TabPanel>
         <TabPanel header="Story">
           <div class="story">
@@ -52,6 +52,9 @@ import TabPanel from "primevue/tabpanel";
 import Videos from "../subComponent/Videos.vue";
 import AVideos from "../subComponent/AVideos.vue";
 import { useRouter } from "vue-router";
+import { onMounted } from "@vue/runtime-core";
+import getUser from "@/composable/getUser.js";
+import { profileUpdateField } from "@/composable/profileUpdateField";
 
 export default {
   components: { TabPanel, TabView, Videos, AVideos, Tag },
@@ -60,6 +63,7 @@ export default {
     const store = useStore();
     const password = ref(null);
     const userPassword = ref(null);
+    const { user } = getUser();
 
     const goBack = () => {
       router.push({
@@ -68,6 +72,10 @@ export default {
     };
     password.value = store.state.explorePass;
     userPassword.value = store.state.userExplorePass;
+
+    onMounted(async () => {
+      await profileUpdateField({ key: "exploreHome" });
+    });
 
     return { password, userPassword, goBack };
   },

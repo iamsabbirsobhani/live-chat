@@ -32,7 +32,7 @@
     <Dialog
       :header="user.displayName"
       v-model:visible="displayMaximizable"
-      :style="{ width: '90vw' }"
+      :style="{ width: '100vw' }"
       :maximizable="true"
       :modal="true"
     >

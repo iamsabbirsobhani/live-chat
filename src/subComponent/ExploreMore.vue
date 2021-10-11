@@ -49,6 +49,7 @@ import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { profileUpdateField } from "@/composable/profileUpdateField";
 
 export default {
   components: { Button, Dialog },
@@ -84,13 +85,14 @@ export default {
     const passwordState = ref(false);
     const store = useStore();
 
-    const submit = () => {
+    const submit = async () => {
       passwordState.value = false;
+      await profileUpdateField({ key: "submitReqForExploreHome" });
       if (password.value == store.state.explorePass) {
         passwordState.value = false;
         console.log("Correct Password");
         store.commit("setExplorePass", password.value);
-        console.log(store.state.userExplorePass);
+        // console.log(store.state.userExplorePass);
         password.value = null;
         router.push({
           name: "ExploreHome",
@@ -98,7 +100,7 @@ export default {
       } else {
         passwordState.value = true;
         store.commit("setExplorePass", password.value);
-        console.log(store.state.userExplorePass);
+        // console.log(store.state.userExplorePass);
         console.log("Wrong Password");
       }
     };
@@ -140,5 +142,9 @@ export default {
   input {
     width: 100% !important;
   }
+}
+
+.empty {
+  color: gray;
 }
 </style>

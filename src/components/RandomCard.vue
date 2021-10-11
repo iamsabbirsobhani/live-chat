@@ -6,6 +6,12 @@
       </div>
     </el-card>
 
+    <el-card :style="styleObject" class="box-card card-weather">
+      <div class="text item">
+        <ExploreMore />
+      </div>
+    </el-card>
+
     <el-card :style="styleObject" v-if="jokes" class="box-card">
       <h3>Jokes</h3>
       <div class="text item">
@@ -54,8 +60,9 @@
 <script>
 import { onMounted, ref } from "vue";
 import WeatherCard from "../subComponent/WeatherCard.vue";
+import ExploreMore from "../subComponent/ExploreMore.vue";
 export default {
-  components: { WeatherCard },
+  components: { WeatherCard, ExploreMore },
   setup() {
     const jokes = ref(null);
     const quotesText = ref(null);

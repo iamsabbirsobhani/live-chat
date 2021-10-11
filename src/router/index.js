@@ -3,6 +3,7 @@ import Welcome from "../views/Welcome.vue";
 import Chatroom from "../views/Chatroom.vue";
 import Profile from "../components/Profile.vue";
 import UserList from "../components/UserList.vue";
+import ExploreHome from "../components/ExploreHome.vue";
 import EditProfile from "../components/EditProfile.vue";
 import UpdateCoverAndDP from "../components/UpdateCoverAndDP.vue";
 import FriendRequest from "@/components/FriendRequest.vue";
@@ -302,6 +303,25 @@ const routes = [
         {
           property: 'og:description',
           content: 'Update users profile photo and cover photo our Live Chat app.'
+        }
+      ]
+    }
+  },
+  {
+    path: "/home/explorehome",
+    name: "ExploreHome",
+    component: ExploreHome,
+    beforeEnter: requiredAuth,
+    meta: {
+      title: 'Explore Home',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Explore home is a secret page of this web app.'
+        },
+        {
+          property: 'og:description',
+          content: 'Explore home is a secret page of this Live Chat web app.'
         }
       ]
     }

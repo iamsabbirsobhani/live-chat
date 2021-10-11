@@ -7,7 +7,8 @@
     content="Home"
   >
   </el-page-header>
-  <div v-if="password == userPassword" class="explore-home">
+  <!-- v-if="password == userPassword"  -->
+  <div class="explore-home">
     <h3 style="text-align: center;">
       Explore Home
     </h3>
@@ -16,46 +17,45 @@
         <TabPanel header="Videos">
           <Videos />
         </TabPanel>
-        <TabPanel header="Images">
-          <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-            quae ab illo inventore veritatis et quasi architecto beatae vitae
-            dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-            aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-            eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci
-            velit, sed quia non numquam eius modi.
-          </p>
+        <TabPanel header="Adult">
+          <AVideos />
         </TabPanel>
         <TabPanel header="Story">
-          <p>
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui
-            blanditiis praesentium voluptatum deleniti atque corrupti quos
-            dolores et quas molestias excepturi sint occaecati cupiditate non
-            provident, similique sunt in culpa qui officia deserunt mollitia
-            animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis
-            est et expedita distinctio. Nam libero tempore, cum soluta nobis est
-            eligendi optio cumque nihil impedit quo minus.
-          </p>
+          <div class="story">
+            <p class="story">
+              At vero eos et accusamus et iusto odio dignissimos ducimus qui
+              blanditiis praesentium voluptatum deleniti atque corrupti quos
+              dolores et quas molestias excepturi sint occaecati cupiditate non
+              provident, similique sunt in culpa qui officia deserunt mollitia
+              animi, id est laborum et dolorum fuga. Et harum quidem rerum
+              facilis est et expedita distinctio. Nam libero tempore, cum soluta
+              nobis est eligendi optio cumque nihil impedit quo minus.
+            </p>
+
+            <Tag class="p-mr-2" severity="info" value="Coming Soon..."></Tag>
+          </div>
         </TabPanel>
       </TabView>
     </div>
   </div>
-  <div v-else>
+  <!-- <div v-else>
     <p>Unauthorise Access</p>
-  </div>
+  </div> -->
 </template>
 
 <script>
+import Tag from "primevue/tag";
+
 import { ref } from "@vue/reactivity";
 import { useStore } from "vuex";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Videos from "../subComponent/Videos.vue";
+import AVideos from "../subComponent/AVideos.vue";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { TabPanel, TabView, Videos },
+  components: { TabPanel, TabView, Videos, AVideos, Tag },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -79,5 +79,12 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap");
 .explore-home {
   font-family: "Rajdhani", sans-serif;
+}
+.story {
+  font-family: "Rajdhani", sans-serif;
+  p {
+    font-size: 20px;
+    font-weight: bold;
+  }
 }
 </style>

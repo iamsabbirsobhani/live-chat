@@ -1,12 +1,20 @@
 <template>
   <div class="videos">
-    <el-card shadow="never" class="card-box" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
-      <form
-
-        @submit.prevent="submit"
-      >
-        <el-input style="margin-top: 20px; margin-bottom: 20px;" v-model="title" placeholder="Please input title" required />
-        <el-input style="margin-top: 20px; margin-bottom: 20px;" v-model="input" placeholder="Please input url" required />
+    <el-card shadow="never" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
+      <form @submit.prevent="submit">
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="title"
+          placeholder="Please input title"
+          required
+          class="card-box"
+        />
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="input"
+          placeholder="Please input url"
+          required
+        />
         <!-- <el-button type="submit" >Submit</el-button> -->
         <Button
           style="width: 100%; margin-top: 20px;"
@@ -44,8 +52,8 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import useVideos from "../composable/useVideos";
-import getVideosUrl from "../composable/getVideosUrl";
+import useAVideos from "../composable/useAVideos";
+import getAVideosUrl from "../composable/getAVideosUrl";
 import getUser from "@/composable/getUser.js";
 import { projectFirestore } from "@/firebase/config.js";
 
@@ -54,11 +62,11 @@ export default {
     const { user } = getUser();
     const input = ref(null);
     const title = ref(null);
-    const { postVideoUrl } = useVideos("videos");
-    const { url } = getVideosUrl();
+    const { postAVideoUrl } = useAVideos("avideos");
+    const { url } = getAVideosUrl();
     const submit = async () => {
       console.log(input.value);
-      await postVideoUrl({ url: input.value, title: title.value });
+      await postAVideoUrl({ url: input.value, title: title.value });
       input.value = null;
       title.value = null;
     };
@@ -86,7 +94,7 @@ export default {
     confirmEvent(id) {
       console.log("confirm!", id);
       projectFirestore
-        .collection("videos")
+        .collection("avideos")
         .doc(id)
         .delete()
         .then(() => {

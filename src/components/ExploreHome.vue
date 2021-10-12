@@ -6,6 +6,7 @@
     @back="goBack"
     content="Home"
   >
+  <!-- v-if="password == userPassword" -->
   </el-page-header>
   <div v-if="password == userPassword" class="explore-home">
     <h3 style="text-align: center;">

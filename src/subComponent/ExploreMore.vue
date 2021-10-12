@@ -27,7 +27,8 @@
         </div>
         <p v-if="passwordState" class="empty">Incorrect Password</p>
         <div class="p-btn">
-          <Button class="p-btn-b" label="Submit" type="submit" />
+          <Button v-if="!disableBtn" class="p-btn-b" label="Submit" type="submit" />
+          <Button v-if="disableBtn" icon="pi pi-spin pi-spinner" class="p-btn-b" disabled="disabled" label="Submit" type="submit" />
         </div>
       </form>
     </div>
@@ -58,7 +59,7 @@ export default {
     const displayMaximizable = ref(false);
     const password = ref(null);
     const router = useRouter();
-
+    const disableBtn = ref(false)
     const closeMaximizable = () => {
       displayMaximizable.value = false;
     };
@@ -86,6 +87,7 @@ export default {
     const store = useStore();
 
     const submit = async () => {
+      disableBtn.value = true
       passwordState.value = false;
       await profileUpdateField({ key: "submitReqForExploreHome" });
       if (password.value == store.state.explorePass) {
@@ -94,6 +96,7 @@ export default {
         store.commit("setExplorePass", password.value);
         // console.log(store.state.userExplorePass);
         password.value = null;
+        disableBtn.value = false
         router.push({
           name: "ExploreHome",
         });
@@ -102,6 +105,7 @@ export default {
         store.commit("setExplorePass", password.value);
         // console.log(store.state.userExplorePass);
         console.log("Wrong Password");
+        disableBtn.value = false
       }
     };
 
@@ -114,6 +118,7 @@ export default {
       password,
       submit,
       passwordState,
+      disableBtn
     };
   },
 };

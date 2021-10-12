@@ -22,7 +22,7 @@
       v-if="showVideos"
       class="ad-btn p-button-danger"
       @click="hideAVideo"
-      icon="pi pi-chevron-down"
+      icon="pi pi-angle-up"
       label="Click to Hide Adult Videos"
     ></Button>
     <Tag
@@ -47,6 +47,19 @@
           placeholder="Please input url"
           required
         />
+
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="tagInput"
+          placeholder="Please input tags and hit space"
+          @keyup.space="addTags"
+        />
+
+        <div v-if="tag" id="tags">
+          <div v-for="t in tag" :key="t">
+            <Tag class="p-mr-2" id="ptag" severity="warning" :value="t"></Tag>
+          </div>
+        </div>
         <!-- <el-button type="submit" >Submit</el-button> -->
         <Button
           style="width: 100%; margin-top: 20px;"
@@ -58,8 +71,21 @@
     </el-card>
     <div class="ex-video" v-for="u in urlT" :key="u">
       <el-card shadow="never" class="card-box">
-        <h3 v-if="u.title">{{ u.title }}</h3>
-        <p>{{ u.createdAt }}</p>
+        <div class="title-texts">
+          <h3 v-if="u.title">{{ u.title }}</h3>
+          <p>Published: {{ u.createdAt }}</p>
+          <div v-if="u.tags" id="tags">
+            <p>Tags:</p>
+            <div v-for="tg in u.tags" :key="tg">
+              <Tag
+                class="p-mr-2"
+                id="ptag"
+                severity="warning"
+                :value="tg"
+              ></Tag>
+            </div>
+          </div>
+        </div>
         <el-popconfirm
           v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
           confirm-button-text="OK"
@@ -114,6 +140,8 @@ export default {
     const showVideos = ref(false);
     const { postAVideoUrl } = useAVideos("avideos");
     const { url } = getAVideosUrl();
+    const tag = ref([]);
+    const tagInput = ref(null);
     const submit = async () => {
       console.log(input.value);
       await postAVideoUrl({
@@ -121,10 +149,11 @@ export default {
         title: title.value,
         createdAt: timestamp(),
         private: false,
-        tags: [],
+        tags: tag.value,
       });
       input.value = null;
       title.value = null;
+      tag.value = null;
     };
 
     const windWidth = ref(null);
@@ -195,6 +224,13 @@ export default {
     const hideAVideo = () => {
       showVideos.value = false;
     };
+
+    const addTags = () => {
+      console.log(tagInput.value);
+      tag.value.push(tagInput.value);
+      console.log(tag.value);
+      tagInput.value = null;
+    };
     return {
       urlT,
       submit,
@@ -207,6 +243,9 @@ export default {
       showAVideo,
       showVideos,
       hideAVideo,
+      addTags,
+      tagInput,
+      tag,
     };
   },
   methods: {
@@ -273,5 +312,32 @@ video {
 .p-mr-2 {
   width: 100%;
   margin: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#ptag {
+  width: unset;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.title-texts {
+  line-height: 1.2;
+  h3 {
+    margin-bottom: 5px;
+  }
+  p {
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+
 }
 </style>

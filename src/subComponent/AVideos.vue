@@ -120,6 +120,8 @@ export default {
         url: input.value,
         title: title.value,
         createdAt: timestamp(),
+        private: false,
+        tags: [],
       });
       input.value = null;
       title.value = null;

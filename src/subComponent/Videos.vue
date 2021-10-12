@@ -1,12 +1,23 @@
 <template>
   <div class="videos">
-    <el-card shadow="never" class="card-box" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
-      <form
-
-        @submit.prevent="submit"
-      >
-        <el-input style="margin-top: 20px; margin-bottom: 20px;" v-model="title" placeholder="Please input title" required />
-        <el-input style="margin-top: 20px; margin-bottom: 20px;" v-model="input" placeholder="Please input url" required />
+    <el-card
+      shadow="never"
+      class="card-box"
+      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+    >
+      <form @submit.prevent="submit">
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="title"
+          placeholder="Please input title"
+          required
+        />
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="input"
+          placeholder="Please input url"
+          required
+        />
         <!-- <el-button type="submit" >Submit</el-button> -->
         <Button
           style="width: 100%; margin-top: 20px;"
@@ -48,6 +59,7 @@ import useVideos from "../composable/useVideos";
 import getVideosUrl from "../composable/getVideosUrl";
 import getUser from "@/composable/getUser.js";
 import { projectFirestore } from "@/firebase/config.js";
+import { timestamp } from "../firebase/config";
 
 export default {
   setup() {
@@ -58,7 +70,12 @@ export default {
     const { url } = getVideosUrl();
     const submit = async () => {
       console.log(input.value);
-      await postVideoUrl({ url: input.value, title: title.value });
+      await postVideoUrl({
+        url: input.value,
+        title: title.value,
+        createdAt: timestamp(),
+        private: false,
+      });
       input.value = null;
       title.value = null;
     };

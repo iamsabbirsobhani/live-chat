@@ -6,16 +6,17 @@ const getVideosUrl = () => {
   // type.value = null
   let collectionRef = projectFirestore
     .collection("videos")
-    // .orderBy("asc");
+    .orderBy("createdAt", "desc");
 
   collectionRef.onSnapshot((snap) => {
     let results = [];
     // console.log('snapshot')
     snap.docs.forEach((doc) => {
-      results.push({
-        ...doc.data(),
-        id: doc.id,
-      });
+      doc.data().createdAt &&
+        results.push({
+          ...doc.data(),
+          id: doc.id,
+        });
     });
 
     url.value = results;

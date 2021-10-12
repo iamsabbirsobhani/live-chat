@@ -51,13 +51,14 @@
         <el-input
           style="margin-top: 20px; margin-bottom: 20px;"
           v-model="tagInput"
-          placeholder="Please input tags and hit space"
-          @keyup.space="addTags"
+          placeholder="Please input tags and hit/swipe right"
+          @keyup.right="addTags"
         />
+        <!-- @keyup.space="addTags" -->
 
         <div v-if="tag" id="tags">
           <div v-for="t in tag" :key="t">
-            <Tag class="p-mr-2" id="ptag" severity="warning" :value="t"></Tag>
+            <Tag class="p-mr-2" id="ptag" severity="warning" :style="{background: t.tagColor}" :value="t.tagName"></Tag>
           </div>
         </div>
         <!-- <el-button type="submit" >Submit</el-button> -->
@@ -81,7 +82,8 @@
                 class="p-mr-2"
                 id="ptag"
                 severity="warning"
-                :value="tg"
+                :value="tg.tagName"
+                :style="{background: tg.tagColor}"
               ></Tag>
             </div>
           </div>
@@ -128,6 +130,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import Tag from "primevue/tag";
+import colors from "@/composable/colors.js";
 
 export default {
   components: { ConfirmDialog, Tag },
@@ -227,9 +230,21 @@ export default {
 
     const addTags = () => {
       console.log(tagInput.value);
-      tag.value.push(tagInput.value);
+      const random = Math.random();
+      const index = Math.round(random * 279);
+      let backgroundColor = `${colors[index]}`;
+      // checking if the "newModel.value.msg" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      if (!isEmptyOrSpaces(tagInput.value)) {
+        tag.value.push({
+          tagName: tagInput.value,
+          tagColor: backgroundColor,
+        });
+      }
       console.log(tag.value);
-      tagInput.value = null;
+      tagInput.value = ``;
     };
     return {
       urlT,
@@ -338,6 +353,5 @@ video {
     margin-top: 7px;
     margin-bottom: 5px;
   }
-
 }
 </style>

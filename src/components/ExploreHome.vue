@@ -6,7 +6,7 @@
     @back="goBack"
     content="Home"
   >
-  <!-- v-if="password == userPassword" -->
+    <!-- v-if="password == userPassword" -->
   </el-page-header>
   <div v-if="password == userPassword" class="explore-home">
     <h3 style="text-align: center;">
@@ -18,7 +18,7 @@
           <Videos />
         </TabPanel>
         <TabPanel header="Adult">
-          <AVideos/>
+          <AVideos />
         </TabPanel>
         <TabPanel header="Story">
           <div class="story">
@@ -39,7 +39,11 @@
     </div>
   </div>
   <div v-else>
-    <p>Unauthorised access</p>
+    <el-card class="my-card" shadow="never">
+      <i class="fas fa-lock"></i>
+      <p>Unauthorised access</p>
+      <p>Please come to this page again by entering the right password.</p>
+    </el-card>
   </div>
 </template>
 
@@ -93,6 +97,24 @@ export default {
   p {
     font-size: 20px;
     font-weight: bold;
+  }
+}
+
+.my-card {
+  font-family: "Rajdhani", sans-serif;
+  max-width: 600px;
+  margin: 20vh auto;
+  background-color: red;
+  border-radius: 10px;
+  p {
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .fa-lock {
+    color: white;
+    font-size: 20px;
   }
 }
 </style>

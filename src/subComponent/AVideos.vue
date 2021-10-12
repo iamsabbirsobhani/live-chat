@@ -58,7 +58,13 @@
 
         <div v-if="tag" id="tags">
           <div v-for="t in tag" :key="t">
-            <Tag class="p-mr-2" id="ptag" severity="warning" :style="{background: t.tagColor}" :value="t.tagName"></Tag>
+            <Tag
+              class="p-mr-2"
+              id="ptag"
+              severity="warning"
+              :style="{ background: t.tagColor }"
+              :value="t.tagName"
+            ></Tag>
           </div>
         </div>
         <!-- <el-button type="submit" >Submit</el-button> -->
@@ -83,7 +89,7 @@
                 id="ptag"
                 severity="warning"
                 :value="tg.tagName"
-                :style="{background: tg.tagColor}"
+                :style="{ background: tg.tagColor }"
               ></Tag>
             </div>
           </div>
@@ -156,7 +162,8 @@ export default {
       });
       input.value = null;
       title.value = null;
-      tag.value = null;
+      tagInput.value = null;
+      tag.value = []
     };
 
     const windWidth = ref(null);
@@ -244,7 +251,7 @@ export default {
         });
       }
       console.log(tag.value);
-      tagInput.value = ``;
+      tagInput.value = null;
     };
     return {
       urlT,

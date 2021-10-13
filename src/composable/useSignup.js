@@ -67,6 +67,7 @@ const signup = async (email, password, displayname) => {
     const submitReqForExploreHome = 0
     const avideoPage = 0
     const avideoPlayed = 0
+    const videoPlayed = 0
 
     const account = {
       userUid,
@@ -103,6 +104,7 @@ const signup = async (email, password, displayname) => {
       submitReqForExploreHome,
       avideoPage,
       avideoPlayed,
+      videoPlayed,
     };
 
     projectFirestore

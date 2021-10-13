@@ -163,7 +163,7 @@ export default {
       input.value = null;
       title.value = null;
       tagInput.value = null;
-      tag.value = []
+      tag.value = [];
     };
 
     const windWidth = ref(null);
@@ -336,6 +336,7 @@ video {
   margin: auto;
   margin-top: 10px;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 #ptag {

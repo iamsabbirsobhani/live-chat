@@ -18,6 +18,26 @@
           placeholder="Please input url"
           required
         />
+
+        <el-input
+          style="margin-top: 20px; margin-bottom: 20px;"
+          v-model="tagInput"
+          placeholder="Please input tags and hit/swipe right"
+          @keyup.right="addTags"
+        />
+
+        <div v-if="tag" id="tags">
+          <div v-for="t in tag" :key="t">
+            <Tag
+              class="p-mr-2"
+              id="ptag"
+              severity="warning"
+              :style="{ background: t.tagColor }"
+              :value="t.tagName"
+            ></Tag>
+          </div>
+        </div>
+
         <!-- <el-button type="submit" >Submit</el-button> -->
         <Button
           style="width: 100%; margin-top: 20px;"
@@ -27,9 +47,24 @@
         />
       </form>
     </el-card>
-    <div class="ex-video" v-for="u in url" :key="u">
+    <div class="ex-video" v-for="u in urlT" :key="u">
       <el-card shadow="never" class="card-box">
-        <h3 v-if="u.title">{{ u.title }}</h3>
+        <div class="title-texts">
+          <h3 v-if="u.title">{{ u.title }}</h3>
+          <p>Published: {{ u.createdAt }}</p>
+          <div v-if="u.tags" id="tags">
+            <p>Tags:</p>
+            <div v-for="tg in u.tags" :key="tg">
+              <Tag
+                class="p-mr-2"
+                id="ptag"
+                severity="warning"
+                :value="tg.tagName"
+                :style="{ background: tg.tagColor }"
+              ></Tag>
+            </div>
+          </div>
+        </div>
         <el-popconfirm
           v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
           confirm-button-text="OK"
@@ -44,7 +79,7 @@
             <el-button class="btn" type="danger">Delete</el-button>
           </template>
         </el-popconfirm>
-        <video :style="styleObject" controls muted>
+        <video @play="played" :style="styleObject" controls muted>
           <source :src="u.url" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -54,20 +89,28 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import useVideos from "../composable/useVideos";
 import getVideosUrl from "../composable/getVideosUrl";
 import getUser from "@/composable/getUser.js";
 import { projectFirestore } from "@/firebase/config.js";
 import { timestamp } from "../firebase/config";
+import { debounce } from "vue-debounce";
+import { profileUpdateField } from "@/composable/profileUpdateField";
+import colors from "@/composable/colors.js";
+import Tag from "primevue/tag";
+import { format } from "date-fns";
 
 export default {
+  components: { Tag },
   setup() {
     const { user } = getUser();
     const input = ref(null);
     const title = ref(null);
     const { postVideoUrl } = useVideos("videos");
     const { url } = getVideosUrl();
+    const tag = ref([]);
+    const tagInput = ref(null);
     const submit = async () => {
       console.log(input.value);
       await postVideoUrl({
@@ -75,9 +118,12 @@ export default {
         title: title.value,
         createdAt: timestamp(),
         private: false,
+        tags: tag.value,
       });
       input.value = null;
       title.value = null;
+      tagInput.value = null;
+      tag.value = [];
     };
 
     const windWidth = ref(null);
@@ -97,7 +143,52 @@ export default {
         };
       }
     });
-    return { submit, input, styleObject, url, user, title };
+
+    const urlT = computed(() => {
+      if (url.value) {
+        return url.value.map((doc) => {
+          let time = format(doc.createdAt.toDate(), "PP");
+          return { ...doc, createdAt: time };
+        });
+      }
+    });
+
+    const played = debounce(async () => {
+      await profileUpdateField({ key: "videoPlayed" });
+    }, 2500);
+
+
+    const addTags = () => {
+      console.log(tagInput.value);
+      const random = Math.random();
+      const index = Math.round(random * 279);
+      let backgroundColor = `${colors[index]}`;
+      // checking if the "newModel.value.msg" has any value
+      function isEmptyOrSpaces(str) {
+        return str === null || str.match(/^ *$/) !== null;
+      }
+      if (!isEmptyOrSpaces(tagInput.value)) {
+        tag.value.push({
+          tagName: tagInput.value,
+          tagColor: backgroundColor,
+        });
+      }
+      console.log(tag.value);
+      tagInput.value = null;
+    };
+    return {
+      submit,
+      input,
+      styleObject,
+      url,
+      user,
+      title,
+      played,
+      addTags,
+      tagInput,
+      tag,
+      urlT
+    };
   },
   methods: {
     confirmEvent(id) {
@@ -142,5 +233,53 @@ video {
 
 .card-box {
   font-family: "Rajdhani", sans-serif;
+}
+
+.warn-btn {
+  max-width: 600px;
+  margin: auto;
+}
+
+.ad-btn {
+  font-family: "Rajdhani", sans-serif;
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  height: 60px;
+  font-weight: bold;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.p-mr-2 {
+  width: 100%;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+#ptag {
+  width: unset;
+  margin-left: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.title-texts {
+  line-height: 1.2;
+  h3 {
+    margin-bottom: 5px;
+  }
+  p {
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
 }
 </style>

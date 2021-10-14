@@ -31,17 +31,23 @@
       content="Click Messages to check inbox"
       placement="left"
     > -->
-      <el-menu-item index="2">
-        <Button
-          @click="messages(user.uid)"
-          label="Messages"
-          class="p-button-raised p-button-secondary p-button-text"
-        />
-      </el-menu-item>
+    <el-menu-item index="2">
+      <!-- <Button
+        @click="messages(user.uid)"
+        label="Messages"
+        class="p-button-raised p-button-secondary p-button-text"
+      /> -->
+      <Button
+        @click="openMaximizable"
+        label="Messages"
+        icon="pi pi-shield"
+        class="p-button-raised p-button-secondary p-button-text"
+      />
+    </el-menu-item>
     <!-- </el-tooltip> -->
   </el-menu>
 
-  <RandomCard/>
+  <RandomCard />
   <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
   <!-- <h1 style="text-align: center; font-size: 25px">Home</h1> -->
@@ -255,6 +261,45 @@
   <p class="home-footer">
     Copyright © 2021 made with <i class="fas fa-heart"></i> by Albion Johnson.
   </p>
+
+  <Dialog
+    header="Authentication"
+    v-model:visible="displayMaximizable"
+    :style="styleObject"
+    :maximizable="true"
+    :modal="true"
+  >
+    <div class="p-m-0">
+      <form @submit.prevent="submit">
+        <div class="password">
+          <el-input
+            v-model="password"
+            placeholder="Please input password"
+            show-password
+            required
+          />
+        </div>
+        <p v-if="passwordState" class="empty">Incorrect Password</p>
+        <div class="p-btn">
+          <Button
+            v-if="!disableBtn"
+            class="p-btn-b"
+            label="Submit"
+            type="submit"
+          />
+          <Button
+            v-if="disableBtn"
+            icon="pi pi-spin pi-spinner"
+            class="p-btn-b"
+            disabled="disabled"
+            label="Submit"
+            type="submit"
+          />
+        </div>
+      </form>
+    </div>
+    <template #footer> </template>
+  </Dialog>
 </template>
 
 <script>
@@ -277,17 +322,52 @@ import { timestamp } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 import { home, messagePageCount } from "@/composable/pageVisited";
-import RandomCard  from '@/components/RandomCard'
+import RandomCard from "@/components/RandomCard";
+import Dialog from "primevue/dialog";
 
 export default {
-  components: { Button, InputText, Chip, RandomCard },
+  components: { Button, InputText, Chip, RandomCard, Dialog },
   setup() {
     const { user } = getUser();
+    const disableBtn = ref(false);
     const { error, documents } = getUsers();
     const { statusHome, morePosts, showMoreBtn } = getPosts("posts");
     const router = useRouter();
     const isLoading = ref(false);
     const store = useStore();
+
+    // message athentication variable and functionality
+    const displayMaximizable = ref(false);
+    const password = ref(null);
+    const passwordState = ref(false);
+
+    const submit = async () => {
+      disableBtn.value = true;
+      passwordState.value = false;
+      if (password.value == store.state.messagesPass) {
+        passwordState.value = false;
+        console.log("Correct Password");
+        store.commit("setMessagesPass", password.value);
+        // console.log(store.state.userExplorePass);
+        password.value = null;
+        await messages();
+        disableBtn.value = false;
+      } else {
+        passwordState.value = true;
+        store.commit("setMessagesPass", password.value);
+        // console.log(store.state.userExplorePass);
+        console.log("Wrong Password");
+        disableBtn.value = false;
+      }
+    };
+
+    const messages = async () => {
+      await messagePageCount();
+      let payload = { name: "Messages", back: "Messages" };
+      store.commit("clickOn", payload);
+      router.push({ name: "Messages", params: { id: user.value.uid } });
+    };
+    // message athentication variable and functionality
 
     // comment section
     const seeComments = ref(true);
@@ -304,15 +384,6 @@ export default {
 
     const { likePost } = likeSystem();
     const { dislikePost } = dislikeSystem();
-
-    // const formattedDocuments = computed(() => {
-    //   if (statusHome.value) {
-    //     return statusHome.value.map((doc) => {
-    //       let time = format(doc.createdAt.toDate(), "PPPp");
-    //       return { ...doc, createdAt: time };
-    //     });
-    //   }
-    // });
 
     const formattedDocuments = computed(() => {
       if (statusHome.value) {
@@ -401,13 +472,6 @@ export default {
       dislikePost(postIdt, reactert);
     };
 
-    const messages = async (uid) => {
-      await messagePageCount();
-      let payload = { name: "Messages", back: "Messages" };
-      store.commit("clickOn", payload);
-      router.push({ name: "Messages", params: { id: uid } });
-    };
-
     const fullscreenLoading = ref(false);
     const clickedShowMore = ref(true);
 
@@ -421,12 +485,26 @@ export default {
       clickedShowMore.value = true;
     };
 
+    const windWidth = ref(null);
+    const styleObject = ref(null);
+
     onMounted(async () => {
       await home();
 
       document
         .querySelector('meta[name="theme-color"]')
         .setAttribute("content", "#DFE4E0");
+
+      windWidth.value = window.innerWidth;
+      if (windWidth.value > 600) {
+        styleObject.value = {
+          width: `50vw`,
+        };
+      } else if (600 > windWidth.value) {
+        styleObject.value = {
+          width: `90vw`,
+        };
+      }
     });
 
     // let i = 0;
@@ -440,6 +518,13 @@ export default {
 
     const metaProfileName = (name) => {
       store.commit("setMetaProfileName", name);
+    };
+
+    const closeMaximizable = () => {
+      displayMaximizable.value = false;
+    };
+    const openMaximizable = () => {
+      displayMaximizable.value = true;
     };
 
     return {
@@ -462,12 +547,20 @@ export default {
       styleBorder,
       documents,
       info,
-      messages,
       showMore,
       fullscreenLoading,
       showMoreBtn,
       clickedShowMore,
       metaProfileName,
+
+      openMaximizable,
+      displayMaximizable,
+      styleObject,
+      submit,
+      password,
+      disableBtn,
+      passwordState,
+      closeMaximizable
     };
   },
 };
@@ -648,6 +741,28 @@ export default {
   font-size: 11px;
   float: right;
   margin-top: -25px;
+}
+
+
+.p-btn {
+  margin: 50px 10px;
+  text-align: center;
+  .p-btn-b {
+  }
+  button {
+    width: 100% !important;
+  }
+}
+
+.password {
+  margin: 10px 10px;
+  input {
+    width: 100% !important;
+  }
+}
+
+.empty {
+  color: gray;
 }
 @media (max-width: 425px) {
   .postcard {

@@ -1,5 +1,17 @@
 <template>
-  <div style="background: none;" :style="getStyle">
+  <el-page-header
+    style="margin: 10px; font-family: Roboto, sans-serif"
+    class="pghd"
+    @back="goBack"
+    content="Home"
+    v-if="msgPassword != userMsgPassword"
+  >
+  </el-page-header>
+  <div
+    style="background: none;"
+    :style="getStyle"
+    v-if="msgPassword == userMsgPassword"
+  >
     <Navbar
       @delete="deletes"
       :userTo="id"
@@ -13,6 +25,9 @@
       <Toast />
     </div>
   </div>
+  <div v-else>
+    <UnauthorizedPage />
+  </div>
 </template>
 
 <script>
@@ -25,17 +40,26 @@ import Navbar from "@/components/PrivateChat/Navbar.vue";
 import getUser from "@/composable/getUser";
 import getUsers from "@/composable/getUsers";
 import { useRouter } from "vue-router";
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { mapGetters } from "vuex";
+import { useStore } from "vuex";
+import UnauthorizedPage from "../../subComponent/UnauthorizedPage.vue";
 
 export default {
   props: ["id", "name", "picture"],
-  components: { Navbar, NewChatForm, Button },
+  components: { Navbar, NewChatForm, Button, UnauthorizedPage },
   setup() {
     const { user } = getUser();
     const { documents } = getUsers();
     const router = useRouter();
     const { delUser, error } = userDelete();
+    const store = useStore();
+
+    const msgPassword = ref(null);
+    const userMsgPassword = ref(null);
+
+    msgPassword.value = store.state.messagesPass;
+    userMsgPassword.value = store.state.userMessagesPass;
 
     const deleteUser = async () => {
       await delUser();
@@ -53,7 +77,13 @@ export default {
         deleteUser();
       }
     };
-    return { deletes, documents };
+
+    const goBack = () => {
+      router.push({
+        name: "Home",
+      });
+    };
+    return { deletes, documents, msgPassword, userMsgPassword, goBack };
   },
   computed: {
     ...mapGetters(["getStyle"]),

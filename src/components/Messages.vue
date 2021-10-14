@@ -6,64 +6,69 @@
     content="Home"
   >
   </el-page-header>
-  <h3 style="text-align: center; font-family: Roboto, sans-serif">Messages</h3>
+  <h3 style="text-align: center; font-family: Roboto, sans-serif" v-if="msgPassword == userMsgPassword">Messages</h3>
 
-  <div v-if="documents">
-    <div v-for="doc in formatedDoc" :key="doc.userUid">
-      <div v-for="fr in info.friendList" :key="fr.id">
-        <div v-if="doc.id === fr">
-          <div class="users">
-            <router-link
-              style="text-decoration: none"
-              :to="{ name: 'Profile', params: { id: doc.userUid } }"
-            >
-              <div class="name">
-                <el-avatar class="img" :size="60">
-                  <img :src="doc.phofilePhoto" />
-                </el-avatar>
-                <div>
-                  <h4>{{ doc.userName }}</h4>
-                  <h4
-                    class="last-seen"
-                    v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
-                  >
-                    {{ doc.lastVisited }}
-                  </h4>
+  <div v-if="msgPassword == userMsgPassword">
+    <div v-if="documents">
+      <div v-for="doc in formatedDoc" :key="doc.userUid">
+        <div v-for="fr in info.friendList" :key="fr.id">
+          <div v-if="doc.id === fr">
+            <div class="users">
+              <router-link
+                style="text-decoration: none"
+                :to="{ name: 'Profile', params: { id: doc.userUid } }"
+              >
+                <div class="name">
+                  <el-avatar class="img" :size="60">
+                    <img :src="doc.phofilePhoto" />
+                  </el-avatar>
+                  <div>
+                    <h4>{{ doc.userName }}</h4>
+                    <h4
+                      class="last-seen"
+                      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+                    >
+                      {{ doc.lastVisited }}
+                    </h4>
+                  </div>
                 </div>
+              </router-link>
+              <div class="friend">
+                <Button
+                  style="margin-left: 10px"
+                  v-if="
+                    !(doc.userUid === user.uid) &&
+                      user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+                  "
+                  @click="openMaximizable(doc.userUid)"
+                  icon="pi pi-map-marker"
+                  class="p-button-rounded"
+                />
+                <Button
+                  style="margin-left: 10px"
+                  v-if="!(doc.userUid === user.uid)"
+                  @click="
+                    privateChat(
+                      doc.userUid,
+                      doc.userName,
+                      doc.phofilePhoto,
+                      user.uid
+                    )
+                  "
+                  icon="pi pi-comments"
+                  class="p-button-rounded"
+                />
               </div>
-            </router-link>
-            <div class="friend">
-              <Button
-                style="margin-left: 10px"
-                v-if="
-                  !(doc.userUid === user.uid) &&
-                    user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
-                "
-                @click="openMaximizable(doc.userUid)"
-                icon="pi pi-map-marker"
-                class="p-button-rounded"
-              />
-              <Button
-                style="margin-left: 10px"
-                v-if="!(doc.userUid === user.uid)"
-                @click="
-                  privateChat(
-                    doc.userUid,
-                    doc.userName,
-                    doc.phofilePhoto,
-                    user.uid
-                  )
-                "
-                icon="pi pi-comments"
-                class="p-button-rounded"
-              />
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   <div v-else v-loading.fullscreen.lock="true"></div>
+  </div>
+  <div v-else>
+    <UnauthorizedPage/>
+  </div>
   <!-- <div v-else class="empty">
     <p>No Messages</p>
   </div> -->
@@ -106,9 +111,10 @@ import { format } from "date-fns";
 import Dialog from "primevue/dialog";
 import GeoLocation from "../subComponent/GeoLocation.vue";
 import { projectFirestore } from "../firebase/config";
+import UnauthorizedPage from '../subComponent/UnauthorizedPage.vue';
 export default {
   props: ["id"],
-  components: { Dialog, GeoLocation },
+  components: { Dialog, GeoLocation, UnauthorizedPage },
   setup(props) {
     const { info } = getProfile("profiles", props.id);
     const { error, documents } = getUsers();
@@ -116,6 +122,12 @@ export default {
     const store = useStore();
     const pId = ref(null);
     const displayMaximizable = ref(false);
+
+    const msgPassword = ref(null);
+    const userMsgPassword = ref(null);
+
+    msgPassword.value = store.state.messagesPass;
+    userMsgPassword.value = store.state.userMessagesPass;
 
     const router = useRouter();
 
@@ -176,7 +188,7 @@ export default {
         .setAttribute("content", "#DFE4E0");
     });
 
-    const geo = ref(null)
+    const geo = ref(null);
     const openMaximizable = (id) => {
       pId.value = id;
       // data
@@ -187,7 +199,7 @@ export default {
         .then((doc) => {
           if (doc.exists) {
             console.log("Document data:", doc.data());
-            geo.value = doc.data()
+            geo.value = doc.data();
             displayMaximizable.value = true;
           } else {
             // doc.data() will be undefined in this case
@@ -217,7 +229,10 @@ export default {
       formatedDoc,
 
       pId,
-      geo
+      geo,
+
+      msgPassword,
+      userMsgPassword,
     };
   },
   computed: {

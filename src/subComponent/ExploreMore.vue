@@ -33,12 +33,6 @@
       </form>
     </div>
     <template #footer>
-      <!-- <Button
-        label="Okay"
-        icon="pi pi-check"
-        @click="closeMaximizable"
-        autofocus
-      /> -->
     </template>
   </Dialog>
 </template>
@@ -59,7 +53,8 @@ export default {
     const displayMaximizable = ref(false);
     const password = ref(null);
     const router = useRouter();
-    const disableBtn = ref(false)
+    const disableBtn = ref(false);
+
     const closeMaximizable = () => {
       displayMaximizable.value = false;
     };

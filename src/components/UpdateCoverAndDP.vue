@@ -1,77 +1,90 @@
 <template>
   <el-page-header
-    style="margin: 10px"
+    style="margin: 10px; font-family: Roboto, sans-serif"
     class="pghd"
-    @back="goBack"
-    content="Profile"
+    @back="goABack"
+    content="Authentication"
+    v-if="masterPass != userMasterPass"
   >
   </el-page-header>
+  <div v-if="masterPass == userMasterPass">
+    <el-page-header
+      style="margin: 10px"
+      class="pghd"
+      @back="goBack"
+      content="Profile"
+    >
+    </el-page-header>
 
-  <el-card shadow="always" class="card">
-    <h3 style="text-align: center">Add Cover And Profile Photos</h3>
-    <form @submit.prevent="submitForm">
-      <label for="coverphoto">Cover Photo:</label>
-      <div class="coverfiles">
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="handleAvatarSuccess"
-          accept="image/*"
-          :auto-upload="false"
-          :limit="1"
-        >
-          <el-button
-            class="upbutton"
-            icon="el-icon-plus"
-            size="small"
-            type="primary"
-          ></el-button>
-          <!-- <template #tip>
+    <el-card shadow="always" class="card">
+      <h3 style="text-align: center">Add Cover And Profile Photos</h3>
+      <form @submit.prevent="submitForm">
+        <label for="coverphoto">Cover Photo:</label>
+        <div class="coverfiles">
+          <el-upload
+            class="upload-demo"
+            action="#"
+            :on-change="handleAvatarSuccess"
+            accept="image/*"
+            :auto-upload="false"
+            :limit="1"
+          >
+            <el-button
+              class="upbutton"
+              icon="el-icon-plus"
+              size="small"
+              type="primary"
+            ></el-button>
+            <!-- <template #tip>
             <div class="el-upload__tip">
               jpg/png files with a size less than 500kb
             </div>
           </template> -->
-        </el-upload>
-      </div>
+          </el-upload>
+        </div>
 
-      <!-- <input accept="image/*" type="file" @change="handleChangeCover" name="coverphoto" required/> -->
-      <label for="profilephoto">Profile Photo:</label>
-      <div class="coverfiles">
-        <el-upload
-          class="upload-demo"
-          action="#"
-          :on-change="handleChangeProfile"
-          accept="image/*"
-          :auto-upload="false"
-          :limit="1"
-        >
-          <el-button
-            class="upbutton"
-            icon="el-icon-plus"
-            size="small"
-            type="primary"
-          ></el-button>
-          <!-- <template #tip>
+        <!-- <input accept="image/*" type="file" @change="handleChangeCover" name="coverphoto" required/> -->
+        <label for="profilephoto">Profile Photo:</label>
+        <div class="coverfiles">
+          <el-upload
+            class="upload-demo"
+            action="#"
+            :on-change="handleChangeProfile"
+            accept="image/*"
+            :auto-upload="false"
+            :limit="1"
+          >
+            <el-button
+              class="upbutton"
+              icon="el-icon-plus"
+              size="small"
+              type="primary"
+            ></el-button>
+            <!-- <template #tip>
             <div class="el-upload__tip">
               jpg/png files with a size less than 500kb
             </div>
           </template> -->
-        </el-upload>
-      </div>
-      <div class="buttonwrapper">
-        <el-button
-          class="button"
-          v-if="isLoading"
-          type="primary"
-          :loading="isLoading"
-          >Loading</el-button
-        >
-        <el-button class="button" v-else type="primary" native-type="submit"
-          >Upload</el-button
-        >
-      </div>
-    </form>
-  </el-card>
+          </el-upload>
+        </div>
+        <div class="buttonwrapper">
+          <el-button
+            class="button"
+            v-if="isLoading"
+            type="primary"
+            :loading="isLoading"
+            >Loading</el-button
+          >
+          <el-button class="button" v-else type="primary" native-type="submit"
+            >Upload</el-button
+          >
+        </div>
+      </form>
+    </el-card>
+  </div>
+  <div v-else>
+    <UnauthorizedPage />
+  </div>
 </template>
 
 <script>
@@ -80,9 +93,13 @@ import userProfileStorage from "@/composable/userProfileStorage.js";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import { profileUpdateField } from "@/composable/profileUpdateField";
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
+import { useStore } from "vuex";
 export default {
   props: ["id"],
+  components: { UnauthorizedPage },
   setup(props) {
+    const store = useStore();
     const coverUrl = ref(null);
     const profileUrl = ref(null);
     const isLoading = ref(false);
@@ -101,7 +118,7 @@ export default {
           coverPhoto: urlCover.value,
           phofilePhoto: urlProfile.value,
         });
-        await profileUpdateField({key: "dpChanged"});
+        await profileUpdateField({ key: "dpChanged" });
         router.push({ name: "Profile" });
       }
       isLoading.value = false;
@@ -120,12 +137,25 @@ export default {
       router.push({ name: "Profile" });
     };
 
+    const masterPass = ref(null);
+    const userMasterPass = ref(null);
+    userMasterPass.value = store.state.userMasterPass;
+    masterPass.value = store.state.masterPass;
+
+    const goABack = () => {
+      router.push({ name: "Authentication"});
+    };
+
     return {
       handleAvatarSuccess,
       handleChangeProfile,
       submitForm,
       isLoading,
       goBack,
+
+      masterPass,
+      userMasterPass,
+      goABack,
     };
   },
 };

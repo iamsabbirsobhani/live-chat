@@ -1,32 +1,49 @@
 <template>
-  <Navbar @delete="deletes" />
-  <h3 style="text-align: center; margin: 0px; padding: 0px; position: relative;">Chatroom</h3>
-  <NewChatForm />
-  <ConfirmPopup></ConfirmPopup>
-  <div class="card">
-    <Toast />
-  </div>
-
-  <!-- bubble amination -->
-  <section class="sticky">
-    <div class="bubbles">
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
-      <div class="bubble"></div>
+  <el-page-header
+    style="margin: 10px; font-family: Roboto, sans-serif"
+    class="pghd"
+    @back="goABack"
+    content="Authentication"
+    v-if="masterPass != userMasterPass"
+  >
+  </el-page-header>
+  <div v-if="masterPass == userMasterPass">
+    <Navbar @delete="deletes" />
+    <h3
+      style="text-align: center; margin: 0px; padding: 0px; position: relative;"
+    >
+      Chatroom
+    </h3>
+    <NewChatForm />
+    <ConfirmPopup></ConfirmPopup>
+    <div class="card">
+      <Toast />
     </div>
-  </section>
-  <!-- end of bubble amination -->
 
+    <!-- bubble amination -->
+    <section class="sticky">
+      <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+      </div>
+    </section>
+    <!-- end of bubble amination -->
+  </div>
+  <div v-else>
+    <UnauthorizedPage />
+  </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
 import userDelete from "../composable/userDelete";
 import Button from "primevue/button";
 import { useConfirm } from "primevue/useconfirm";
@@ -35,13 +52,15 @@ import NewChatForm from "../components/NewChatForm.vue";
 import Navbar from "../components/Navbar.vue";
 import getUser from "../composable/getUser";
 import { useRouter } from "vue-router";
-import { watch } from "vue";
+import { watch, ref } from "vue";
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
 export default {
-  components: { Navbar, NewChatForm, Button },
+  components: { Navbar, NewChatForm, Button, UnauthorizedPage },
   setup() {
     const { user } = getUser();
     const router = useRouter();
     const { delUser, error } = userDelete();
+    const store = useStore();
 
     const deleteUser = async () => {
       await delUser();
@@ -59,7 +78,16 @@ export default {
         deleteUser();
       }
     };
-    return { deletes };
+
+    const masterPass = ref(null);
+    const userMasterPass = ref(null);
+    userMasterPass.value = store.state.userMasterPass;
+    masterPass.value = store.state.masterPass;
+
+    const goABack = () => {
+      router.push({ name: "Authentication" });
+    };
+    return { deletes, goABack, masterPass, userMasterPass };
   },
 };
 </script>

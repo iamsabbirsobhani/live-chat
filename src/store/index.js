@@ -11,7 +11,9 @@ export default createStore({
     explorePass: 63952,
     userExplorePass: null,
     messagesPass: 63952,
-    userMessagesPass: null
+    userMessagesPass: null,
+    masterPass: 63952,
+    userMasterPass: null,
     // background: "black"
   },
   getters: {
@@ -57,6 +59,9 @@ export default createStore({
     },
     setMessagesPass(state, payload) {
       state.userMessagesPass = payload;
+    },
+    setMasterPass(state, payload) {
+      state.userMasterPass = payload;
     },
   },
   actions: {},

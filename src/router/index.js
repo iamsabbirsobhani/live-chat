@@ -16,6 +16,7 @@ import { projectAuth } from "../firebase/config";
 import { lastSeen } from "@/composable/lastSeen";
 import { logs } from "@/composable/logs";
 import getUser from "@/composable/getUser";
+import Authentication from  "@/subComponent/Authentication.vue"
 const { user } = getUser();
 import {getSingleDoc} from "@/composable/getSingleDoc.js";
 let { getDoc } = getSingleDoc();
@@ -263,6 +264,26 @@ const routes = [
         {
           property: 'og:description',
           content: 'Home page our Live Chat app.'
+        }
+      ]
+    }
+  },
+  {
+    path: "/authentication",
+    name: "Authentication",
+    component: Authentication,
+    beforeEnter: requiredAuth,
+    props: true,
+    meta: {
+      title: 'Authentication',
+      metaTags: [
+        {
+          name: 'description',
+          content: 'Passphrase Authentication.'
+        },
+        {
+          property: 'og:description',
+          content: 'One more authentication required.'
         }
       ]
     }

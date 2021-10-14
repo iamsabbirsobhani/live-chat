@@ -4,67 +4,80 @@
   <ConfirmDialog></ConfirmDialog>
   <ConfirmDialog group="positionDialog"></ConfirmDialog>
   <!-- end of unfriend confirmation dialog -->
-
   <el-page-header
-    style="margin: 10px"
+    style="margin: 10px; font-family: Roboto, sans-serif"
     class="pghd"
-    @back="goBack"
-    content="Profile"
+    @back="goABack"
+    content="Authentication"
+    v-if="masterPass != userMasterPass"
   >
   </el-page-header>
-  <h3 style="text-align: center; font-family: Roboto, sans-serif">
-    Friend List
-  </h3>
+  <div v-if="masterPass == userMasterPass">
+    <el-page-header
+      style="margin: 10px"
+      class="pghd"
+      @back="goBack"
+      content="Profile"
+    >
+    </el-page-header>
+    <h3 style="text-align: center; font-family: Roboto, sans-serif">
+      Friend List
+    </h3>
 
-  <div v-if="hasFriend">
-    <div v-for="doc in documents" :key="doc.userUid">
-      <div v-for="fr in info.friendList" :key="fr.id">
-        <div v-if="doc.id === fr">
-          <div class="users">
-            <router-link
-              style="text-decoration: none"
-              :to="{ name: 'Profile', params: { id: doc.userUid } }"
-            >
-              <div class="name">
-                <el-avatar :size="60">
-                  <img :src="doc.phofilePhoto" />
-                </el-avatar>
-                <h4>{{ doc.userName }}</h4>
+    <div v-if="hasFriend">
+      <div v-for="doc in documents" :key="doc.userUid">
+        <div v-for="fr in info.friendList" :key="fr.id">
+          <div v-if="doc.id === fr">
+            <div class="users">
+              <router-link
+                style="text-decoration: none"
+                :to="{ name: 'Profile', params: { id: doc.userUid } }"
+              >
+                <div class="name">
+                  <el-avatar :size="60">
+                    <img :src="doc.phofilePhoto" />
+                  </el-avatar>
+                  <h4>{{ doc.userName }}</h4>
+                </div>
+              </router-link>
+              <div class="friend">
+                <!-- unfriend process -->
+                <Button
+                  style="margin-left: 10px"
+                  v-if="!(doc.userUid === user.uid)"
+                  @click="confirmPosition('top', user.uid, doc.userUid)"
+                  icon="pi pi-user-minus"
+                  class="p-button-rounded p-button-danger p-button-outlined"
+                />
+                <!-- end unfriend process -->
+
+                <Button
+                  style="margin-left: 10px"
+                  v-if="!(doc.userUid === user.uid)"
+                  @click="
+                    privateChat(
+                      doc.userUid,
+                      doc.userName,
+                      doc.phofilePhoto,
+                      user.uid
+                    )
+                  "
+                  icon="pi pi-comments"
+                  class="p-button-rounded"
+                />
               </div>
-            </router-link>
-            <div class="friend">
-              <!-- unfriend process -->
-              <Button
-                style="margin-left: 10px"
-                v-if="!(doc.userUid === user.uid)"
-                @click="confirmPosition('top', user.uid, doc.userUid)"
-                icon="pi pi-user-minus"
-                class="p-button-rounded p-button-danger p-button-outlined"
-              />
-              <!-- end unfriend process -->
-
-              <Button
-                style="margin-left: 10px"
-                v-if="!(doc.userUid === user.uid)"
-                @click="
-                  privateChat(
-                    doc.userUid,
-                    doc.userName,
-                    doc.phofilePhoto,
-                    user.uid
-                  )
-                "
-                icon="pi pi-comments"
-                class="p-button-rounded"
-              />
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div v-else class="empty">
+      <p>No Friends</p>
+    </div>
   </div>
-  <div v-else class="empty">
-    <p>No Friends</p>
+
+  <div v-else>
+    <UnauthorizedPage />
   </div>
 </template>
 
@@ -80,10 +93,11 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
 
 export default {
   props: ["id"],
-  components: { ConfirmDialog },
+  components: { ConfirmDialog, UnauthorizedPage },
   setup(props) {
     const confirm = useConfirm();
     const toast = useToast();
@@ -168,8 +182,19 @@ export default {
     onMounted(() => {
       document.body.style.backgroundColor = "white";
 
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#DFE4E0");
     });
+
+    const masterPass = ref(null);
+    const userMasterPass = ref(null);
+    userMasterPass.value = store.state.userMasterPass;
+    masterPass.value = store.state.masterPass;
+
+    const goABack = () => {
+      router.push({ name: "Authentication" });
+    };
 
     return {
       info,
@@ -181,6 +206,10 @@ export default {
       centerDialogVisible,
       confirmPosition,
       hasFriend,
+
+      masterPass,
+      userMasterPass,
+      goABack,
     };
   },
 };

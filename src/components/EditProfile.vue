@@ -1,131 +1,153 @@
 <template>
-  <el-page-header class="pghd" @back="goBack" content="Profile">
+  <el-page-header
+    style="margin: 10px; font-family: Roboto, sans-serif"
+    class="pghd"
+    @back="goABack"
+    content="Authentication"
+    v-if="masterPass != userMasterPass"
+  >
   </el-page-header>
-  <h4 style="text-align: center; font-family: Roboto, sans-serif">
-    Input arbitrary fields
-  </h4>
-  <form class="changeEdit" @submit.prevent="submitForm">
-    <label for="bio">Bio:</label>
-    <el-input
-      maxlength="100"
-      show-word-limit
-      placeholder="Please enter a short bio"
-      v-model="bio"
-      type="text"
-      name="bio"
-      required
-    ></el-input>
-    <!-- <input v-model="bio" type="text" name="bio" required/> -->
-    <label for="location">Location:</label>
-    <el-input
-      maxlength="17"
-      show-word-limit
-      placeholder="Please enter location"
-      v-model="location"
-      type="text"
-      name="location"
-      required
-    ></el-input>
-    <label for="profession">Profession:</label>
-    <el-input
-      maxlength="18"
-      show-word-limit
-      placeholder="Please enter your profession"
-      v-model="profession"
-      type="text"
-      name="profession"
-      required
-    ></el-input>
-    <label for="interest">Currently hacking on?</label>
-    <el-input
-      maxlength="15"
-      show-word-limit
-      placeholder="Please enter currently what are you on"
-      v-model="interest"
-      type="text"
-      name="interest"
-      required
-    ></el-input>
+  <div v-if="masterPass == userMasterPass">
+    <el-page-header class="pghd" @back="goBack" content="Profile">
+    </el-page-header>
+    <h4 style="text-align: center; font-family: Roboto, sans-serif">
+      Input arbitrary fields
+    </h4>
+    <form class="changeEdit" @submit.prevent="submitForm">
+      <label for="bio">Bio:</label>
+      <el-input
+        maxlength="100"
+        show-word-limit
+        placeholder="Please enter a short bio"
+        v-model="bio"
+        type="text"
+        name="bio"
+        required
+      ></el-input>
+      <!-- <input v-model="bio" type="text" name="bio" required/> -->
+      <label for="location">Location:</label>
+      <el-input
+        maxlength="17"
+        show-word-limit
+        placeholder="Please enter location"
+        v-model="location"
+        type="text"
+        name="location"
+        required
+      ></el-input>
+      <label for="profession">Profession:</label>
+      <el-input
+        maxlength="18"
+        show-word-limit
+        placeholder="Please enter your profession"
+        v-model="profession"
+        type="text"
+        name="profession"
+        required
+      ></el-input>
+      <label for="interest">Currently hacking on?</label>
+      <el-input
+        maxlength="15"
+        show-word-limit
+        placeholder="Please enter currently what are you on"
+        v-model="interest"
+        type="text"
+        name="interest"
+        required
+      ></el-input>
 
-    <el-button
-      class="button"
-      v-if="isLoading"
-      type="primary"
-      :loading="isLoading"
-      >Loading</el-button
-    >
-    <el-button class="button" v-else type="primary" native-type="submit"
-      >Change Edit</el-button
-    >
-  </form>
-  <form class="changeName" @submit.prevent="changeName">
-    <label for="displayName">Update Name: </label>
-    <p v-if="errorUpdateName" class="error">{{ errorUpdateName }}</p>
-    <el-input
-      type="text"
-      :placeholder="user.displayName"
-      v-model="changeDisplayName"
-      maxlength="6"
-      show-word-limit
-      name="displayName"
-      required
-    >
-    </el-input>
-    <el-button
-      class="button"
-      v-if="isLoadingName"
-      type="primary"
-      :loading="isLoadingName"
-      >Loading</el-button
-    >
-    <el-button v-else class="button" type="primary" native-type="submit"
-      >Update Name</el-button
-    >
-  </form>
-  <form class="changePass" @submit.prevent="updatePass">
-    <div class="passwordButton">
-    <label for="password">Update Password: </label>
-    <el-button class="showPass" type="danger" @click="dialogVisible = true">See Current Password</el-button>
-    </div>
-    <p v-if="errorUpdatePass" class="error">{{ errorUpdatePass }}</p>
-    <el-input
-      placeholder="Please input password"
-      v-model="newPassword"
-      show-password
-      required
-    ></el-input>
-    <el-button
-      class="button"
-      v-if="isLoadingPass"
-      type="primary"
-      :loading="isLoadingPass"
-      >Loading</el-button
-    >
-    <el-button v-else class="button" type="primary" native-type="submit"
-      >Update Password</el-button
-    >
-  </form>
+      <el-button
+        class="button"
+        v-if="isLoading"
+        type="primary"
+        :loading="isLoading"
+        >Loading</el-button
+      >
+      <el-button class="button" v-else type="primary" native-type="submit"
+        >Change Edit</el-button
+      >
+    </form>
+    <form class="changeName" @submit.prevent="changeName">
+      <label for="displayName">Update Name: </label>
+      <p v-if="errorUpdateName" class="error">{{ errorUpdateName }}</p>
+      <el-input
+        type="text"
+        :placeholder="user.displayName"
+        v-model="changeDisplayName"
+        maxlength="6"
+        show-word-limit
+        name="displayName"
+        required
+      >
+      </el-input>
+      <el-button
+        class="button"
+        v-if="isLoadingName"
+        type="primary"
+        :loading="isLoadingName"
+        >Loading</el-button
+      >
+      <el-button v-else class="button" type="primary" native-type="submit"
+        >Update Name</el-button
+      >
+    </form>
+    <form class="changePass" @submit.prevent="updatePass">
+      <div class="passwordButton">
+        <label for="password">Update Password: </label>
+        <el-button class="showPass" type="danger" @click="dialogVisible = true"
+          >See Current Password</el-button
+        >
+      </div>
+      <p v-if="errorUpdatePass" class="error">{{ errorUpdatePass }}</p>
+      <el-input
+        placeholder="Please input password"
+        v-model="newPassword"
+        show-password
+        required
+      ></el-input>
+      <el-button
+        class="button"
+        v-if="isLoadingPass"
+        type="primary"
+        :loading="isLoadingPass"
+        >Loading</el-button
+      >
+      <el-button v-else class="button" type="primary" native-type="submit"
+        >Update Password</el-button
+      >
+    </form>
 
-  <!-- dialog pops up to see current password -->
-  <el-dialog
-  style="font-family: Roboto, sans-serif;"
-  title="Password"
-  v-model="dialogVisible"
-  width="300px"
-  :before-close="handleClose">
-  <span style="font-family: Roboto, sans-serif;">Your current password is: </span>
-  <p style="font-family: Roboto, sans-serif;" class="error">{{info.userPass}}</p>
-  <pre>Don't share with other.</pre>
-  <template #footer>
-    <span class="dialog-footer">
-      <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
-    </span>
-  </template>
-</el-dialog>
-
+    <!-- dialog pops up to see current password -->
+    <el-dialog
+      style="font-family: Roboto, sans-serif;"
+      title="Password"
+      v-model="dialogVisible"
+      width="300px"
+      :before-close="handleClose"
+    >
+      <span style="font-family: Roboto, sans-serif;"
+        >Your current password is:
+      </span>
+      <p style="font-family: Roboto, sans-serif;" class="error">
+        {{ info.userPass }}
+      </p>
+      <pre>Don't share with other.</pre>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false"
+            >Confirm</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
+  </div>
+  <div v-else>
+    <UnauthorizedPage />
+  </div>
 </template>
 
 <script>
+import UnauthorizedPage from '../subComponent/UnauthorizedPage.vue';
 import { ref } from "vue";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
@@ -136,19 +158,22 @@ import {
   errorUpdateName,
   errorUpdatePass,
 } from "@/composable/updateUserName.js";
-import getProfile from '../composable/getProfile'
+import getProfile from "../composable/getProfile";
+import { useStore } from "vuex";
 
 export default {
   props: ["id"],
-
+  components: { UnauthorizedPage },
   setup(props) {
+    const store = useStore();
+
     const { user } = getUser();
 
     const { addDoc } = userEditProfileInfo();
 
     const router = useRouter();
 
-    const { info } = getProfile("profiles", user.value.uid)
+    const { info } = getProfile("profiles", user.value.uid);
 
     const bio = ref(null);
     const location = ref(null);
@@ -210,6 +235,15 @@ export default {
       }
     };
 
+    const masterPass = ref(null);
+    const userMasterPass = ref(null);
+    userMasterPass.value = store.state.userMasterPass;
+    masterPass.value = store.state.masterPass;
+
+    const goABack = () => {
+      router.push({ name: "Authentication" });
+    };
+
     return {
       bio,
       location,
@@ -228,7 +262,10 @@ export default {
       errorUpdateName,
       errorUpdatePass,
       info,
-      dialogVisible
+      dialogVisible,
+      masterPass,
+      userMasterPass,
+      goABack,
     };
   },
 };

@@ -1,65 +1,78 @@
 <template>
   <Toast />
   <el-page-header
+    style="margin: 10px; font-family: Roboto, sans-serif"
     class="pghd"
-    style="margin: 10px"
-    @back="goBack"
-    content="Profile"
+    @back="goABack"
+    content="Authentication"
+    v-if="masterPass != userMasterPass"
   >
   </el-page-header>
-  <h2 style="text-align: center; font-family: Roboto, sans-serif">
-    All the users
-  </h2>
-  <div v-if="documents">
-    <div v-for="doc in documents" :key="doc.userUid">
-      <div class="users">
-        <router-link
-          style="text-decoration: none"
-          :to="{ name: 'Profile', params: { id: doc.userUid } }"
-        >
-          <div class="name">
-            <el-avatar :size="60" src="https://empty" @error="errorHandler">
-              <img :src="doc.phofilePhoto" />
-            </el-avatar>
-            <h4>{{ doc.userName }}</h4>
+  <div v-if="masterPass == userMasterPass">
+    <el-page-header
+      class="pghd"
+      style="margin: 10px"
+      @back="goBack"
+      content="Profile"
+    >
+    </el-page-header>
+    <h2 style="text-align: center; font-family: Roboto, sans-serif">
+      All the users
+    </h2>
+    <div v-if="documents">
+      <div v-for="doc in documents" :key="doc.userUid">
+        <div class="users">
+          <router-link
+            style="text-decoration: none"
+            :to="{ name: 'Profile', params: { id: doc.userUid } }"
+          >
+            <div class="name">
+              <el-avatar :size="60" src="https://empty" @error="errorHandler">
+                <img :src="doc.phofilePhoto" />
+              </el-avatar>
+              <h4>{{ doc.userName }}</h4>
+            </div>
+          </router-link>
+          <div class="title">
+            <p>{{ doc.profession }}</p>
+            <p>{{ doc.location }}</p>
           </div>
-        </router-link>
-        <div class="title">
-          <p>{{ doc.profession }}</p>
-          <p>{{ doc.location }}</p>
-        </div>
-        <div class="addFriend">
-          <!-- && !doc.friendRequest.includes(user.uid) -->
-          <Button
-            v-if="
-              !(doc.userUid === user.uid) &&
-                !doc.friendList.includes(user.uid) &&
-                !doc.friendRequest.includes(user.uid)
-            "
-            @click="addFriends(doc.userUid, user.uid)"
-            icon="pi pi-user-plus"
-            class="p-button-rounded p-button-success"
-          />
-          <Button
-            disabled
-            v-if="doc.friendList.includes(user.uid)"
-            icon="pi pi-check"
-            class="p-button-rounded"
-            label="Friend"
-          />
-          <Button
-            v-if="doc.friendRequest.includes(user.uid)"
-            icon="pi pi-times"
-            class="p-button-rounded p-button-danger"
-            label="Unsent"
-            @click="unsent(user.uid, doc.userUid)"
-          />
+          <div class="addFriend">
+            <!-- && !doc.friendRequest.includes(user.uid) -->
+            <Button
+              v-if="
+                !(doc.userUid === user.uid) &&
+                  !doc.friendList.includes(user.uid) &&
+                  !doc.friendRequest.includes(user.uid)
+              "
+              @click="addFriends(doc.userUid, user.uid)"
+              icon="pi pi-user-plus"
+              class="p-button-rounded p-button-success"
+            />
+            <Button
+              disabled
+              v-if="doc.friendList.includes(user.uid)"
+              icon="pi pi-check"
+              class="p-button-rounded"
+              label="Friend"
+            />
+            <Button
+              v-if="doc.friendRequest.includes(user.uid)"
+              icon="pi pi-times"
+              class="p-button-rounded p-button-danger"
+              label="Unsent"
+              @click="unsent(user.uid, doc.userUid)"
+            />
+          </div>
         </div>
       </div>
     </div>
+    <div v-else class="empty">
+      <p>No Users</p>
+    </div>
   </div>
-  <div v-else class="empty">
-    <p>No Users</p>
+  <div v-else>
+    <UnauthorizedPage />
   </div>
 </template>
 
@@ -73,11 +86,15 @@ import Button from "primevue/button";
 import { computed } from "vue";
 import { useToast } from "primevue/usetoast";
 import unsentFreq from "@/composable/unsentFreq.js";
+import { useStore } from "vuex";
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
+import { ref } from "vue";
 
 export default {
   props: ["id"],
-  components: { Button },
+  components: { Button, UnauthorizedPage },
   setup(props) {
+    const store = useStore();
     const { error, documents } = getUsers();
     const { user } = getUser();
     const { info } = getProfile("profiles", user.value.uid);
@@ -118,7 +135,26 @@ export default {
 
     // unsent
 
-    return { documents, goBack, addFriends, user, unsent };
+    const masterPass = ref(null);
+    const userMasterPass = ref(null);
+    userMasterPass.value = store.state.userMasterPass;
+    masterPass.value = store.state.masterPass;
+
+    const goABack = () => {
+      router.push({ name: "Authentication" });
+    };
+
+    return {
+      documents,
+      goBack,
+      addFriends,
+      user,
+      unsent,
+
+      masterPass,
+      userMasterPass,
+      goABack,
+    };
   },
 };
 </script>

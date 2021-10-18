@@ -25,6 +25,28 @@
         <div v-if="u.played && user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
           <p>Total Played: {{ u.played }}</p>
         </div>
+
+        <div style="display: flex; align-items: center; margin-top: 20px;">
+          <label style="margin-right: 10px;" for="tags">Privacy: </label>
+          <Tag
+            class="p-mr-2"
+            id="ptag"
+            severity="warning"
+            v-if="u.private"
+            value="Private"
+            style="background: black; color: white;"
+            tag-name="tags"
+          ></Tag>
+          <Tag
+            tag-name="tags"
+            v-else
+            class="p-mr-2"
+            id="ptag"
+            severity="warning"
+            value="Public"
+            style="background: #33dfac; color: white;"
+          ></Tag>
+        </div>
       </el-card>
     </div>
   </div>
@@ -38,7 +60,7 @@ import getUser from "@/composable/getUser.js";
 import Tag from "primevue/tag";
 
 export default {
-    components: { Tag },
+  components: { Tag },
   setup() {
     const { user } = getUser();
     const { url } = getAVideosPlayed();

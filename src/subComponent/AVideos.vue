@@ -234,6 +234,7 @@ export default {
         createdAt: timestamp(),
         private: checked1.value,
         tags: tag.value,
+        played: 0,
       });
       input.value = null;
       title.value = null;

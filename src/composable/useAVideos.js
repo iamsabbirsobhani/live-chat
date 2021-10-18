@@ -13,10 +13,9 @@ const useAVideos = (collection) => {
       await projectFirestore
         .collection("avideosplayed")
         .doc(res.id)
-        .set({
-          played: 0,
-          createdAt: timestamp()
-        });
+        .set(
+          doc
+        );
       console.log(res.id);
     } catch (err) {
       console.log(err);

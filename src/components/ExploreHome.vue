@@ -82,7 +82,7 @@ export default {
       await profileUpdateField({ key: "exploreHome" });
     });
 
-    return { password, userPassword, goBack };
+    return { password, userPassword, goBack, user };
   },
 };
 </script>

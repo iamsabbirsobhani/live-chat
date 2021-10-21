@@ -30,6 +30,18 @@
                     >
                       {{ doc.lastVisited }}
                     </h4>
+                    <h4
+                      class="last-seen"
+                      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+                    >
+                     AVideos Played: {{ doc.avideoPlayed }}
+                    </h4>
+                    <h4
+                      class="last-seen"
+                      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+                    >
+                     AVisited: {{ doc.avideoPage }}
+                    </h4>
                   </div>
                 </div>
               </router-link>

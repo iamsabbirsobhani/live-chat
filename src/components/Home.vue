@@ -348,6 +348,7 @@ import { home, messagePageCount } from "@/composable/pageVisited";
 import RandomCard from "@/components/RandomCard";
 import Dialog from "primevue/dialog";
 import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
+import { updateFCMToken } from "@/composable/updateFCMToken";
 
 export default {
   components: { Button, InputText, Chip, RandomCard, Dialog, UnauthorizedPage },
@@ -556,7 +557,7 @@ export default {
         };
       }
 
-// store all the profiles to the store
+      // store all the profiles to the store
       let allProfiles = [];
       projectFirestore
         .collection("profiles")
@@ -569,6 +570,18 @@ export default {
           });
         });
       store.commit("setProfiles", allProfiles);
+
+      await updateFCMToken(store.state.currentToken);
+
+      // store current user profiles to the store
+      const profile = await projectFirestore
+        .collection("profiles")
+        .doc(user.value.uid)
+        .get();
+      if (profile.exists) {
+        store.commit("setProfile", profile.data());
+      }
+      // fetch
     });
 
     // let i = 0;

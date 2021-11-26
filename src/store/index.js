@@ -15,7 +15,8 @@ export default createStore({
     masterPass: 63952,
     userMasterPass: null,
     currentToken: null,
-    profiles: null
+    profiles: null,
+    profile: null,
     // background: "black"
   },
   getters: {
@@ -40,6 +41,9 @@ export default createStore({
     },
     getMetaName: (state) => {
       return state.otherProfileName;
+    },
+    getProfiles: (state) => {
+      return state.profiles;
     },
     getProfile: (state) => {
       return state.profiles;
@@ -73,7 +77,10 @@ export default createStore({
     },
     setProfiles(state, payload) {
       state.profiles = payload
-    }
+    },
+    setProfile(state, payload) {
+      state.profile = payload
+    },
   },
   actions: {},
   modules: {},

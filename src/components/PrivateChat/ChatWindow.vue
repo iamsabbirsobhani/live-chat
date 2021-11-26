@@ -232,7 +232,6 @@ import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
 import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 import { profileUpdateField } from "@/composable/profileUpdateField";
-import { updateFCMToken } from "@/composable/updateFCMToken";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 import { mapGetters, useStore } from "vuex";
 
@@ -324,10 +323,10 @@ export default {
     const messages = ref(null);
 
     onUpdated(async () => {
-      await updateFCMToken(store.state.currentToken);
 
       // console.log(store.state.profiles);
       // console.log(store.state.currentToken);
+      // console.log(store.state.profile.fcmTokens[0]);
 
       const time = setInterval(() => {
         messages.value.scrollTop = messages.value.scrollHeight;

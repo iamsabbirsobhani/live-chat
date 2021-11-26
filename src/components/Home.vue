@@ -315,7 +315,10 @@
     </Dialog>
   </div>
   <div v-else>
-    <UnauthorizedPage/>
+    <UnauthorizedPage />
+  </div>
+  <div style="margin: auto; max-width: 600px;" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
+    {{getKey}}
   </div>
 </template>
 
@@ -335,13 +338,14 @@ import useComments from "@/composable/useComments.js";
 import getComments from "@/composable/getComments.js";
 import commentDelete from "@/composable/commentDelete.js";
 import colors from "@/composable/colors.js";
-import { timestamp } from "../firebase/config";
+import { timestamp, messaging } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 import { home, messagePageCount } from "@/composable/pageVisited";
 import RandomCard from "@/components/RandomCard";
 import Dialog from "primevue/dialog";
-import UnauthorizedPage from '../subComponent/UnauthorizedPage.vue';
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
+
 export default {
   components: { Button, InputText, Chip, RandomCard, Dialog, UnauthorizedPage },
   setup() {
@@ -478,7 +482,7 @@ export default {
     // end of comment section
 
     const goBack = () => {
-      router.push({ name: "Authentication"});
+      router.push({ name: "Authentication" });
     };
 
     const like = (postId, reacter) => {
@@ -504,8 +508,32 @@ export default {
 
     const windWidth = ref(null);
     const styleObject = ref(null);
-
+    const getKey = ref(null)
     onMounted(async () => {
+      messaging
+        .getToken(messaging, {
+          vapidKey:
+            "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
+        })
+        .then((currentToken) => {
+          if (currentToken) {
+            // Send the token to your server and update the UI if necessary
+            // ...
+            getKey.value = currentToken
+            console.log(currentToken)
+          } else {
+            // Show permission request UI
+            console.log(
+              "No registration token available. Request permission to generate one."
+            );
+            // ...
+          }
+        })
+        .catch((err) => {
+          console.log("An error occurred while retrieving token. ", err);
+          // ...
+        });
+
       await home();
 
       document
@@ -549,7 +577,6 @@ export default {
     userMasterPass.value = store.state.userMasterPass;
     masterPass.value = store.state.masterPass;
 
-
     return {
       goBack,
       user,
@@ -586,7 +613,9 @@ export default {
       closeMaximizable,
 
       masterPass,
-      userMasterPass
+      userMasterPass,
+
+      getKey,
     };
   },
 };

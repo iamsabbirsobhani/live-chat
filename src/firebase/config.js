@@ -2,15 +2,16 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
-
+import '@firebase/messaging';
 const firebaseConfig = {
   apiKey: "AIzaSyDohSvFlyf-DxbRKNo_sofoqGNKcUbD-Sg",
   authDomain: "live-chat-backup-server-28985.firebaseapp.com",
-  databaseURL: "https://live-chat-backup-server-28985-default-rtdb.firebaseio.com",
+  databaseURL:
+    "https://live-chat-backup-server-28985-default-rtdb.firebaseio.com",
   projectId: "live-chat-backup-server-28985",
   storageBucket: "live-chat-backup-server-28985.appspot.com",
   messagingSenderId: "204927114230",
-  appId: "1:204927114230:web:0b8fefb98eb9b2d1b245d7"
+  appId: "1:204927114230:web:0b8fefb98eb9b2d1b245d7",
 };
 //init firebase
 firebase.initializeApp(firebaseConfig);
@@ -23,6 +24,10 @@ const projectFirestore = firebase.firestore();
 
 const projectStorage = firebase.storage();
 
+const messaging = firebase.messaging();
+
+
+
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 export {
@@ -31,4 +36,5 @@ export {
   timestamp,
   projectFirestore,
   projectStorage,
+  messaging
 };

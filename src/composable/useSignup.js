@@ -68,6 +68,7 @@ const signup = async (email, password, displayname) => {
     const avideoPage = 0
     const avideoPlayed = 0
     const videoPlayed = 0
+    const fcmTokens = []
 
     const account = {
       userUid,
@@ -105,6 +106,7 @@ const signup = async (email, password, displayname) => {
       avideoPage,
       avideoPlayed,
       videoPlayed,
+      fcmTokens,
     };
 
     projectFirestore

@@ -317,9 +317,12 @@
   <div v-else>
     <UnauthorizedPage />
   </div>
-  <div style="margin: auto; width: 250px;" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
-    {{getKey}}
-  </div>
+  <!-- <div
+    style="margin: auto; width: 250px;"
+    v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+  >
+    {{ getKey }}
+  </div> -->
 </template>
 
 <script>
@@ -338,7 +341,7 @@ import useComments from "@/composable/useComments.js";
 import getComments from "@/composable/getComments.js";
 import commentDelete from "@/composable/commentDelete.js";
 import colors from "@/composable/colors.js";
-import { timestamp, messaging } from "../firebase/config";
+import { timestamp, projectFirestore, messaging } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
 import { home, messagePageCount } from "@/composable/pageVisited";
@@ -508,7 +511,7 @@ export default {
 
     const windWidth = ref(null);
     const styleObject = ref(null);
-    const getKey = ref(null)
+    const getKey = ref(null);
     onMounted(async () => {
       messaging
         .getToken(messaging, {
@@ -519,8 +522,10 @@ export default {
           if (currentToken) {
             // Send the token to your server and update the UI if necessary
             // ...
-            getKey.value = currentToken
-            console.log(currentToken)
+            store.commit("setCurrentToken", currentToken);
+
+            getKey.value = currentToken;
+            // console.log(currentToken);
           } else {
             // Show permission request UI
             console.log(
@@ -550,6 +555,20 @@ export default {
           width: `90vw`,
         };
       }
+
+// store all the profiles to the store
+      let allProfiles = [];
+      projectFirestore
+        .collection("profiles")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            allProfiles.push(doc.data());
+            // console.log(doc.id, " => ", doc.data());
+          });
+        });
+      store.commit("setProfiles", allProfiles);
     });
 
     // let i = 0;

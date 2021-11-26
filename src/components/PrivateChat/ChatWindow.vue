@@ -232,8 +232,9 @@ import getUser from "@/composable/getUser.js";
 import ScrollPanel from "primevue/scrollpanel";
 import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 import { profileUpdateField } from "@/composable/profileUpdateField";
+import { updateFCMToken } from "@/composable/updateFCMToken";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
-import { mapGetters } from "vuex";
+import { mapGetters, useStore } from "vuex";
 
 export default {
   props: ["userTo"],
@@ -241,6 +242,7 @@ export default {
   setup(props) {
     const { user } = getUser();
     const { performDelete } = deleteChat();
+    const store = useStore();
 
     const { error, documents, esourceList } = getCollection(
       "privateChat",
@@ -321,7 +323,12 @@ export default {
     //Auto Scrolling
     const messages = ref(null);
 
-    onUpdated(() => {
+    onUpdated(async () => {
+      await updateFCMToken(store.state.currentToken);
+
+      // console.log(store.state.profiles);
+      // console.log(store.state.currentToken);
+
       const time = setInterval(() => {
         messages.value.scrollTop = messages.value.scrollHeight;
         // messages.value.scrollHeight;

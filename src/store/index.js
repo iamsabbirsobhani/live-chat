@@ -14,6 +14,8 @@ export default createStore({
     userMessagesPass: null,
     masterPass: 63952,
     userMasterPass: null,
+    currentToken: null,
+    profiles: null
     // background: "black"
   },
   getters: {
@@ -39,6 +41,9 @@ export default createStore({
     getMetaName: (state) => {
       return state.otherProfileName;
     },
+    getProfile: (state) => {
+      return state.profiles;
+    },
   },
   mutations: {
     clickOn(state, payload) {
@@ -63,6 +68,12 @@ export default createStore({
     setMasterPass(state, payload) {
       state.userMasterPass = payload;
     },
+    setCurrentToken(state, payload) {
+      state.currentToken = payload
+    },
+    setProfiles(state, payload) {
+      state.profiles = payload
+    }
   },
   actions: {},
   modules: {},

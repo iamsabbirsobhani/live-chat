@@ -198,13 +198,14 @@ export default {
 
         // let to = store.state.profile.fcmTokens;
         let to = store.state.profiles;
+        let self = store.state.profile;
         let newTo = to.filter((value) => value.userUid === props.userTo);
         let data = {
           to: newTo[0].fcmTokens,
-          title: `${newTo[0].userName} just sent you msg!`,
+          title: `${user.value.displayName} just sent you msg!`,
           body: `${newModel.value.msg.substr(0, 5)}...\n(Quick login to reply)`,
-          image: newTo[0].coverPhoto,
-          icon: newTo[0].phofilePhoto,
+          image: self.coverPhoto,
+          icon: self.phofilePhoto,
         };
         fetch("https://fathomless-reaches-88372.herokuapp.com/api/fcm/", {
           method: "POST",

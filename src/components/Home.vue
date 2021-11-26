@@ -581,7 +581,9 @@ export default {
       if (profile.exists) {
         store.commit("setProfile", profile.data());
       }
-      // fetch
+
+      fetch('https://fathomless-reaches-88372.herokuapp.com/api/')
+      .then().catch(err => console.log(err));
     });
 
     // let i = 0;

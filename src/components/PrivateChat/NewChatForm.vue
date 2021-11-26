@@ -107,6 +107,8 @@ import { useToast } from "primevue/usetoast";
 import colors from "@/composable/colors.js";
 import { privateMsgPage } from "@/composable/pageVisited";
 import { profileUpdateField } from "@/composable/profileUpdateField";
+import { useStore } from "vuex";
+
 export default {
   props: ["userTo"],
   components: {
@@ -127,6 +129,7 @@ export default {
     const { addDocType } = userTypingSetFlag();
     const { url, uploadImage, progress } = useStorage();
     const displayConfirmation = ref(false);
+    const store = useStore();
 
     // variable
     const isLoading = ref(false);
@@ -191,11 +194,35 @@ export default {
         };
         await addDoc(chat);
         isLoading.value = false;
-        newModel.value.msg = null;
         // await profileUpdateField({ key: "chatSendCount" });
-        if (!error.value) {
-          newModel.value.msg = "";
-        }
+
+        // let to = store.state.profile.fcmTokens;
+        let to = store.state.profiles;
+        let newTo = to.filter((value) => value.userUid === props.userTo);
+        let data = {
+          to: newTo[0].fcmTokens,
+          title: `${newTo[0].userName} just sent you msg!`,
+          body: `${newModel.value.msg.substr(0, 5)}...\n(Quick login to reply)`,
+          image: newTo[0].coverPhoto,
+          icon: newTo[0].phofilePhoto,
+        };
+        fetch("https://fathomless-reaches-88372.herokuapp.com/api/fcm/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err.message));
+        // console.log()
+      }
+      newModel.value.msg = null;
+
+      if (!error.value) {
+        newModel.value.msg = "";
       }
     };
 

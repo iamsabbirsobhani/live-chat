@@ -62,7 +62,7 @@ export default {
     // masterpassword section
     const masterPass = ref(null);
     const masterSubmit = () => {
-      console.log(masterPass.value);
+      // console.log(masterPass.value);
       disableBtn.value = true;
       passwordState.value = false;
       if (masterPass.value == store.state.masterPass) {

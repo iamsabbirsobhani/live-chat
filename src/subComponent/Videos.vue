@@ -112,7 +112,7 @@ export default {
     const tag = ref([]);
     const tagInput = ref(null);
     const submit = async () => {
-      console.log(input.value);
+      // console.log(input.value);
       await postVideoUrl({
         url: input.value,
         title: title.value,
@@ -159,7 +159,7 @@ export default {
 
 
     const addTags = () => {
-      console.log(tagInput.value);
+      // console.log(tagInput.value);
       const random = Math.random();
       const index = Math.round(random * 279);
       let backgroundColor = `${colors[index]}`;
@@ -173,7 +173,7 @@ export default {
           tagColor: backgroundColor,
         });
       }
-      console.log(tag.value);
+      // console.log(tag.value);
       tagInput.value = null;
     };
     return {
@@ -192,7 +192,7 @@ export default {
   },
   methods: {
     confirmEvent(id) {
-      console.log("confirm!", id);
+      // console.log("confirm!", id);
       projectFirestore
         .collection("videos")
         .doc(id)

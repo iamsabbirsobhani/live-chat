@@ -326,7 +326,7 @@ export default {
 
       // console.log(store.state.profiles);
       // console.log(store.state.currentToken);
-      // console.log(store.state.profile.fcmTokens[0]);
+      // console.log(store.state.profile.fcmTokens);
 
       const time = setInterval(() => {
         messages.value.scrollTop = messages.value.scrollHeight;

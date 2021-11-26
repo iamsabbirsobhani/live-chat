@@ -207,7 +207,7 @@ export default {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data());
             geo.value = doc.data();
             displayMaximizable.value = true;
           } else {

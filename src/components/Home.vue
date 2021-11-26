@@ -317,7 +317,7 @@
   <div v-else>
     <UnauthorizedPage />
   </div>
-  <div style="margin: auto; max-width: 600px;" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
+  <div style="margin: auto; width: 250px;" v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
     {{getKey}}
   </div>
 </template>

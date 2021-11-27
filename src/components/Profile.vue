@@ -1144,7 +1144,7 @@ export default {
 
       // console.log(route.params.id, user.value.uid)
       // console.log(windowWidth.value);
-      await profile();
+      // await profile();
       let style = {
         width: "60vw",
       };

@@ -33,27 +33,6 @@
     </el-card>
 
     <el-skeleton class="skeleton" :style="styleObject" v-else />
-
-    <!-- <el-card v-for="art in articles" :key="art" class="box-card"> -->
-    <!-- <div class="text item"> -->
-    <!-- <img src="https://picsum.photos/200/350" alt="" /> -->
-    <!-- <img style="max-width: 310px;" :src="art.urlToImage" alt=""> -->
-    <!-- <p >{{ art.title }}</p>
-        <p style="color: rgb(83, 83, 83);">{{ art.description }}</p>
-        {{ new Date(art.publishedAt).toLocaleString() }}
-        <a :href="art.url" target="_blank">Full article</a>
-      </div> -->
-    <!-- </el-card> -->
-
-    <!-- <div v-for="art of article" :key="art.title">
-      <div>
-        <img style="max-width: 310px;" :src="art.urlToImage" alt="" />
-        <p>{{ art.title }}</p>
-        <p style="color: rgb(83, 83, 83);">{{ art.description }}</p>
-        {{ new Date(art.publishedAt).toLocaleString() }}
-        <a :href="art.url" target="_blank">Full article</a>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -67,7 +46,6 @@ export default {
     const jokes = ref(null);
     const quotesText = ref(null);
     const quotesAuthor = ref(null);
-    const article = ref(null);
 
     const windWidth = ref(null);
     const styleObject = ref(null);
@@ -114,28 +92,12 @@ export default {
           // enter your logic for when there is an error (ex. error toast)
           console.log(error);
         });
-
-      fetch(
-        "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=bad8d364f1f54cdbbd00e1008005d826"
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          // enter you logic when the fetch is successful
-          //   console.log(data[0].text, data[0].author);
-          // console.log(data.articles);
-          article.value = data.articles;
-        })
-        .catch((error) => {
-          // enter your logic for when there is an error (ex. error toast)
-          console.log(error);
-        });
     });
 
     return {
       jokes,
       quotesText,
       quotesAuthor,
-      article,
       styleObject,
     };
   },

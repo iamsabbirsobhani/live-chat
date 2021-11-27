@@ -187,7 +187,7 @@ export default {
           sunset.value = format(new Date(data.sys.senset), "PPp");
         })
         .catch((error) => {
-          console.log(error.message);
+          // console.log(error.message);
         });
     });
 

@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/analytics";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
@@ -12,9 +13,12 @@ const firebaseConfig = {
   storageBucket: "live-chat-backup-server-28985.appspot.com",
   messagingSenderId: "204927114230",
   appId: "1:204927114230:web:0b8fefb98eb9b2d1b245d7",
+  measurementId: "G-Z948DMVF26"
 };
 //init firebase
-firebase.initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
+
+firebase.analytics(app)
 
 const projectAuth = firebase.auth();
 

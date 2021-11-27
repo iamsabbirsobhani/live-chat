@@ -10,19 +10,17 @@ const updateFCMToken = async (token) => {
       .get();
 
     if (userData.exists) {
-      //   fcmTokens =  fcmTokens.push(userData.data()[field.key]);
       fcmTokens = userData.data().fcmTokens;
       if (!fcmTokens.includes(token)) {
         fcmTokens.push(token);
+        await projectFirestore
+        .collection("profiles")
+        .doc(user.value.uid)
+        .update({
+          fcmTokens: fcmTokens,
+        });
       }
     }
-    // console.log(count)
-    await projectFirestore
-      .collection("profiles")
-      .doc(user.value.uid)
-      .update({
-        fcmTokens: fcmTokens,
-      });
     fcmTokens = [];
   } catch (error) {
     console.log(error);

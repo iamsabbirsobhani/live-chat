@@ -44,7 +44,7 @@ import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { profileUpdateField } from "@/composable/profileUpdateField";
+// import { profileUpdateField } from "@/composable/profileUpdateField";
 
 export default {
   components: { Button, Dialog },
@@ -84,7 +84,7 @@ export default {
     const submit = async () => {
       disableBtn.value = true
       passwordState.value = false;
-      await profileUpdateField({ key: "submitReqForExploreHome" });
+      // await profileUpdateField({ key: "submitReqForExploreHome" });
       if (password.value == store.state.explorePass) {
         passwordState.value = false;
         console.log("Correct Password");

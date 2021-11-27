@@ -344,7 +344,7 @@ import colors from "@/composable/colors.js";
 import { timestamp, projectFirestore, messaging } from "../firebase/config";
 import InputText from "primevue/inputtext";
 import { useStore } from "vuex";
-import { home, messagePageCount } from "@/composable/pageVisited";
+// import { home, messagePageCount } from "@/composable/pageVisited";
 import RandomCard from "@/components/RandomCard";
 import Dialog from "primevue/dialog";
 import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
@@ -373,21 +373,19 @@ export default {
         passwordState.value = false;
         console.log("Correct Password");
         store.commit("setMessagesPass", password.value);
-        // console.log(store.state.userExplorePass);
         password.value = null;
         await messages();
         disableBtn.value = false;
       } else {
         passwordState.value = true;
         store.commit("setMessagesPass", password.value);
-        // console.log(store.state.userExplorePass);
         console.log("Wrong Password");
         disableBtn.value = false;
       }
     };
 
     const messages = async () => {
-      await messagePageCount();
+      // await messagePageCount(); disabled message page view count
       let payload = { name: "Messages", back: "Messages" };
       store.commit("clickOn", payload);
       router.push({ name: "Messages", params: { id: user.value.uid } });
@@ -521,26 +519,19 @@ export default {
         })
         .then((currentToken) => {
           if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            // ...
             store.commit("setCurrentToken", currentToken);
-
             getKey.value = currentToken;
-            // console.log(currentToken);
           } else {
-            // Show permission request UI
             console.log(
               "No registration token available. Request permission to generate one."
             );
-            // ...
           }
         })
         .catch((err) => {
           console.log("An error occurred while retrieving token. ", err);
-          // ...
         });
 
-      await home();
+      // await home(); disabled home page view count
 
       document
         .querySelector('meta[name="theme-color"]')
@@ -564,9 +555,7 @@ export default {
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
             allProfiles.push(doc.data());
-            // console.log(doc.id, " => ", doc.data());
           });
         });
       store.commit("setProfiles", allProfiles);
@@ -585,15 +574,6 @@ export default {
       fetch('https://fathomless-reaches-88372.herokuapp.com/api/')
       .then().catch(err => console.log(err));
     });
-
-    // let i = 0;
-    // onUpdated(() => {
-    //   if (i !== 0) {
-    //     var scrollingElement = document.scrollingElement || document.body;
-    //     scrollingElement.scrollTop = scrollingElement.scrollHeight;
-    //   }
-    //   i++;
-    // });
 
     const metaProfileName = (name) => {
       store.commit("setMetaProfileName", name);

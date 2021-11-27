@@ -374,7 +374,7 @@ export default {
         performDelete(id, { url: false, name: docName });
       }
       if (img) {
-        await profileUpdateField({ key: "imgDeleted" });
+        // await profileUpdateField({ key: "imgDeleted" });
         performDelete(id, { url: true, name: docName });
       }
     };

@@ -779,7 +779,7 @@ import useLogout from "../composable/useLogout";
 import { useStore } from "vuex";
 import { getPostById } from "@/composable/getPostById.js";
 import { logOutCount } from "@/composable/logOutCount";
-import { profileVisitedBy } from "@/composable/profileVisitedBy";
+// import { profileVisitedBy } from "@/composable/profileVisitedBy";
 import {
   profile,
   chatRoom,
@@ -985,7 +985,7 @@ export default {
     };
 
     const postComment = async (docId, name, userId) => {
-      await profileVisitedBy();
+      // await profileVisitedBy(); disabled profile page view count
       isLoadingCmt.value = true;
       docsid.value = docId;
       const docs = {
@@ -1187,7 +1187,7 @@ export default {
 
     const vueQuillEditor = async () => {
       openEditor.value = true;
-      await profileUpdateField({ key: "editorUsed" });
+      // await profileUpdateField({ key: "editorUsed" });
     };
 
     return {

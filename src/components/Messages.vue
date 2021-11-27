@@ -198,7 +198,6 @@ export default {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            console.log("Document data:", doc.data());
             geo.value = doc.data();
             displayMaximizable.value = true;
           } else {
@@ -209,8 +208,6 @@ export default {
         .catch((error) => {
           console.log("Error getting document:", error);
         });
-      // data
-      console.log(pId.value);
     };
     const closeMaximizable = () => {
       displayMaximizable.value = false;

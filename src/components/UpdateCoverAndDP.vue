@@ -92,7 +92,7 @@ import { ref } from "vue";
 import userProfileStorage from "@/composable/userProfileStorage.js";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
-import { profileUpdateField } from "@/composable/profileUpdateField";
+// import { profileUpdateField } from "@/composable/profileUpdateField";
 import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
 import { useStore } from "vuex";
 export default {
@@ -118,7 +118,7 @@ export default {
           coverPhoto: urlCover.value,
           phofilePhoto: urlProfile.value,
         });
-        await profileUpdateField({ key: "dpChanged" });
+        // await profileUpdateField({ key: "dpChanged" }); disabled dpChanged visited count
         router.push({ name: "Profile" });
       }
       isLoading.value = false;

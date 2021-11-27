@@ -105,7 +105,7 @@ import Button from "primevue/button";
 import useStorage from "@/composable/useStorage";
 import { useToast } from "primevue/usetoast";
 import colors from "@/composable/colors.js";
-import { privateMsgPage } from "@/composable/pageVisited";
+// import { privateMsgPage } from "@/composable/pageVisited";
 import { profileUpdateField } from "@/composable/profileUpdateField";
 import { useStore } from "vuex";
 
@@ -302,7 +302,7 @@ export default {
     };
 
     onMounted(async () => {
-      await privateMsgPage();
+      // await privateMsgPage(); disabled privateMsgPage visited count
     });
     return {
       handleSumbit,

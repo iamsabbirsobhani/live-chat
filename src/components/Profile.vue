@@ -243,7 +243,7 @@
           <div v-if="doc.post.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp/)">
             <div>
               <video :style="styleObject" controls muted>
-                <source :src="doc.post" type="video/mp4"/>
+                <source :src="doc.post" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -1141,7 +1141,6 @@ export default {
           // height: `240px`,
         };
       }
-
       // console.log(route.params.id, user.value.uid)
       // console.log(windowWidth.value);
       // await profile();
@@ -1251,7 +1250,7 @@ export default {
       windowWidth,
       vueQuillEditor,
 
-      styleObject
+      styleObject,
     };
   },
 };

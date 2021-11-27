@@ -87,9 +87,7 @@ export default {
       // await profileUpdateField({ key: "submitReqForExploreHome" });
       if (password.value == store.state.explorePass) {
         passwordState.value = false;
-        console.log("Correct Password");
         store.commit("setExplorePass", password.value);
-        // console.log(store.state.userExplorePass);
         password.value = null;
         disableBtn.value = false
         router.push({
@@ -98,8 +96,6 @@ export default {
       } else {
         passwordState.value = true;
         store.commit("setExplorePass", password.value);
-        // console.log(store.state.userExplorePass);
-        console.log("Wrong Password");
         disableBtn.value = false
       }
     };

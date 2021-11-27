@@ -21,19 +21,15 @@ export default createStore({
   },
   getters: {
     getRoute: (state) => {
-      // console.log(state.route)
       return state.route;
     },
     getBack: (state) => {
-      // console.log(state.back)
       return state.back;
     },
     getStyle: (state) => {
-      // console.log(state.back)
       return state.style;
     },
     isDark: (state) => {
-      // console.log(state.back)
       return state.dark;
     },
     color: (state) => {

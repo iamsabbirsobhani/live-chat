@@ -94,7 +94,6 @@ export default {
         name: store.getters.getRoute,
         params: { id: user.value.uid },
       });
-      console.log(store.getters.isDark);
       document.body.style.backgroundColor = "white";
     };
 
@@ -102,7 +101,6 @@ export default {
 
     // for remember dark mode choice
     watch(userDarkMode, (newUserDarkMode) => {
-      console.log(newUserDarkMode.isDark);
       if (newUserDarkMode.isDark) {
         checked1.value = true;
         darkM();

@@ -371,7 +371,6 @@ export default {
       passwordState.value = false;
       if (password.value == store.state.messagesPass) {
         passwordState.value = false;
-        console.log("Correct Password");
         store.commit("setMessagesPass", password.value);
         password.value = null;
         await messages();
@@ -379,7 +378,6 @@ export default {
       } else {
         passwordState.value = true;
         store.commit("setMessagesPass", password.value);
-        console.log("Wrong Password");
         disableBtn.value = false;
       }
     };

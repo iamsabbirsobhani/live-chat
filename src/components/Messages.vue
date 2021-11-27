@@ -142,7 +142,6 @@ export default {
           picture: dp,
         },
       });
-      console.log(store.getters.isDark);
       if (store.getters.isDark) {
         document.body.style.backgroundColor = "black";
       }
@@ -202,7 +201,7 @@ export default {
             displayMaximizable.value = true;
           } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            // console.log("No such document!");
           }
         })
         .catch((error) => {

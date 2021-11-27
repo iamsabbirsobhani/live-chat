@@ -62,14 +62,11 @@ export default {
     // masterpassword section
     const masterPass = ref(null);
     const masterSubmit = () => {
-      // console.log(masterPass.value);
       disableBtn.value = true;
       passwordState.value = false;
       if (masterPass.value == store.state.masterPass) {
         store.commit("setMasterPass", masterPass.value);
         passwordState.value = false;
-        console.log("Correct Password");
-        // console.log(store.state.userExplorePass);
         router.push({
           name: "Home",
         });
@@ -78,8 +75,6 @@ export default {
       } else {
         passwordState.value = true;
         store.commit("setMasterPass", masterPass.value);
-        // console.log(store.state.userExplorePass);
-        console.log("Wrong Password");
         disableBtn.value = false;
       }
     };

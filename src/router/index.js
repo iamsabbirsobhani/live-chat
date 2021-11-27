@@ -30,7 +30,6 @@ const { performLastSeen } = lastSeen();
 // Authintication guard
 const requiredAuth = async (to, from, next) => {
   let user = projectAuth.currentUser; //Checking if a user is authinticated or not
-  // console.log('Current user is auth guard', user)
   if (!user) {
     //if user is not authinticated
     next({ name: "Welcome" }); //it will be redirected to 'Welcome' route
@@ -365,9 +364,7 @@ let doc;
 if(to.params.id && to.params.id != user.uid){
     document.title = `Live Chat loading...`;
     doc = await getDoc({collection: "profiles", docId: to.params.id})
-    console.log("got")
   }
-  // console.log(d.userName);
   // This goes through the matched routes from last to first, finding the closest route with a title.
   // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
   // `/nested`'s will be chosen.

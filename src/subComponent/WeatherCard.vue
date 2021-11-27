@@ -129,21 +129,18 @@ export default {
             new Date().getHours() < 12 &&
             new Date().getHours() > 6
           ) {
-            console.log("Good Morning");
             greetings.value = `Good Morning!`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 12 &&
             new Date().getHours() < 15
           ) {
-            console.log("Good Noon");
             greetings.value = `Good Noon,`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 15 &&
             new Date().getHours() < 17
           ) {
-            console.log("Good After Noon");
             greetings.value = `Good Afternoon,`;
           } else if (
             timeCurrent.value.includes(`PM`) &&
@@ -151,10 +148,8 @@ export default {
             new Date().getHours() < 20
           ) {
             greetings.value = `Good Evening,`;
-            console.log("Good Evening");
           } else {
             greetings.value = `Good Night,`;
-            console.log("Good night");
           }
           crName.value = data.currency.name;
           crCode.value = data.currency.code;
@@ -176,7 +171,6 @@ export default {
 
           // ipdata.co I have account
           return fetch(
-            // `https://api.openweathermap.org/data/2.5/weather?lat=${data.latitude}&lon=${data.longitude}&appid=f4160958e410ad8ae77d0e3b11368deb`
             `https://api.openweathermap.org/data/2.5/weather?lat=${data.latitude}&lon=${data.longitude}&units=metric&appid=f4160958e410ad8ae77d0e3b11368deb`
           );
         })
@@ -191,7 +185,6 @@ export default {
           wIcon.value = data.weather.icon;
           sunrise.value = format(new Date(data.sys.sunrise), "PPp");
           sunset.value = format(new Date(data.sys.senset), "PPp");
-          // console.log(data);
         })
         .catch((error) => {
           console.log(error.message);
@@ -207,16 +200,14 @@ export default {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            // console.log("Document data:", doc.data());
             geo.value = doc.data();
             displayMaximizable.value = true;
           } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
           }
         })
         .catch((error) => {
-          console.log("Error getting document:", error);
+          console.log(error);
         });
     };
     const closeMaximizable = () => {

@@ -9,7 +9,7 @@ const updateFCMToken = async (token) => {
       .doc(user.value.uid)
       .get();
 
-    if (userData.exists) {
+    if (userData.exists && token) {
       fcmTokens = userData.data().fcmTokens;
       if (!fcmTokens.includes(token)) {
         fcmTokens.push(token);
@@ -21,7 +21,7 @@ const updateFCMToken = async (token) => {
         });
       }
     }
-    // fcmTokens = [];
+    fcmTokens = [];
   } catch (error) {
     console.log(error);
   }

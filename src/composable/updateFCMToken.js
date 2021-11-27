@@ -21,7 +21,7 @@ const updateFCMToken = async (token) => {
         });
       }
     }
-    fcmTokens = [];
+    // fcmTokens = [];
   } catch (error) {
     console.log(error);
   }

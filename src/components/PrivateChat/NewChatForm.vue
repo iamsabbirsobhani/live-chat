@@ -203,7 +203,7 @@ export default {
         let data = {
           to: newTo[0].fcmTokens,
           title: `${user.value.displayName} just sent you msg!`,
-          body: `${newModel.value.msg.substr(0, 5)}...\n(Quick login to reply)`,
+          body: `${newModel.value.msg.substr(0, 10)}...\n(Quick login to reply)`,
           image: self.coverPhoto,
           icon: self.phofilePhoto,
         };

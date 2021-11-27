@@ -52,7 +52,13 @@
               <!-- element-plus Image Preview -->
               <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
                 <!-- <div v-if="doc.imgUrl.includes(`mp4`) || doc.imgUrl.includes(`MP4`) || doc.imgUrl.includes(`MKV`) || doc.imgUrl.includes(`mkv`)"> -->
-                <div v-if="doc.imgUrl.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp|mp3|MP3|m4a|M4A|amr|AMR|AAC|aac|3ga|3GA/)">
+                <div
+                  v-if="
+                    doc.imgUrl.match(
+                      /mp4|mkv|MP4|MKV|AVI|avi|3gp|mp3|MP3|m4a|M4A|amr|AMR|AAC|aac|3ga|3GA/
+                    )
+                  "
+                >
                   <video :style="styleObject" controls>
                     <source :src="doc.imgUrl" type="video/mp4" />
                     Your browser does not support the video tag.
@@ -144,7 +150,13 @@
             <!-- element-plus Image Preview -->
             <div v-if="doc.imgUrl" class="pvtSelfUser demo-image__preview">
               <!-- <div v-if="doc.imgUrl.includes(`mp4`) || doc.imgUrl.includes(`MP4`) || doc.imgUrl.includes(`MKV`) || doc.imgUrl.includes(`mkv`)"> -->
-              <div v-if="doc.imgUrl.match(/mp4|mkv|MP4|MKV|AVI|avi|3gp|mp3|MP3|m4a|M4A|amr|AMR|AAC|aac|3ga|3GA/)">
+              <div
+                v-if="
+                  doc.imgUrl.match(
+                    /mp4|mkv|MP4|MKV|AVI|avi|3gp|mp3|MP3|m4a|M4A|amr|AMR|AAC|aac|3ga|3GA/
+                  )
+                "
+              >
                 <video :style="styleObject" width="280" height="240" controls>
                   <source :src="doc.imgUrl" type="video/mp4" />
                   Your browser does not support the video tag.
@@ -323,7 +335,6 @@ export default {
     const messages = ref(null);
 
     onUpdated(async () => {
-
       // console.log(store.state.profiles);
       // console.log(store.state.currentToken);
       // console.log(store.state.profile.fcmTokens);
@@ -394,6 +405,10 @@ export default {
           // height: `240px`,
         };
       }
+      let to = store.state.profiles;
+      let newTo = to.filter((value) => value.userUid === props.userTo);
+
+      document.title = newTo[0].userName + ' | Private Message';
     });
 
     return {

@@ -330,11 +330,67 @@ export default {
     // const deletedTime = computed(() => {
     //   return formatDistanceToNow(deltime.toDate());
     // })
+    let ddd = ref(null);
+
+    watch(documents, (newDocV) => {
+      if (newDocV[49]) {
+        ddd.value = newDocV[49].to === user.value.uid;
+      }
+    });
 
     //Auto Scrolling
     const messages = ref(null);
-
     onUpdated(async () => {
+      const audio = new Audio("https://www.myinstants.com/media/sounds/whatsapp-audio-2020-08-23-at-04_cMHstO4.mp3");
+
+      let to = store.state.profiles;
+      let newTo = to.filter((value) => value.userUid === props.userTo);
+
+      console.log(ddd.value);
+      var tId, idleTimer, stopTitle, count;
+      function initReload() {
+        clearInterval(tId);
+        tId = setInterval(checklatestmsgidLive, 10000);
+      }
+      window.onload = window.onfocus = function() {
+        // document.title = newTo[0].userName + " | Private Message";
+
+        clearInterval(stopTitle);
+        initReload();
+      };
+      window.onclick = function() {
+        clearInterval(stopTitle);
+        ddd.value = false;
+        // document.title = newTo[0].userName + " | Private Message";
+      };
+      function start() {
+        let c = 0;
+        stopTitle = setInterval(() => {
+          c++;
+          if (ddd.value) {
+            if (c % 2 == 0) {
+              audio.play();
+              document.title = `Message... | ${newTo[0].userName}`;
+            } else {
+              document.title = newTo[0].userName + " | Private Message";
+            }
+          }
+        }, 1500);
+      }
+      window.onblur = function() {
+        start();
+        clearInterval(tId);
+      };
+
+      window.onmousemove = function() {
+        clearTimeout(idleTimer);
+        clearInterval(stopTitle);
+
+        idleTimer = setTimeout(function() {
+          clearInterval(tId);
+        }, 600000); // idle for 10 minutes
+      };
+
       // console.log(store.state.profiles);
       // console.log(store.state.currentToken);
       // console.log(store.state.profile.fcmTokens);
@@ -392,7 +448,11 @@ export default {
 
     const windWidth = ref(null);
     const styleObject = ref(null);
+    // const isnewmsg = ref(null);
     onMounted(() => {
+      // isnewmsg.value = documents.value[49];
+      console.log(documents.value);
+
       windWidth.value = window.innerWidth;
       if (windWidth.value > 600) {
         styleObject.value = {
@@ -408,7 +468,7 @@ export default {
       let to = store.state.profiles;
       let newTo = to.filter((value) => value.userUid === props.userTo);
 
-      document.title = newTo[0].userName + ' | Private Message';
+      document.title = newTo[0].userName + " | Private Message";
     });
 
     return {

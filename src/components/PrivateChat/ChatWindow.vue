@@ -341,7 +341,9 @@ export default {
     //Auto Scrolling
     const messages = ref(null);
     onUpdated(async () => {
-      const audio = new Audio("https://www.myinstants.com/media/sounds/whatsapp-audio-2020-08-23-at-04_cMHstO4.mp3");
+      const audio = new Audio(
+        "https://www.myinstants.com/media/sounds/whatsapp-audio-2020-08-23-at-04_cMHstO4.mp3"
+      );
 
       let to = store.state.profiles;
       let newTo = to.filter((value) => value.userUid === props.userTo);
@@ -354,7 +356,7 @@ export default {
       }
       window.onload = window.onfocus = function() {
         // document.title = newTo[0].userName + " | Private Message";
-
+        console.log("on tab");
         clearInterval(stopTitle);
         initReload();
       };
@@ -363,14 +365,19 @@ export default {
         ddd.value = false;
         // document.title = newTo[0].userName + " | Private Message";
       };
+
       function start() {
         let c = 0;
+
         stopTitle = setInterval(() => {
           c++;
           if (ddd.value) {
             if (c % 2 == 0) {
-              audio.play();
               document.title = `Message... | ${newTo[0].userName}`;
+              if (document.hidden) {
+                // do what you need
+                audio.play();
+              }
             } else {
               document.title = newTo[0].userName + " | Private Message";
             }

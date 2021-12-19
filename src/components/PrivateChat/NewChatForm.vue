@@ -211,7 +211,7 @@ export default {
           image: self.coverPhoto,
           icon: self.phofilePhoto,
         };
-        fetch("https://fathomless-reaches-88372.herokuapp.com/api/fcm/", {
+        fetch("https://nodejs-express-postgres.herokuapp.com/api/fcm/", {
           method: "POST",
           headers: {
             Accept: "application/json",

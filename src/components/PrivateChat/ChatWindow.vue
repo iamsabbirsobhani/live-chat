@@ -381,11 +381,15 @@ export default {
             } else {
               document.title = newTo[0].userName + " | Private Message";
             }
+          } else {
+            clearInterval(stopTitle);
           }
         }, 1500);
       }
       window.onblur = function() {
-        start();
+        if (document.hidden) {
+          start();
+        }
         clearInterval(tId);
       };
 

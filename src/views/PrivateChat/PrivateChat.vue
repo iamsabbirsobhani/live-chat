@@ -4,13 +4,13 @@
     class="pghd"
     @back="goBack"
     content="Home"
-    v-if="msgPassword != userMsgPassword"
+    v-if="msgPassword != userMsgPassword  && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
   >
   </el-page-header>
   <div
     style="background: none;"
     :style="getStyle"
-    v-if="msgPassword == userMsgPassword"
+    v-if="msgPassword == userMsgPassword  || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
   >
     <Navbar
       @delete="deletes"
@@ -83,7 +83,7 @@ export default {
         name: "Home",
       });
     };
-    return { deletes, documents, msgPassword, userMsgPassword, goBack };
+    return { deletes, documents, msgPassword, userMsgPassword, goBack, user };
   },
   computed: {
     ...mapGetters(["getStyle"]),

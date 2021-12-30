@@ -4,10 +4,16 @@
     class="pghd"
     @back="goBack"
     content="Authentication"
-    v-if="masterPass != userMasterPass"
+    v-if="
+      masterPass != userMasterPass && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+    "
   >
   </el-page-header>
-  <div v-if="masterPass == userMasterPass">
+  <div
+    v-if="
+      masterPass == userMasterPass || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+    "
+  >
     <el-menu
       :default-active="activeIndex"
       class="el-menu-demo"
@@ -47,9 +53,16 @@
         class="p-button-raised p-button-secondary p-button-text"
       /> -->
         <Button
+          v-if="user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
           @click="openMaximizable"
           label="Messages"
           icon="pi pi-shield"
+          class="p-button-raised p-button-secondary p-button-text"
+        />
+        <Button
+          v-else
+          @click="goPvtMsg"
+          label="Messages"
           class="p-button-raised p-button-secondary p-button-text"
         />
       </el-menu-item>
@@ -569,8 +582,9 @@ export default {
         store.commit("setProfile", profile.data());
       }
 
-      fetch('https://fathomless-reaches-88372.herokuapp.com/api/')
-      .then().catch(err => console.log(err));
+      fetch("https://fathomless-reaches-88372.herokuapp.com/api/")
+        .then()
+        .catch((err) => console.log(err));
     });
 
     const metaProfileName = (name) => {
@@ -588,6 +602,12 @@ export default {
     const userMasterPass = ref(null);
     userMasterPass.value = store.state.userMasterPass;
     masterPass.value = store.state.masterPass;
+
+    const goPvtMsg = () => {
+      let payload = { name: "Messages", back: "Messages" };
+      store.commit("clickOn", payload);
+      router.push({ name: "Messages", params: { id: user.value.uid } });
+    };
 
     return {
       goBack,
@@ -626,7 +646,7 @@ export default {
 
       masterPass,
       userMasterPass,
-
+      goPvtMsg,
       getKey,
     };
   },

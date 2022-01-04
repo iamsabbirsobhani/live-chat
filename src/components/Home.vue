@@ -541,6 +541,7 @@ export default {
       //     if (currentToken) {
       //       store.commit("setCurrentToken", currentToken);
       //       getKey.value = currentToken;
+            // updateFCMToken(currentToken); // beta for testing another full version is on line 608
       //     } else {
       //       console.log(
       //         "No registration token available. Request permission to generate one."
@@ -563,6 +564,7 @@ export default {
           if (currentToken) {
             store.commit("setCurrentToken", currentToken);
             getKey.value = currentToken;
+            updateFCMToken(currentToken); // beta for testing another full version is on line 608
           } else {
             console.log(
               "No registration token available. Request permission to generate one."
@@ -603,7 +605,7 @@ export default {
         });
       store.commit("setProfiles", allProfiles);
 
-      await updateFCMToken(store.state.currentToken);
+      // await updateFCMToken(store.state.currentToken); //it works perfectly but not working with backup server thats why added a beta version of it inside "fcm backup" section
 
       // store current user profiles to the store
       const profile = await projectFirestore

@@ -4,11 +4,27 @@
     class="pghd"
     @back="goBack"
     content="Home"
+    v-if="msgRoute"
   >
   </el-page-header>
-  <h3 style="text-align: center; font-family: Roboto, sans-serif" v-if="msgPassword == userMsgPassword">Messages</h3>
+  <h3
+    style="text-align: center; font-family: Roboto, sans-serif"
+    v-if="
+      msgPassword == userMsgPassword ||
+        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+    "
+  >
+    Messages
+  </h3>
 
-  <div v-if="msgPassword == userMsgPassword || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
+  <div
+    v-if="
+      msgPassword == userMsgPassword ||
+        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+    "
+  >
     <div v-if="documents">
       <div v-for="doc in formatedDoc" :key="doc.userUid">
         <div v-for="fr in info.friendList" :key="fr.id">
@@ -26,7 +42,10 @@
                     <h4>{{ doc.userName }}</h4>
                     <h4
                       class="last-seen"
-                      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+                      v-if="
+                        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+                          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+                      "
                     >
                       {{ doc.lastVisited }}
                     </h4>
@@ -37,8 +56,9 @@
                 <Button
                   style="margin-left: 10px"
                   v-if="
-                    !(doc.userUid === user.uid) &&
-                      user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+                    (!(doc.userUid === user.uid) &&
+                      user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`) ||
+                      user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
                   "
                   @click="openMaximizable(doc.userUid)"
                   icon="pi pi-map-marker"
@@ -64,10 +84,10 @@
         </div>
       </div>
     </div>
-  <div v-else v-loading.fullscreen.lock="true"></div>
+    <div v-else v-loading.fullscreen.lock="true"></div>
   </div>
   <div v-else>
-    <UnauthorizedPage/>
+    <UnauthorizedPage />
   </div>
   <!-- <div v-else class="empty">
     <p>No Messages</p>
@@ -111,7 +131,7 @@ import { format } from "date-fns";
 import Dialog from "primevue/dialog";
 import GeoLocation from "../subComponent/GeoLocation.vue";
 import { projectFirestore } from "../firebase/config";
-import UnauthorizedPage from '../subComponent/UnauthorizedPage.vue';
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
 export default {
   props: ["id"],
   components: { Dialog, GeoLocation, UnauthorizedPage },
@@ -166,8 +186,9 @@ export default {
         ? false
         : true;
     });
-
+    const msgRoute = ref();
     onMounted(() => {
+      msgRoute.value = router.currentRoute.value.fullPath.includes("messages");
       // for dark mode
       document.body.style.backgroundColor = "white";
       // for address theme
@@ -229,6 +250,7 @@ export default {
 
       msgPassword,
       userMsgPassword,
+      msgRoute,
     };
   },
   computed: {

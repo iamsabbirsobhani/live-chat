@@ -3,7 +3,8 @@ import "firebase/analytics";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
-import '@firebase/messaging';
+import "@firebase/messaging";
+// live server
 // const firebaseConfig = {
 //   apiKey: "AIzaSyDohSvFlyf-DxbRKNo_sofoqGNKcUbD-Sg",
 //   authDomain: "live-chat-backup-server-28985.firebaseapp.com",
@@ -15,18 +16,22 @@ import '@firebase/messaging';
 //   appId: "1:204927114230:web:0b8fefb98eb9b2d1b245d7",
 //   measurementId: "G-Z948DMVF26"
 // };
+// live server
+
+// live server backup
 const firebaseConfig = {
   apiKey: "AIzaSyDADPaaAvUiVhlvBZX_AidkXJZ90HTuZuc",
   authDomain: "live-chat-31739.firebaseapp.com",
   projectId: "live-chat-31739",
   storageBucket: "live-chat-31739.appspot.com",
   messagingSenderId: "286730120664",
-  appId: "1:286730120664:web:0579bb432f88a51efcd6ad"
+  appId: "1:286730120664:web:0579bb432f88a51efcd6ad",
 };
+// live server backup
 //init firebase
 const app = firebase.initializeApp(firebaseConfig);
 
-firebase.analytics(app)
+firebase.analytics(app);
 
 const projectAuth = firebase.auth();
 
@@ -38,8 +43,6 @@ const projectStorage = firebase.storage();
 
 const messaging = firebase.messaging();
 
-
-
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 export {
@@ -48,5 +51,5 @@ export {
   timestamp,
   projectFirestore,
   projectStorage,
-  messaging
+  messaging,
 };

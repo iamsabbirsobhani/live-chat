@@ -211,7 +211,22 @@ export default {
           image: self.coverPhoto,
           icon: self.phofilePhoto,
         };
-        fetch("https://nodejs-express-postgres.herokuapp.com/api/fcm/", {
+        // fcm
+        // fetch("https://nodejs-express-postgres.herokuapp.com/api/fcm/", {
+        //   method: "POST",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(data),
+        // })
+        //   .then((res) => res.json())
+        //   .then((data) => console.log(data))
+        //   .catch((err) => console.log(err.message));
+        // fcm
+
+        // fcm backup
+        fetch("https://nodejs-express-postgres.herokuapp.com/api/fcmbackup/", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -222,7 +237,7 @@ export default {
           .then((res) => res.json())
           .then((data) => console.log(data))
           .catch((err) => console.log(err.message));
-        // console.log()
+        // fcm backup
       }
       newModel.value.msg = null;
 

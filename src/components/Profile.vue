@@ -51,7 +51,10 @@
 
               <!-- admin option -->
               <el-dropdown-item
-                v-if="`oJStHj6xShPbVyEFpwmK1B1rjAk2` == user.uid"
+                v-if="
+                  `oJStHj6xShPbVyEFpwmK1B1rjAk2` == user.uid ||
+                    `MORuJJ0PWpb3inamywW5sSrHDGq2` == user.uid
+                "
                 @click="userActivity"
                 icon="pi pi-file-o"
                 >User Activity</el-dropdown-item

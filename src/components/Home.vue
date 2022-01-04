@@ -5,13 +5,17 @@
     @back="goBack"
     content="Authentication"
     v-if="
-      masterPass != userMasterPass && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+      masterPass != userMasterPass &&
+        user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&
+        user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2`
     "
   >
   </el-page-header>
   <div
     v-if="
-      masterPass == userMasterPass || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`
+      masterPass == userMasterPass ||
+        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
     "
   >
     <el-menu
@@ -52,17 +56,21 @@
         label="Messages"
         class="p-button-raised p-button-secondary p-button-text"
       /> -->
+
         <Button
-          v-if="user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
-          @click="openMaximizable"
+          v-if="
+            user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+              user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+          "
+          @click="goPvtMsg"
           label="Messages"
-          icon="pi pi-shield"
           class="p-button-raised p-button-secondary p-button-text"
         />
         <Button
           v-else
-          @click="goPvtMsg"
+          @click="openMaximizable"
           label="Messages"
+          icon="pi pi-shield"
           class="p-button-raised p-button-secondary p-button-text"
         />
       </el-menu-item>
@@ -523,10 +531,33 @@ export default {
     const styleObject = ref(null);
     const getKey = ref(null);
     onMounted(async () => {
+      // fcm
+      // messaging
+      //   .getToken(messaging, {
+      //     vapidKey:
+      //       "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
+      //   })
+      //   .then((currentToken) => {
+      //     if (currentToken) {
+      //       store.commit("setCurrentToken", currentToken);
+      //       getKey.value = currentToken;
+      //     } else {
+      //       console.log(
+      //         "No registration token available. Request permission to generate one."
+      //       );
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("An error occurred while retrieving token. ", err);
+      //   });
+
+      // fcm
+
+      // fcm backup
       messaging
         .getToken(messaging, {
           vapidKey:
-            "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
+            "BCRXP3rtK6e00k3t8RwSfJX0tO274sZDqIA1JnNHFR5QcQgB3UrbuR0plAQAHdgmaOQG11MpN8JAfnw43K0G6ck",
         })
         .then((currentToken) => {
           if (currentToken) {
@@ -541,6 +572,7 @@ export default {
         .catch((err) => {
           console.log("An error occurred while retrieving token. ", err);
         });
+      // fcm backup
 
       // await home(); disabled home page view count
 

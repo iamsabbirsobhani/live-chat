@@ -1,4 +1,8 @@
-import { createRouter, createWebHistory, onBeforeRouteUpdate } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  onBeforeRouteUpdate,
+} from "vue-router";
 import Welcome from "../views/Welcome.vue";
 import Chatroom from "../views/Chatroom.vue";
 import Profile from "../components/Profile.vue";
@@ -16,13 +20,13 @@ import { projectAuth } from "../firebase/config";
 import { lastSeen } from "@/composable/lastSeen";
 import { logs } from "@/composable/logs";
 import getUser from "@/composable/getUser";
-import Authentication from  "@/subComponent/Authentication.vue"
+import Authentication from "@/subComponent/Authentication.vue";
 const { user } = getUser();
-import {getSingleDoc} from "@/composable/getSingleDoc.js";
+import { getSingleDoc } from "@/composable/getSingleDoc.js";
 let { getDoc } = getSingleDoc();
 
 // import getProfile from "@/composable/getProfile.js";
-import store from "../store"
+import store from "../store";
 // import {  useStore } from "vuex";
 
 const { performLastSeen } = lastSeen();
@@ -45,12 +49,15 @@ const requiredAuth = async (to, from, next) => {
 // Once user logged out, only then user can see the "sign in"/"root"/"sign up" page again.
 
 const adminPage = (to, from, next) => {
-  if(user.value.uid !== `oJStHj6xShPbVyEFpwmK1B1rjAk2`) {
+  if (
+    user.value.uid !== `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&
+    user.value.uid !== `MORuJJ0PWpb3inamywW5sSrHDGq2`
+  ) {
     next({ name: "Home" });
   } else {
     next();
   }
-}
+};
 
 const requiredNoAuth = (to, from, next) => {
   let user = projectAuth.currentUser;
@@ -70,18 +77,19 @@ const routes = [
     component: Welcome,
     beforeEnter: requiredNoAuth, //users have to face "beforeEnter" key, before they want to come to this route
     meta: {
-      title: 'Live Chat - Welcome',
+      title: "Live Chat - Welcome",
       metaTags: [
         {
-          name: 'description',
-          content: 'Welcome to Live Chat'
+          name: "description",
+          content: "Welcome to Live Chat",
         },
         {
-          property: 'og:description',
-          content: 'Live Chat is a live chatting and social media web application. Create an account and start surfing!'
-        }
-      ]
-    }
+          property: "og:description",
+          content:
+            "Live Chat is a live chatting and social media web application. Create an account and start surfing!",
+        },
+      ],
+    },
   },
   {
     path: "/chatroom",
@@ -89,18 +97,18 @@ const routes = [
     component: Chatroom,
     beforeEnter: requiredAuth, //users have to face "beforeEnter" key, before they want to come to this route
     meta: {
-      title: 'Chatroom - Public Chat',
+      title: "Chatroom - Public Chat",
       metaTags: [
         {
-          name: 'description',
-          content: 'Public chatroom of our Live Chat app.'
+          name: "description",
+          content: "Public chatroom of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'Public chatroom of our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "Public chatroom of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/profile/:id",
@@ -110,21 +118,22 @@ const routes = [
     props: true,
     meta: {
       title: `Profile`, // rendered as <title>Profile</title>
-      metaTags: [ // these will be rendered like <meta name="" content="">
+      metaTags: [
+        // these will be rendered like <meta name="" content="">
         {
-          name: 'description',
-          content: 'User profile of our Live Chat app.'
+          name: "description",
+          content: "User profile of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'User profile of our Live Chat app.'
+          property: "og:description",
+          content: "User profile of our Live Chat app.",
         },
         {
           name: `theme-color`,
-          content: '#319197'
+          content: "#319197",
         },
       ],
-    }
+    },
   },
   {
     path: "/profile/:id/editprofile",
@@ -133,18 +142,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Edit Profile',
+      title: "Edit Profile",
       metaTags: [
         {
-          name: 'description',
-          content: 'Edit data profile of our Live Chat app.'
+          name: "description",
+          content: "Edit data profile of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'Edit data profile of our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "Edit data profile of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/profile/:id/friendrequest",
@@ -153,18 +162,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Friend Request',
+      title: "Friend Request",
       metaTags: [
         {
-          name: 'description',
-          content: 'See friend request of our Live Chat app.'
+          name: "description",
+          content: "See friend request of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'See friend request of our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "See friend request of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/profile/friendlist/:id",
@@ -173,18 +182,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Friend List',
+      title: "Friend List",
       metaTags: [
         {
-          name: 'description',
-          content: 'See friend list of our Live Chat app.'
+          name: "description",
+          content: "See friend list of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'See friend list of our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "See friend list of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/home/messages/:id",
@@ -193,18 +202,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Messages',
+      title: "Messages",
       metaTags: [
         {
-          name: 'description',
-          content: 'See active private chat of our Live Chat app.'
+          name: "description",
+          content: "See active private chat of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'See active private chatof our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "See active private chatof our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/:route/:routeTwo/privatechat/:id",
@@ -213,18 +222,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Private Chat',
+      title: "Private Chat",
       metaTags: [
         {
-          name: 'description',
-          content: 'See private chat of our Live Chat app.'
+          name: "description",
+          content: "See private chat of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'See private chat of our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "See private chat of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/userlist",
@@ -233,19 +242,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'User List',
+      title: "User List",
       metaTags: [
         {
-          name: 'description',
-          content: 'See user list of our Live Chat app.'
+          name: "description",
+          content: "See user list of our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'See user list of our Live Chat app.'
-        }
-      ]
-    }
-
+          property: "og:description",
+          content: "See user list of our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/home",
@@ -254,18 +262,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Home',
+      title: "Home",
       metaTags: [
         {
-          name: 'description',
-          content: 'Home page our Live Chat app.'
+          name: "description",
+          content: "Home page our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'Home page our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "Home page our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/authentication",
@@ -274,18 +282,18 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Authentication',
+      title: "Authentication",
       metaTags: [
         {
-          name: 'description',
-          content: 'Passphrase Authentication.'
+          name: "description",
+          content: "Passphrase Authentication.",
         },
         {
-          property: 'og:description',
-          content: 'One more authentication required.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "One more authentication required.",
+        },
+      ],
+    },
   },
   {
     path: "/useractivity",
@@ -294,18 +302,18 @@ const routes = [
     beforeEnter: adminPage,
     props: true,
     meta: {
-      title: 'User Activity',
+      title: "User Activity",
       metaTags: [
         {
-          name: 'description',
-          content: 'For Admin only user activity our Live Chat app.'
+          name: "description",
+          content: "For Admin only user activity our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'For Admin only user activity our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "For Admin only user activity our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/profile/:id/updatecoveranddp",
@@ -314,18 +322,20 @@ const routes = [
     beforeEnter: requiredAuth,
     props: true,
     meta: {
-      title: 'Update cover and dp',
+      title: "Update cover and dp",
       metaTags: [
         {
-          name: 'description',
-          content: 'Update users profile photo and cover photo our Live Chat app.'
+          name: "description",
+          content:
+            "Update users profile photo and cover photo our Live Chat app.",
         },
         {
-          property: 'og:description',
-          content: 'Update users profile photo and cover photo our Live Chat app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content:
+            "Update users profile photo and cover photo our Live Chat app.",
+        },
+      ],
+    },
   },
   {
     path: "/home/explorehome",
@@ -333,22 +343,20 @@ const routes = [
     component: ExploreHome,
     beforeEnter: requiredAuth,
     meta: {
-      title: 'Explore Home',
+      title: "Explore Home",
       metaTags: [
         {
-          name: 'description',
-          content: 'Explore home is a secret page of this web app.'
+          name: "description",
+          content: "Explore home is a secret page of this web app.",
         },
         {
-          property: 'og:description',
-          content: 'Explore home is a secret page of this Live Chat web app.'
-        }
-      ]
-    }
+          property: "og:description",
+          content: "Explore home is a secret page of this Live Chat web app.",
+        },
+      ],
+    },
   },
-
 ];
-
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -356,28 +364,40 @@ const router = createRouter({
 });
 
 // This callback runs before every route change, including on page load.
-router.beforeEach( async (to, from, next) => {
-// const store = useStore();
+router.beforeEach(async (to, from, next) => {
+  // const store = useStore();
 
-let user = projectAuth.currentUser;
-let doc;
-if(to.params.id && to.params.id != user.uid){
+  let user = projectAuth.currentUser;
+  let doc;
+  if (to.params.id && to.params.id != user.uid) {
     document.title = `Live Chat loading...`;
-    doc = await getDoc({collection: "profiles", docId: to.params.id})
+    doc = await getDoc({ collection: "profiles", docId: to.params.id });
   }
   // This goes through the matched routes from last to first, finding the closest route with a title.
   // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,
   // `/nested`'s will be chosen.
-  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  const nearestWithTitle = to.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.title);
 
   // Find the nearest route element with meta tags.
-  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+  const nearestWithMeta = to.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.metaTags);
 
-  const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+  const previousNearestWithMeta = from.matched
+    .slice()
+    .reverse()
+    .find((r) => r.meta && r.meta.metaTags);
 
   // If a route with a title was found, set the document (page) title to that value.
-  if(nearestWithTitle) {
-    if(nearestWithTitle.meta.title.includes("Profile") && user.uid != to.params.id) {
+  if (nearestWithTitle) {
+    if (
+      nearestWithTitle.meta.title.includes("Profile") &&
+      user.uid != to.params.id
+    ) {
       document.title = `${doc.userName} | ${nearestWithTitle.meta.title}`;
     } else if (nearestWithTitle.meta.title.includes("Profile")) {
       document.title = `${user.displayName} | ${nearestWithTitle.meta.title}`;
@@ -385,34 +405,36 @@ if(to.params.id && to.params.id != user.uid){
       document.title = nearestWithTitle.meta.title;
     }
     // console.log(nearestWithTitle.meta.title)
-  } else if(previousNearestWithMeta) {
+  } else if (previousNearestWithMeta) {
     document.title = previousNearestWithMeta.meta.title;
   }
 
   // Remove any stale meta tags from the document using the key attribute we set below.
-  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
+  Array.from(
+    document.querySelectorAll("[data-vue-router-controlled]")
+  ).map((el) => el.parentNode.removeChild(el));
 
   // Skip rendering meta tags if there are none.
-  if(!nearestWithMeta) return next();
+  if (!nearestWithMeta) return next();
 
   // Turn the meta tag definitions into actual elements in the head.
-  nearestWithMeta.meta.metaTags.map(tagDef => {
-    const tag = document.createElement('meta');
+  nearestWithMeta.meta.metaTags
+    .map((tagDef) => {
+      const tag = document.createElement("meta");
 
-    Object.keys(tagDef).forEach(key => {
-      tag.setAttribute(key, tagDef[key]);
-    });
+      Object.keys(tagDef).forEach((key) => {
+        tag.setAttribute(key, tagDef[key]);
+      });
 
-    // We use this to track which meta tags we create so we don't interfere with other ones.
-    tag.setAttribute('data-vue-router-controlled', '');
+      // We use this to track which meta tags we create so we don't interfere with other ones.
+      tag.setAttribute("data-vue-router-controlled", "");
 
-    return tag;
-  })
-  // Add the meta tags to the document head.
-  .forEach(tag => document.head.appendChild(tag));
+      return tag;
+    })
+    // Add the meta tags to the document head.
+    .forEach((tag) => document.head.appendChild(tag));
 
   next();
 });
-
 
 export default router;

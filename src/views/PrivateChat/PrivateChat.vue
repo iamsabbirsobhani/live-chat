@@ -4,13 +4,13 @@
     class="pghd"
     @back="goBack"
     content="Home"
-    v-if="msgPassword != userMsgPassword  && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+    v-if="msgPassword != userMsgPassword  && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&  user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2`"
   >
   </el-page-header>
   <div
     style="background: none;"
     :style="getStyle"
-    v-if="msgPassword == userMsgPassword  || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+    v-if="msgPassword == userMsgPassword  || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||  user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`"
   >
     <Navbar
       @delete="deletes"

@@ -109,7 +109,7 @@ export default {
         // meta.name = "theme-color";
         // meta.content = "black";
         // document.getElementsByTagName("head")[0].appendChild(meta);
-        document.querySelector('meta[name="theme-color"]').setAttribute('content',  'black');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
       }
     });
     // for remember dark mode choice
@@ -117,18 +117,18 @@ export default {
     const darkM = () => {
       // checked1.value = true
       if (checked1.value) {
-        let payload = { background: "black", border: "black", color: "white" };
+        let payload = { background: "#0f172a", border: "#0f172a", color: "white" };
         addDoc(user.value.uid, { isDark: true });
         store.commit("darkMode", payload);
         store.commit("isDark", true);
-        document.body.style.backgroundColor = "black";
+        document.body.style.backgroundColor = "#0f172a";
       } else {
         addDoc(user.value.uid, { isDark: false });
         store.commit("isDark", false);
         let payload = { background: "none", color: "black" };
         store.commit("darkMode", payload);
         document.body.style.backgroundColor = "white";
-        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
         // checked1.value = false
       }
     };
@@ -141,7 +141,7 @@ export default {
       // meta2.name = "theme-color";
       // meta2.content = "white";
       // document.getElementsByTagName("head")[0].append(meta2);
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#DFE4E0');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
     };
     // dark mode
 

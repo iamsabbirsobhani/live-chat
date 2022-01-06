@@ -347,6 +347,7 @@ export default {
   margin: auto;
   margin-top: 0px;
   position: relative;
+  background-color: #0f172a;
 }
 
 .typeStatus {

@@ -184,7 +184,7 @@ export default {
 
       document
         .querySelector('meta[name="theme-color"]')
-        .setAttribute("content", "#DFE4E0");
+        .setAttribute("content", "#0f172a");
     });
 
     const masterPass = ref(null);

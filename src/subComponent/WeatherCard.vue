@@ -267,6 +267,12 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #f9fafb;
+  // background-color: #bbf7d0;
+}
+
+h2 {
+  color: #f9fafb !important;
 }
 
 .p-button-info {

@@ -25,7 +25,7 @@
                 style="max-width: 100%; text-align: end"
               >
                 <Chip
-                  style="text-align: start"
+                  style="text-align: start; color: #f9fafb;"
                   :label="doc.message"
                   v-if="doc.message"
                   class="p-mr-2 p-mb-2 custom-chip self-solid-text"
@@ -614,18 +614,20 @@ a {
 
 .chatMessagesDark::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: black;
+  // background-color: black;
 }
 .chatMessagesDark::-webkit-scrollbar {
   width: 5px;
-  background-color: black;
+  // background-color: black;
 }
 
 .chatMessages::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
-
+.chatMessages::-webkit-scrollbar {
+  display: none;
+}
 .pvtSelfUser .images {
   max-width: 300px;
   max-height: 400px;

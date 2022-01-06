@@ -76,6 +76,10 @@ export default {
 
     onMounted(async () => {
       await profileUpdateField({ key: "exploreHome" });
+
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#0f172a");
     });
 
     return { password, userPassword, goBack, user };

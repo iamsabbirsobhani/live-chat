@@ -1,6 +1,6 @@
 <template>
   <el-page-header
-    style="margin: 10px; font-family: Roboto, sans-serif"
+    style="margin: 10px; font-family: Roboto, sans-serif; color: #f9fafb !important;"
     class="pghd"
     @back="goBack"
     content="Home"
@@ -39,7 +39,7 @@
                     <img :src="doc.phofilePhoto" />
                   </el-avatar>
                   <div>
-                    <h4>{{ doc.userName }}</h4>
+                    <h4 style="color: #f9fafb;">{{ doc.userName }}</h4>
                     <h4
                       class="last-seen"
                       v-if="
@@ -163,7 +163,7 @@ export default {
         },
       });
       if (store.getters.isDark) {
-        document.body.style.backgroundColor = "black";
+        document.body.style.backgroundColor = "#0f172a";
       }
     };
 
@@ -205,7 +205,7 @@ export default {
       // document.getElementsByTagName("head")[0].append(meta2);
       document
         .querySelector('meta[name="theme-color"]')
-        .setAttribute("content", "#DFE4E0");
+        .setAttribute("content", "#0f172a");
     });
 
     const geo = ref(null);
@@ -261,6 +261,9 @@ export default {
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
+.pghd {
+  color: #f9fafb !important;
+}
 
 .users {
   font-family: "Roboto", sans-serif;
@@ -268,7 +271,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   max-width: 400px;
-  background: #f5f5f5;
+  background-color: #1e293b;
   margin: auto;
   border-radius: 10px;
   transition: all 0.1s ease-in-out;
@@ -294,6 +297,7 @@ export default {
     margin-right: 15px;
   }
 }
+
 @media (max-width: 475px) {
   .users {
     max-width: 350px;

@@ -6,7 +6,7 @@ export default createStore({
     back: null,
     style: {},
     dark: false,
-    color: "black",
+    color: "#0f172a",
     otherProfileName: null,
     explorePass: 63952,
     userExplorePass: null,

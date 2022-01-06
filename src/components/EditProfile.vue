@@ -147,8 +147,8 @@
 </template>
 
 <script>
-import UnauthorizedPage from '../subComponent/UnauthorizedPage.vue';
-import { ref } from "vue";
+import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
+import { onMounted, ref } from "vue";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
 import getUser from "@/composable/getUser.js";
@@ -234,6 +234,12 @@ export default {
         goBack();
       }
     };
+
+    onMounted(() => {
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#0f172a");
+    });
 
     const masterPass = ref(null);
     const userMasterPass = ref(null);

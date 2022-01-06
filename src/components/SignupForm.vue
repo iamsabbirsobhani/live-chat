@@ -28,7 +28,7 @@
 import Button from "primevue/button";
 import Password from "primevue/password";
 import InputText from "primevue/inputtext";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import useSignup from "../composable/useSignup";
 import { useToast } from "primevue/usetoast";
 
@@ -55,7 +55,7 @@ export default {
           detail: "Successfully signed up",
           life: 2000,
         });
-        setTimeout(function () {
+        setTimeout(function() {
           context.emit("signup");
         }, 2000);
       } else {
@@ -67,7 +67,11 @@ export default {
         });
       }
     };
-
+    onMounted(() => {
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#0f172a");
+    });
     return { displayName, email, password, handleSumbit, error };
   },
 };
@@ -76,5 +80,6 @@ export default {
 <style>
 .signup {
   padding: 10px;
+  background-color: #1e293b !important;
 }
 </style>

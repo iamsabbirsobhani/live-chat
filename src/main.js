@@ -6,7 +6,8 @@ import "primevue/resources/themes/saga-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 
-import "primevue/resources/themes/saga-blue/theme.css";
+// import "primevue/resources/themes/saga-blue/theme.css";
+import "primevue/resources/themes/bootstrap4-dark-blue/theme.css"
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 import ToastService from "primevue/toastservice";
@@ -17,7 +18,7 @@ import Button from "primevue/button";
 import vueDebounce from "vue-debounce";
 import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
-import "@/assets/common.css";
+import "@/assets/scss/common.scss";
 // import Vue from 'vue'
 import Vuex from "vuex";
 import store from "./store";
@@ -34,7 +35,6 @@ import { dom } from "@fortawesome/fontawesome-svg-core";
 dom.watch();
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-
 import { projectAuth } from "./firebase/config";
 
 let app;

@@ -203,7 +203,7 @@
     <el-card
       v-if="doc.post && user.uid == doc.userId"
       shadow="always"
-      style="border-radius: 10px"
+      style="border-radius: 10px; background-color: #0f172a; color:#f9fafb; "
     >
       <div class="name">
         <el-avatar :size="40">
@@ -1165,7 +1165,7 @@ export default {
 
       document
         .querySelector('meta[name="theme-color"]')
-        .setAttribute("content", "#DFE4E0");
+        .setAttribute("content", "#0f172a");
     });
     // media query using code
     // end Dialog resize/responsive by screen size

@@ -23,14 +23,9 @@
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
-      style="font-family: Roboto, sans-serif"
+      style="font-family: Roboto, sans-serif; background-color: #0f172a;"
     >
-      <el-tooltip
-        class="item"
-        effect="dark"
-        content="Click on name to go profile"
-        placement="right"
-      >
+
         <el-menu-item index="1">
           <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
             <div class="navPhoto">
@@ -43,7 +38,7 @@
             </div>
           </router-link>
         </el-menu-item>
-      </el-tooltip>
+
       <!-- <el-tooltip
       class="item"
       effect="dark"
@@ -57,6 +52,7 @@
         class="p-button-raised p-button-secondary p-button-text"
       /> -->
 
+        <!-- <Button label="Success" class="p-button-success" /> -->
         <Button
           v-if="
             user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
@@ -64,14 +60,14 @@
           "
           @click="goPvtMsg"
           label="Messages"
-          class="p-button-raised p-button-secondary p-button-text"
+          class="p-button-success"
         />
         <Button
           v-else
           @click="openMaximizable"
           label="Messages"
           icon="pi pi-shield"
-          class="p-button-raised p-button-secondary p-button-text"
+          class="p-button-success"
         />
       </el-menu-item>
       <!-- </el-tooltip> -->
@@ -93,7 +89,7 @@
             v-if="doc.post"
             :style="doc.id === seeCommentsDocId ? styleBorder : ''"
             shadow="always"
-            style="border-radius: 10px"
+            style="border-radius: 10px; border: 1px solid #EBEEF5 !important; background-color: #0f172a; color: #f9fafb;"
           >
             <router-link
               style="text-decoration: none; margin: 0px"
@@ -580,7 +576,7 @@ export default {
 
       document
         .querySelector('meta[name="theme-color"]')
-        .setAttribute("content", "#DFE4E0");
+        .setAttribute("content", "#0f172a");
 
       windWidth.value = window.innerWidth;
       if (windWidth.value > 600) {

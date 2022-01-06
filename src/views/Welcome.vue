@@ -3,15 +3,21 @@
     <h1>Live Chat</h1>
     <div v-if="showLogin">
       <SigninForm @login="chatroom" />
-      <p style="font-family: Roboto, sans-serif;">Not registered? <span @click="show">Sign up</span> Instead</p>
+      <p style="font-family: Roboto, sans-serif;">
+        Not registered? <span @click="show">Sign up</span> Instead
+      </p>
     </div>
     <div v-if="showSignup">
       <SignupForm @signup="chatroom" />
-      <p style="font-family: Roboto, sans-serif;">Already registered? <span @click="show">Login</span> Instead</p>
+      <p style="font-family: Roboto, sans-serif;">
+        Already registered? <span @click="show">Login</span> Instead
+      </p>
     </div>
     <!-- Footer -->
     <div class="footer">
-      <span style="font-family: Roboto, sans-serif;">Copyright © 2021 </span>
+      <span style="font-family: Roboto, sans-serif;"
+        >Copyright © 2021 - 2022
+      </span>
       <!-- <Button @click="openPosition" label="See Credit" class="p-button-link" /> -->
     </div>
     <Dialog

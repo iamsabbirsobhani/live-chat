@@ -21,9 +21,17 @@
         </el-table-column>
         <!-- <el-table-column prop="chatSendCount" label="Message Sent(deprecated)" width="180">
         </el-table-column> -->
-        <el-table-column prop="submitReqForExploreHome" label="ExploreHome Submit" width="180">
+        <el-table-column
+          prop="submitReqForExploreHome"
+          label="ExploreHome Submit"
+          width="180"
+        >
         </el-table-column>
-        <el-table-column prop="exploreHome" label="ExploreHome Visited" width="180">
+        <el-table-column
+          prop="exploreHome"
+          label="ExploreHome Visited"
+          width="180"
+        >
         </el-table-column>
         <el-table-column prop="avideoPage" label="Adult Visited" width="180">
         </el-table-column>
@@ -33,7 +41,11 @@
         </el-table-column>
         <el-table-column prop="imgUploaded" label="Image Sent" width="180">
         </el-table-column>
-        <el-table-column prop="chatDeleted" label="Message Deleted(deprecated)" width="180">
+        <el-table-column
+          prop="chatDeleted"
+          label="Message Deleted(deprecated)"
+          width="180"
+        >
         </el-table-column>
         <el-table-column prop="imgDeleted" label="Image Deleted" width="180">
         </el-table-column>
@@ -45,7 +57,11 @@
         </el-table-column>
         <el-table-column prop="isDark" label="Dark Mode" width="180">
         </el-table-column>
-        <el-table-column prop="editorUsed" label="Quill Editor Opened" width="180">
+        <el-table-column
+          prop="editorUsed"
+          label="Quill Editor Opened"
+          width="180"
+        >
         </el-table-column>
       </el-table>
     </div>
@@ -273,6 +289,11 @@ export default {
       } else {
         editPostQuery.value = style2;
       }
+      onMounted(() => {
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute("content", "#0f172a");
+      });
     });
     return {
       formatedDoc,

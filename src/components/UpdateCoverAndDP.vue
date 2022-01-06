@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import userProfileStorage from "@/composable/userProfileStorage.js";
 import userEditProfileInfo from "@/composable/userEditProfileInfo.js";
 import { useRouter } from "vue-router";
@@ -143,8 +143,14 @@ export default {
     masterPass.value = store.state.masterPass;
 
     const goABack = () => {
-      router.push({ name: "Authentication"});
+      router.push({ name: "Authentication" });
     };
+
+    onMounted(() => {
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#0f172a");
+    });
 
     return {
       handleAvatarSuccess,

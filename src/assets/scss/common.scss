@@ -1,76 +1,84 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital@1&display=swap");
+
+body {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+.el-page-header__content {
+    color: #f9fafb !important;
+  }
 .empty {
-    font-family: "Roboto", sans-serif;
-    text-align: center;
-    p {
-        color: red;
-        font-weight: bold;
-    }
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  p {
+    color: red;
+    font-weight: bold;
+  }
 }
 
 .chatDelete {
-    cursor: pointer;
-    color: red;
-    text-decoration: underline;
+  cursor: pointer;
+  color: red;
+  text-decoration: underline;
 }
 
 .unsentChat {
-    font-family: 'Open Sans', sans-serif;
-    color: #BCC0C4;
-    background-color: white;
-    border: 1px solid #BCC0C4;
-    word-break: break-word;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    margin-right: 5px;
-    margin-bottom: 3px;
-    text-align: end !important;
+  font-family: "Open Sans", sans-serif;
+  color: #bcc0c4;
+  background-color: white;
+  border: 1px solid #bcc0c4;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  text-align: end !important;
 }
 
 .deleteTime {
-    color: red;
+  color: red;
 }
 
-.pvtOtherUser{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.pvtOtherUser {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .created-at-now {
-    font-family: "Roboto", sans-serif;
-    // color: rgb(153, 153, 153);
-    color: #21094e;
-    color: #511281;
-    color: #72147e;
-    color: #fa9905;
-    font-weight: bold;
-    margin-left: 10px;
-    font-size: 12px;
-    text-shadow: 0px 0.1px 5px rgb(224, 224, 224);
+  font-family: "Roboto", sans-serif;
+  // color: rgb(153, 153, 153);
+  color: #21094e;
+  color: #511281;
+  color: #72147e;
+  color: #fa9905;
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 12px;
+  text-shadow: 0px 0.1px 5px rgb(224, 224, 224);
 }
-.othermsg-just{
-    // background-color: #FFBA00;
-    // background-color: #F5C33B;
-    // background-color: #F7B928;
-    // background-color: #dfa51f;
-    // background-color: #dfa317;
-    // background-color: #99154e;
+.othermsg-just {
+  // background-color: #FFBA00;
+  // background-color: #F5C33B;
+  // background-color: #F7B928;
+  // background-color: #dfa51f;
+  // background-color: #dfa317;
+  // background-color: #99154e;
 
-    // background-color: linear-gradient(90deg, rgba(152,136,103,1) 0%, rgba(168,151,117,1) 48%, rgba(167,151,117,1) 72%, rgba(144,127,92,1) 100%);
-    // background: linear-gradient(90deg, rgba(152,136,103,1) 0%, rgba(168,151,117,1) 48%, rgba(167,151,117,1) 72%, rgba(144,127,92,1) 100%);
-    // background: linear-gradient(90deg, rgba(48,52,53,1) 0%, rgba(56,61,62,1) 48%, rgba(60,66,68,1) 72%, rgba(50,53,54,1) 100%);
-    // background: linear-gradient(90deg, rgba(191,30,29,1) 0%, rgba(195,47,47,1) 27%, rgba(181,30,30,1) 48%, rgba(175,40,39,1) 61%, rgba(179,35,34,1) 72%, rgba(173,20,19,1) 100%);
-    // background: ;
-    border: 2px solid rgb(0, 132, 255);
-    background-color: rgb(250, 247, 247);
-    color: white;
-    color: black;
-    backdrop-filter: blur(6px);
-    margin-bottom: 3px;
-    word-break: break-word;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    // font-weight: bold;
+  // background-color: linear-gradient(90deg, rgba(152,136,103,1) 0%, rgba(168,151,117,1) 48%, rgba(167,151,117,1) 72%, rgba(144,127,92,1) 100%);
+  // background: linear-gradient(90deg, rgba(152,136,103,1) 0%, rgba(168,151,117,1) 48%, rgba(167,151,117,1) 72%, rgba(144,127,92,1) 100%);
+  // background: linear-gradient(90deg, rgba(48,52,53,1) 0%, rgba(56,61,62,1) 48%, rgba(60,66,68,1) 72%, rgba(50,53,54,1) 100%);
+  // background: linear-gradient(90deg, rgba(191,30,29,1) 0%, rgba(195,47,47,1) 27%, rgba(181,30,30,1) 48%, rgba(175,40,39,1) 61%, rgba(179,35,34,1) 72%, rgba(173,20,19,1) 100%);
+  // background: ;
+  border: 2px solid rgb(0, 132, 255);
+  background-color: rgb(250, 247, 247);
+  color: white;
+  color: black;
+  backdrop-filter: blur(6px);
+  margin-bottom: 3px;
+  word-break: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  // font-weight: bold;
 }

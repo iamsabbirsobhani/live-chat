@@ -12,7 +12,7 @@
       </div>
     </el-card>
 
-    <el-card :style="styleObject" v-if="jokes" class="box-card">
+    <el-card :style="styleObject" v-if="jokes" class="box-card jokes">
       <h3>Jokes</h3>
       <div class="text item">
         <p>{{ jokes }}</p>
@@ -22,7 +22,7 @@
 
     <el-skeleton v-else :style="styleObject" class="skeleton" />
 
-    <el-card :style="styleObject" v-if="quotesText" class="box-card box-two">
+    <el-card :style="styleObject" v-if="quotesText" class="box-card box-two quote">
       <h3>Quotes</h3>
       <div class="text item">
         <p>{{ quotesText }}</p>
@@ -111,6 +111,12 @@ h3 {
   color: orangered;
   //   text-align: center;
 }
+.jokes {
+  color: #f9fafb;
+}
+.quote {
+  color: #f9fafb;
+}
 p {
   font-family: "Patua One", cursive;
   // color: olivedrab;
@@ -133,6 +139,7 @@ p {
 // }
 .rand-card {
   margin: auto;
+  color: #f9fafb !important;
 }
 
 .box-card {
@@ -147,17 +154,17 @@ p {
 }
 
 .box-two {
-  background-image: url("../assets/quotesCircle.svg");
-  background-repeat: no-repeat;
-  background-position: -380% 37%;
+
   background-color: rgba(75, 228, 164, 0.055);
 }
 
 .card-weather {
-  background-image: url("../assets/wCircleRec.svg");
-  background-repeat: no-repeat;
-  background-position: -120% 35%;
-  background-color: rgba(75, 228, 164, 0.055);
+  // background-image: url("../assets/wCircleRec.svg");
+  // background-repeat: no-repeat;
+  // background-position: 100% 35%;
+  // background-color: rgba(75, 228, 164, 0.055);
+  background-color: #4ade80;
+
 }
 .box-two {
   h3 {
@@ -204,9 +211,9 @@ p {
   }
 
   .card-weather {
-    background-image: url("../assets/wCircleRec.svg");
-    background-repeat: no-repeat;
-    background-position: 67% 30%;
+    // background-image: url("../assets/wCircleRec.svg");
+    // background-repeat: no-repeat;
+    // background-position: 67% 30%;
     background-color: rgba(75, 228, 164, 0.055);
   }
 }

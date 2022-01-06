@@ -28,6 +28,10 @@
                   style="text-align: start; color: #f9fafb;"
                   :label="doc.message"
                   v-if="doc.message"
+                  :style="{
+                    backgroundColor: `#` + info.ownChipColor,
+                    color: `#` + info.ownTextColor,
+                  }"
                   class="p-mr-2 p-mb-2 custom-chip self-solid-text"
                 />
               </div>
@@ -144,7 +148,15 @@
               />
             </div>
             <div v-else>
-              <Chip class="othermsg" v-if="doc.message" :label="doc.message" />
+              <Chip
+                :style="{
+                  backgroundColor: `#` + info.otherChipColor,
+                  color: `#` + info.otherTextColor,
+                }"
+                class="othermsg"
+                v-if="doc.message"
+                :label="doc.message"
+              />
             </div>
 
             <!-- element-plus Image Preview -->
@@ -227,6 +239,49 @@
         </div>
         <template #footer> </template>
       </Dialog>
+      <Dialog
+        header="Chat Settings"
+        v-model:visible="store.state.openChatSettings"
+        :style="{ width: '370px' }"
+        :maximizable="true"
+        :modal="true"
+      >
+        <p class="p-m-0"></p>
+        <div class="settings" style="height: 200px;">
+          <div class="chip-color">
+            <p>Your Chip Color:</p>
+            <ColorPicker class="clr-pkr" v-model="ownChipColor" />
+          </div>
+          <div class="chip-color">
+            <p>Your Text Color:</p>
+            <ColorPicker class="clr-pkr" v-model="ownTextColor" />
+          </div>
+          <div class="chip-color">
+            <p>
+              {{ store.state.friendName ? store.state.friendName : "Friend's" }}
+              Chip Color:
+            </p>
+            <ColorPicker class="clr-pkr" v-model="otherChipColor" />
+          </div>
+          <div class="chip-color">
+            <p>
+              {{ store.state.friendName ? store.state.friendName : "Friend's" }}
+              Text Color:
+            </p>
+            <ColorPicker class="clr-pkr" v-model="otherTextColor" />
+          </div>
+        </div>
+        <template #footer>
+          <!-- icon="pi pi-check" -->
+          <Button icon="pi pi-angle-double-left" label="Reset to Default" @click="changeSettingsReset" autofocus />
+          <Button
+            label="Make Chnages"
+            icon="pi pi-check"
+            @click="changeSettings"
+            autofocus
+          />
+        </template>
+      </Dialog>
     </div>
     <!-- End of Primevue Error Popup -->
   </div>
@@ -246,14 +301,17 @@ import { deleteChat } from "@/composable/PrivateChat/deleteChat.js";
 import { profileUpdateField } from "@/composable/profileUpdateField";
 import getTypeStatus from "@/composable/PrivateChat/getTypeStatus";
 import { mapGetters, useStore } from "vuex";
-
+import ColorPicker from "primevue/colorpicker";
+import getProfile from "@/composable/getProfile.js";
+import { setChatColors } from "@/composable/chatSettings/chatColors/setChatColors.js";
 export default {
   props: ["userTo"],
-  components: { Dialog, Button, Chip, ScrollPanel, Tag },
+  components: { Dialog, Button, Chip, ScrollPanel, Tag, ColorPicker },
   setup(props) {
     const { user } = getUser();
     const { performDelete } = deleteChat();
     const store = useStore();
+    const { info } = getProfile("profiles", user.value.uid);
 
     const { error, documents, esourceList } = getCollection(
       "privateChat",
@@ -481,8 +539,51 @@ export default {
 
       document.title = newTo[0].userName + " | Private Message";
     });
+    const ownChipColor = ref();
+    const otherChipColor = ref();
+    const ownTextColor = ref();
+    const otherTextColor = ref();
+
+    watch(info, (newInfo) => {
+      ownChipColor.value = newInfo.ownChipColor;
+      ownTextColor.value = newInfo.ownTextColor;
+      otherChipColor.value = newInfo.otherChipColor;
+      otherTextColor.value = newInfo.otherTextColor;
+    });
+
+    const changeSettings = async () => {
+      await setChatColors(
+        ownChipColor.value,
+        ownTextColor.value,
+        otherChipColor.value,
+        otherTextColor.value
+      );
+      store.commit("setChatSettingse", false);
+    };
+    const changeSettingsReset = async () => {
+      ownChipColor.value = "0084ff";
+      otherChipColor.value = "3f4b5b";
+      ownTextColor.value = "f9fafb";
+      otherTextColor.value = "ffffffde";
+      await setChatColors(
+        ownChipColor.value,
+        ownTextColor.value,
+        otherChipColor.value,
+        otherTextColor.value
+      );
+      store.commit("setChatSettingse", false);
+    };
 
     return {
+      // chat settings
+      ownChipColor,
+      otherChipColor,
+      ownTextColor,
+      otherTextColor,
+      changeSettings,
+      changeSettingsReset,
+      // chat settings
+
       error,
       documents,
       formattedDocuments,
@@ -499,6 +600,8 @@ export default {
       idsOther,
       chatDel,
       styleObject,
+      store,
+      info,
     };
   },
   computed: {
@@ -508,6 +611,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// chat settings
+.chip-color {
+  display: flex;
+  align-items: center;
+  margin: 10px auto;
+  .clr-pkr {
+    margin-left: 5px;
+  }
+}
+// chat settings
+
 // transition for msg time
 .slide-fade-enter-active {
   transition: all 0.1s ease-out;
@@ -526,8 +640,8 @@ export default {
 
 .p-chip.custom-chip {
   // background: var(--primary-color);
-  background-color: rgb(0, 132, 255);
-  color: var(--primary-color-text);
+  // background-color: #0084ff;
+  // color: var(--primary-color-text);
   margin-right: 5px;
   margin-bottom: 3px;
   word-break: break-word;
@@ -703,8 +817,8 @@ a {
 }
 
 .othermsg {
-  color: #050505;
-  background: #e4e6eb;
+  // color: #050505;
+  // background: #e4e6eb;
   margin-bottom: 3px;
   word-break: break-word;
   word-wrap: break-word;

@@ -17,6 +17,12 @@ export default createStore({
     currentToken: null,
     profiles: null,
     profile: null,
+    // personal chat settings
+    openChatSettings: false,
+    friendName: null,
+    ownChipColor: 'black',
+    // personal chat settings
+
     // background: "black"
   },
   getters: {
@@ -44,6 +50,14 @@ export default createStore({
     getProfile: (state) => {
       return state.profiles;
     },
+    // personal chat settings
+    getChatSettings: (state) => {
+      return state.openChatSettings;
+    },
+    getFriendName: (state) => {
+      return state.friendName;
+    },
+    // personal chat settings
   },
   mutations: {
     clickOn(state, payload) {
@@ -69,14 +83,25 @@ export default createStore({
       state.userMasterPass = payload;
     },
     setCurrentToken(state, payload) {
-      state.currentToken = payload
+      state.currentToken = payload;
     },
     setProfiles(state, payload) {
-      state.profiles = payload
+      state.profiles = payload;
     },
     setProfile(state, payload) {
-      state.profile = payload
+      state.profile = payload;
     },
+    // personal chat settings
+    setChatSettingse(state, payload) {
+      state.openChatSettings = payload;
+    },
+    setFriendName(state, payload) {
+      state.friendName = payload;
+    },
+    setOwnChatColor(state, payload) {
+      state.ownChipColor = payload;
+    },
+    // personal chat settings
   },
   actions: {},
   modules: {},

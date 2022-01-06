@@ -11,12 +11,17 @@
       >
       </el-page-header>
       {{ getBack }}
-      <ToggleButton
+      <!-- <ToggleButton
         style="margin-left: 15px;"
         v-model="checked1"
         @click="darkM"
         onIcon="pi pi-sun"
         offIcon="pi pi-moon"
+      /> -->
+      <Button
+        style="margin-left: 15px;"
+        @click="openChatSettings"
+        icon="pi pi-cog"
       />
     </div>
     <div>
@@ -109,7 +114,9 @@ export default {
         // meta.name = "theme-color";
         // meta.content = "black";
         // document.getElementsByTagName("head")[0].appendChild(meta);
-        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute("content", "#0f172a");
       }
     });
     // for remember dark mode choice
@@ -117,7 +124,11 @@ export default {
     const darkM = () => {
       // checked1.value = true
       if (checked1.value) {
-        let payload = { background: "#0f172a", border: "#0f172a", color: "white" };
+        let payload = {
+          background: "#0f172a",
+          border: "#0f172a",
+          color: "white",
+        };
         addDoc(user.value.uid, { isDark: true });
         store.commit("darkMode", payload);
         store.commit("isDark", true);
@@ -128,7 +139,9 @@ export default {
         let payload = { background: "none", color: "black" };
         store.commit("darkMode", payload);
         document.body.style.backgroundColor = "white";
-        document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute("content", "#0f172a");
         // checked1.value = false
       }
     };
@@ -141,9 +154,18 @@ export default {
       // meta2.name = "theme-color";
       // meta2.content = "white";
       // document.getElementsByTagName("head")[0].append(meta2);
-      document.querySelector('meta[name="theme-color"]').setAttribute('content',  '#0f172a');
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#0f172a");
     };
     // dark mode
+
+    // const openSettings = ref()
+
+    const openChatSettings = () => {
+      store.commit("setChatSettingse", true);
+      store.commit("setFriendName", props.name);
+    };
 
     return {
       user,
@@ -152,6 +174,7 @@ export default {
       darkM,
       checked1,
       profileDark,
+      openChatSettings,
     };
   },
   computed: {

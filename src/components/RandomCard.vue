@@ -65,7 +65,7 @@ export default {
         };
       } else if (600 > windWidth.value) {
         styleObject.value = {
-          width: `320px`,
+          width: `340px`,
           // height: `240px`,
         };
       }

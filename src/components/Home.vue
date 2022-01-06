@@ -19,9 +19,12 @@
     "
   >
     <el-menu
-      :default-active="activeIndex"
       class="el-menu-demo"
+      :default-active="activeIndex"
       mode="horizontal"
+      background-color="#0f172a"
+      text-color="#fff"
+      active-text-color="#ffd04b"
       @select="handleSelect"
       style="font-family: Roboto, sans-serif; background-color: #0f172a;"
     >
@@ -731,14 +734,14 @@ export default {
 .nameDate {
   line-height: 0.5;
   h3 {
-    color: #004f89;
+    color: #0284c7;
   }
 }
 
 .date {
   font-size: 12px;
   margin: 10px;
-  color: rgba(0, 80, 137, 0.829);
+  color: #0285c7cc;
 }
 
 .feeling {
@@ -825,7 +828,7 @@ export default {
 }
 .navPhoto {
   margin: 0px;
-  filter: opacity(70%);
+  filter: opacity(97%);
   transition: filter 0.4s;
 }
 .navPhoto:hover {
@@ -889,9 +892,9 @@ export default {
 .empty {
   color: gray;
 }
-@media (max-width: 425px) {
+@media (max-width: 450px) {
   .postcard {
-    max-width: 320px;
+    max-width: 340px !important;
   }
 }
 </style>

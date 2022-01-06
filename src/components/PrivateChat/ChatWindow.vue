@@ -29,8 +29,8 @@
                   :label="doc.message"
                   v-if="doc.message"
                   :style="{
-                    backgroundColor: `#` + info.ownChipColor,
-                    color: `#` + info.ownTextColor,
+                    backgroundColor: info.ownChipColor,
+                    color: info.ownTextColor,
                   }"
                   class="p-mr-2 p-mb-2 custom-chip self-solid-text"
                 />
@@ -150,8 +150,8 @@
             <div v-else>
               <Chip
                 :style="{
-                  backgroundColor: `#` + info.otherChipColor,
-                  color: `#` + info.otherTextColor,
+                  backgroundColor: info.otherChipColor,
+                  color: info.otherTextColor,
                 }"
                 class="othermsg"
                 v-if="doc.message"
@@ -249,26 +249,51 @@
         <p class="p-m-0"></p>
         <div class="settings" style="height: 300px;">
           <div class="chip-color">
-            <p>Your Chip Color:</p>
-            <ColorPicker class="clr-pkr" v-model="ownChipColor" />
+            <p>Your Chat Color:</p>
+            <!-- <ColorPicker class="clr-pkr" v-model="ownChipColor" /> -->
+            <el-color-picker
+              class="clr-pkr"
+              v-model="ownChipColor"
+              show-alpha
+              :predefine="predefineColors"
+              :draggable="true"
+            />
           </div>
           <div class="chip-color">
             <p>Your Text Color:</p>
-            <ColorPicker class="clr-pkr" v-model="ownTextColor" />
+            <!-- <ColorPicker class="clr-pkr" v-model="ownTextColor" /> -->
+            <el-color-picker
+              class="clr-pkr"
+              v-model="ownTextColor"
+              show-alpha
+              :predefine="predefineColors"
+            />
           </div>
           <div class="chip-color">
             <p>
               {{ store.state.friendName ? store.state.friendName : "Friend's" }}
-              Chip Color:
+              Chat Color:
             </p>
-            <ColorPicker class="clr-pkr" v-model="otherChipColor" />
+            <!-- <ColorPicker class="clr-pkr" v-model="otherChipColor" /> -->
+            <el-color-picker
+              class="clr-pkr"
+              v-model="otherChipColor"
+              show-alpha
+              :predefine="predefineColors"
+            />
           </div>
           <div class="chip-color">
             <p>
               {{ store.state.friendName ? store.state.friendName : "Friend's" }}
               Text Color:
             </p>
-            <ColorPicker class="clr-pkr" v-model="otherTextColor" />
+            <!-- <ColorPicker class="clr-pkr" v-model="otherTextColor" /> -->
+            <el-color-picker
+              class="clr-pkr"
+              v-model="otherTextColor"
+              show-alpha
+              :predefine="predefineColors"
+            />
           </div>
         </div>
         <template #footer>
@@ -279,6 +304,7 @@
               label="Reset to Default"
               @click="changeSettingsReset"
               autofocus
+              class="p-button-warning"
             />
             <Button
               label="Make Chnages"
@@ -546,6 +572,8 @@ export default {
 
       document.title = newTo[0].userName + " | Private Message";
     });
+
+    // chat settings section
     const ownChipColor = ref();
     const otherChipColor = ref();
     const ownTextColor = ref();
@@ -568,10 +596,10 @@ export default {
       store.commit("setChatSettingse", false);
     };
     const changeSettingsReset = async () => {
-      ownChipColor.value = "0084ff";
-      otherChipColor.value = "3f4b5b";
-      ownTextColor.value = "f9fafb";
-      otherTextColor.value = "ffffffde";
+      ownChipColor.value = "#0084ff";
+      otherChipColor.value = "#3f4b5b";
+      ownTextColor.value = "#f9fafb";
+      otherTextColor.value = "#ffffffde";
       await setChatColors(
         ownChipColor.value,
         ownTextColor.value,
@@ -581,6 +609,24 @@ export default {
       store.commit("setChatSettingse", false);
     };
 
+    const predefineColors = ref([
+      "#ff4500",
+      "#ff8c00",
+      "#ffd700",
+      "#90ee90",
+      "#00ced1",
+      "#1e90ff",
+      "#c71585",
+      "rgba(255, 69, 0, 0.68)",
+      "rgb(255, 120, 0)",
+      "hsv(51, 100, 98)",
+      "hsva(120, 40, 94, 0.5)",
+      "hsl(181, 100%, 37%)",
+      "hsla(209, 100%, 56%, 0.73)",
+      "#c7158577",
+    ]);
+    // end of chat settings section
+
     return {
       // chat settings
       ownChipColor,
@@ -589,6 +635,7 @@ export default {
       otherTextColor,
       changeSettings,
       changeSettingsReset,
+      predefineColors,
       // chat settings
 
       error,
@@ -621,8 +668,12 @@ export default {
 // chat settings
 .chip-color {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   margin: 10px auto;
+  border-bottom: 1px solid #475569;
+  padding: 7px;
+  border-width: 50%;
   .clr-pkr {
     margin-left: 5px;
   }

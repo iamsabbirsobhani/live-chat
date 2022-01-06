@@ -28,7 +28,7 @@
                 {{ Math.ceil(cityTemp) }}&#176;C
               </h1>
             </div>
-            <p>{{ timeCurrent }}</p>
+            <p>{{ format(new Date(), "PPp") }}</p>
             <Button
               label="More Info?"
               @click="openMaximizable(user.uid)"
@@ -136,25 +136,25 @@ export default {
           );
           addDoc({ geoLocation: data });
           if (
-            timeCurrent.value.includes(`AM`) &&
-            new Date().getHours() < 12 &&
-            new Date().getHours() > 6
+            // timeCurrent.value.includes(`AM`) &&
+            new Date().getHours() >= 5 &&
+            new Date().getHours() < 12
           ) {
             greetings.value = `Good Morning!`;
           } else if (
-            timeCurrent.value.includes(`PM`) &&
+            // timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 12 &&
             new Date().getHours() < 15
           ) {
             greetings.value = `Good Noon,`;
           } else if (
-            timeCurrent.value.includes(`PM`) &&
+            // timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 15 &&
             new Date().getHours() < 17
           ) {
             greetings.value = `Good Afternoon,`;
           } else if (
-            timeCurrent.value.includes(`PM`) &&
+            // timeCurrent.value.includes(`PM`) &&
             new Date().getHours() >= 17 &&
             new Date().getHours() < 20
           ) {
@@ -248,7 +248,6 @@ export default {
 
       timeName,
       timeZone,
-      timeCurrent,
 
       crName,
       crCode,
@@ -265,6 +264,7 @@ export default {
       displayMaximizable,
 
       geo,
+      format,
     };
   },
 };

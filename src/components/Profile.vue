@@ -388,7 +388,7 @@
 
     <!-- public view on profile -->
     <div v-else-if="doc.post && doc.privacy == `public`">
-      <el-card shadow="always" style="border-radius: 10px">
+      <el-card shadow="always" style="border-radius: 10px;  background-color: #0f172a; color:#f9fafb; ">
         <div class="name">
           <el-avatar :size="40">
             <img :src="doc.dp" />

@@ -289,7 +289,7 @@
   </div> -->
     <!-- <pre style="text-align: center; color: rgb(196, 196, 196); cursor: not-allowed; user-select: none;">Pagination is Beta.</pre> -->
     <p class="home-footer">
-      Copyright © 2021 made with <i class="fas fa-heart"></i> by Albion Johnson.
+      Copyright © 2021 - 2022 made with <i class="fas fa-heart"></i> by Albion Johnson.
     </p>
 
     <Dialog

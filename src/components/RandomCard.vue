@@ -163,7 +163,7 @@ p {
   // background-repeat: no-repeat;
   // background-position: 100% 35%;
   // background-color: rgba(75, 228, 164, 0.055);
-  background-color: #4ade80;
+  // background-color: #4ade80;
 
 }
 .box-two {

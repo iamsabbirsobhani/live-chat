@@ -12,7 +12,7 @@
       </div>
     </el-card>
 
-    <el-card :style="styleObject" v-if="jokes" class="box-card jokes">
+    <!-- <el-card :style="styleObject" v-if="jokes" class="box-card jokes">
       <h3>Jokes</h3>
       <div class="text item">
         <p>{{ jokes }}</p>
@@ -20,7 +20,7 @@
       </div>
     </el-card>
 
-    <el-skeleton v-else :style="styleObject" class="skeleton" />
+    <el-skeleton v-else :style="styleObject" class="skeleton" /> -->
 
     <el-card :style="styleObject" v-if="quotesText" class="box-card box-two quote">
       <h3>Quotes</h3>
@@ -168,7 +168,7 @@ p {
 }
 .box-two {
   h3 {
-    color: gray;
+    color: orangered;
   }
   span {
     color: gray;

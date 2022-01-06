@@ -407,17 +407,18 @@ export default {
       confirm.require({
         message: details,
         header: features,
-        icon: "pi pi-volume-down",
+        icon: "pi pi-heart",
         accept: () => {
           toast.add({
             severity: "info",
             summary: "Confirmed",
-            detail: "Yes! I will definitely check the new feature!",
+            detail: "Thank You!",
             life: 3000,
           });
         },
       });
     };
+            // detail: "Yes! I will definitely check the new feature!",
     // Updated Feautures Notice:
 
     // message athentication variable and functionality
@@ -570,9 +571,10 @@ export default {
     const getKey = ref(null);
     onMounted(async () => {
       // new features notice
+        // "New Features! Version: 2022 SHAKARU DARK LC",
       notice(
-        "New Features! Version: 2022 SHAKARU DARK LC",
-        "You can now change chat chip color from chat settings icon!"
+        "Happy Birthday, Hira! ❤",
+        "Today a true queen was born and I’m so happy to be in your court!"
       );
       // new features notice
 

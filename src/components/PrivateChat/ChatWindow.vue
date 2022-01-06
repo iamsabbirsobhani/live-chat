@@ -242,12 +242,12 @@
       <Dialog
         header="Chat Settings"
         v-model:visible="store.state.openChatSettings"
-        :style="{ width: '370px' }"
+        :style="{ width: '100vw'}"
         :maximizable="true"
         :modal="true"
       >
         <p class="p-m-0"></p>
-        <div class="settings" style="height: 200px;">
+        <div class="settings" style="height: 300px;">
           <div class="chip-color">
             <p>Your Chip Color:</p>
             <ColorPicker class="clr-pkr" v-model="ownChipColor" />

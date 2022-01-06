@@ -242,7 +242,7 @@
       <Dialog
         header="Chat Settings"
         v-model:visible="store.state.openChatSettings"
-        :style="{ width: '100vw'}"
+        :style="{ width: '100vw' }"
         :maximizable="true"
         :modal="true"
       >
@@ -273,13 +273,20 @@
         </div>
         <template #footer>
           <!-- icon="pi pi-check" -->
-          <Button icon="pi pi-angle-double-left" label="Reset to Default" @click="changeSettingsReset" autofocus />
-          <Button
-            label="Make Chnages"
-            icon="pi pi-check"
-            @click="changeSettings"
-            autofocus
-          />
+          <div class="settings-buttons">
+            <Button
+              icon="pi pi-angle-double-left"
+              label="Reset to Default"
+              @click="changeSettingsReset"
+              autofocus
+            />
+            <Button
+              label="Make Chnages"
+              icon="pi pi-check"
+              @click="changeSettings"
+              autofocus
+            />
+          </div>
         </template>
       </Dialog>
     </div>
@@ -619,6 +626,11 @@ export default {
   .clr-pkr {
     margin-left: 5px;
   }
+}
+.settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 // chat settings
 

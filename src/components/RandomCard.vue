@@ -1,5 +1,8 @@
 <template>
   <div class="rand-card">
+
+
+
     <el-card :style="styleObject" class="box-card card-weather">
       <div class="text item">
         <WeatherCard />
@@ -40,8 +43,11 @@
 import { onMounted, ref } from "vue";
 import WeatherCard from "../subComponent/WeatherCard.vue";
 import ExploreMore from "../subComponent/ExploreMore.vue";
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+
 export default {
-  components: { WeatherCard, ExploreMore },
+  components: { WeatherCard, ExploreMore, Accordion, AccordionTab },
   setup() {
     const jokes = ref(null);
     const quotesText = ref(null);

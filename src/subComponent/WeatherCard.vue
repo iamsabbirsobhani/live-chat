@@ -1,55 +1,64 @@
 <template>
-  <div v-if="cityName && cityTemp">
-    <h2>{{ greetings }} {{ user.displayName }}</h2>
-    <div class="card">
-      <div class="first">
-        <img :src="flag" alt="" />
-        <h3>{{ country }}</h3>
-        <h4>{{ cityName }}</h4>
-        <h4>{{ region }}</h4>
-        <h4 v-if="postal">Postal code: {{ postal }}</h4>
-      </div>
-      <div class="second">
-        <div class="temp-data">
-          <lottie-player
-            src="https://assets4.lottiefiles.com/temp/lf20_rpC1Rd.json"
-            background="transparent"
-            speed="1"
-            style="height: 50px;"
-            loop
-            autoplay
-          ></lottie-player>
-          <h1 style="text-align: right;">{{ Math.ceil(cityTemp) }}&#176;C</h1>
-        </div>
-        <p>{{ timeCurrent }}</p>
-        <Button
-          label="More Info?"
-          @click="openMaximizable(user.uid)"
-          class="p-button-info"
-        />
-      </div>
-    </div>
-    <Dialog
-      :header="user.displayName"
-      v-model:visible="displayMaximizable"
-      :style="{ width: '100vw' }"
-      :maximizable="true"
-      :modal="true"
-    >
-      <div class="p-m-0">
-        <GeoLocation :geo="geo" />
-      </div>
-      <template #footer>
-        <Button
-          label="Okay"
-          icon="pi pi-check"
-          @click="closeMaximizable"
-          autofocus
-        />
+  <Accordion class="accordion-custom">
+    <AccordionTab>
+      <template #header>
+        <!-- <i class="pi pi-calendar"></i> -->
+        <h2>{{ greetings }} {{ user.displayName }}</h2>
       </template>
-    </Dialog>
-  </div>
-  <el-skeleton style="margin: auto;" v-else />
+      <div v-if="cityName && cityTemp">
+        <div class="card">
+          <div class="first">
+            <img :src="flag" alt="" />
+            <h3>{{ country }}</h3>
+            <h4>{{ cityName }}</h4>
+            <h4>{{ region }}</h4>
+            <h4 v-if="postal">Postal code: {{ postal }}</h4>
+          </div>
+          <div class="second">
+            <div class="temp-data">
+              <lottie-player
+                src="https://assets4.lottiefiles.com/temp/lf20_rpC1Rd.json"
+                background="transparent"
+                speed="1"
+                style="height: 50px;"
+                loop
+                autoplay
+              ></lottie-player>
+              <h1 style="text-align: right;">
+                {{ Math.ceil(cityTemp) }}&#176;C
+              </h1>
+            </div>
+            <p>{{ timeCurrent }}</p>
+            <Button
+              label="More Info?"
+              @click="openMaximizable(user.uid)"
+              class="p-button-info"
+            />
+          </div>
+        </div>
+        <Dialog
+          :header="user.displayName"
+          v-model:visible="displayMaximizable"
+          :style="{ width: '100vw' }"
+          :maximizable="true"
+          :modal="true"
+        >
+          <div class="p-m-0">
+            <GeoLocation :geo="geo" />
+          </div>
+          <template #footer>
+            <Button
+              label="Okay"
+              icon="pi pi-check"
+              @click="closeMaximizable"
+              autofocus
+            />
+          </template>
+        </Dialog>
+      </div>
+      <el-skeleton style="margin: auto;" v-else />
+    </AccordionTab>
+  </Accordion>
 </template>
 
 <script>
@@ -60,9 +69,11 @@ import useGeoLocation from "@/composable/useGeoLocation.js";
 import Dialog from "primevue/dialog";
 import GeoLocation from "./GeoLocation.vue";
 import { projectFirestore } from "../firebase/config";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 
 export default {
-  components: { Dialog, GeoLocation },
+  components: { Dialog, GeoLocation, Accordion, AccordionTab },
   setup() {
     const { addDoc, error } = useGeoLocation("profiles");
 

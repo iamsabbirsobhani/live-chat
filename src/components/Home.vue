@@ -74,7 +74,8 @@
       </el-menu-item>
       <!-- </el-tooltip> -->
     </el-menu>
-
+    <ConfirmDialog></ConfirmDialog>
+    <Toast />
     <RandomCard />
     <!-- <el-page-header style="margin: 10px;" @back="goBack" content="Profile">
   </el-page-header> -->
@@ -378,10 +379,22 @@ import RandomCard from "@/components/RandomCard";
 import Dialog from "primevue/dialog";
 import UnauthorizedPage from "../subComponent/UnauthorizedPage.vue";
 import { updateFCMToken } from "@/composable/updateFCMToken";
-
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+import ConfirmDialog from "primevue/confirmdialog";
 export default {
-  components: { Button, InputText, Chip, RandomCard, Dialog, UnauthorizedPage },
+  components: {
+    ConfirmDialog,
+    Button,
+    InputText,
+    Chip,
+    RandomCard,
+    Dialog,
+    UnauthorizedPage,
+  },
   setup() {
+    const confirm = useConfirm();
+    const toast = useToast();
     const { user } = getUser();
     const disableBtn = ref(false);
     const { error, documents } = getUsers();
@@ -389,6 +402,23 @@ export default {
     const router = useRouter();
     const isLoading = ref(false);
     const store = useStore();
+    // Updated Feautures Notice:
+    const notice = (features, details) => {
+      confirm.require({
+        message: details,
+        header: features,
+        icon: "pi pi-volume-down",
+        accept: () => {
+          toast.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "Yes! I will definitely check the new feature!",
+            life: 3000,
+          });
+        },
+      });
+    };
+    // Updated Feautures Notice:
 
     // message athentication variable and functionality
     const displayMaximizable = ref(false);
@@ -539,6 +569,13 @@ export default {
     const styleObject = ref(null);
     const getKey = ref(null);
     onMounted(async () => {
+      // new features notice
+      notice(
+        "New Features! Version: 2022 SHAKARU DARK LC",
+        "You can now change chat chip color from chat settings icon!"
+      );
+      // new features notice
+
       // fcm
       // messaging
       //   .getToken(messaging, {
@@ -690,6 +727,7 @@ export default {
       userMasterPass,
       goPvtMsg,
       getKey,
+      notice,
     };
   },
 };

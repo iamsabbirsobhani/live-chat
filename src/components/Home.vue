@@ -25,19 +25,18 @@
       @select="handleSelect"
       style="font-family: Roboto, sans-serif; background-color: #0f172a;"
     >
-
-        <el-menu-item index="1">
-          <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
-            <div class="navPhoto">
-              <img
-                class="profilePic"
-                :src="info.phofilePhoto"
-                alt="Profile Photo"
-              />
-              {{ user.displayName }}
-            </div>
-          </router-link>
-        </el-menu-item>
+      <el-menu-item index="1">
+        <router-link :to="{ name: 'Profile', params: { id: user.uid } }">
+          <div class="navPhoto">
+            <img
+              class="profilePic"
+              :src="info.phofilePhoto"
+              alt="Profile Photo"
+            />
+            {{ user.displayName }}
+          </div>
+        </router-link>
+      </el-menu-item>
 
       <!-- <el-tooltip
       class="item"
@@ -273,7 +272,16 @@
         </div>
       </div>
     </div>
-    <div v-else v-loading.fullscreen.lock="true"></div>
+    <div
+      v-else
+      v-loading.fullscreen.lock="true"
+      element-loading-text="Loading..."
+      :element-loading-spinner="svg"
+      element-loading-svg-view-box="-10, -10, 50, 50"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      style="width: 100%"
+    ></div>
 
     <!-- <div class="showMore">
     <el-button
@@ -289,7 +297,8 @@
   </div> -->
     <!-- <pre style="text-align: center; color: rgb(196, 196, 196); cursor: not-allowed; user-select: none;">Pagination is Beta.</pre> -->
     <p class="home-footer">
-      Copyright © 2021 - 2022 made with <i class="fas fa-heart"></i> by Albion Johnson.
+      Copyright © 2021 - 2022 made with <i class="fas fa-heart"></i> by Albion
+      Johnson.
     </p>
 
     <Dialog

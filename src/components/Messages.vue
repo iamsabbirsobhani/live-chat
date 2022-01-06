@@ -84,7 +84,16 @@
         </div>
       </div>
     </div>
-    <div v-else v-loading.fullscreen.lock="true"></div>
+    <div
+      v-else
+      v-loading.fullscreen.lock="true"
+      element-loading-text="Loading..."
+      :element-loading-spinner="svg"
+      element-loading-svg-view-box="-10, -10, 50, 50"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      style="width: 100%"
+    ></div>
   </div>
   <div v-else>
     <UnauthorizedPage />

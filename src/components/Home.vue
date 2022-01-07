@@ -579,33 +579,10 @@ export default {
       // new features notice
 
       // fcm
-      messaging
-        .getToken(messaging, {
-          vapidKey:
-            "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
-        })
-        .then((currentToken) => {
-          if (currentToken) {
-            store.commit("setCurrentToken", currentToken);
-            getKey.value = currentToken;
-            updateFCMToken(currentToken); // beta for testing another full version is on line 608
-          } else {
-            console.log(
-              "No registration token available. Request permission to generate one."
-            );
-          }
-        })
-        .catch((err) => {
-          console.log("An error occurred while retrieving token. ", err);
-        });
-
-      // fcm
-
-      // fcm backup
       // messaging
       //   .getToken(messaging, {
       //     vapidKey:
-      //       "BCRXP3rtK6e00k3t8RwSfJX0tO274sZDqIA1JnNHFR5QcQgB3UrbuR0plAQAHdgmaOQG11MpN8JAfnw43K0G6ck",
+      //       "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
       //   })
       //   .then((currentToken) => {
       //     if (currentToken) {
@@ -621,6 +598,29 @@ export default {
       //   .catch((err) => {
       //     console.log("An error occurred while retrieving token. ", err);
       //   });
+
+      // fcm
+
+      // fcm backup
+      messaging
+        .getToken(messaging, {
+          vapidKey:
+            "BCRXP3rtK6e00k3t8RwSfJX0tO274sZDqIA1JnNHFR5QcQgB3UrbuR0plAQAHdgmaOQG11MpN8JAfnw43K0G6ck",
+        })
+        .then((currentToken) => {
+          if (currentToken) {
+            store.commit("setCurrentToken", currentToken);
+            getKey.value = currentToken;
+            updateFCMToken(currentToken); // beta for testing another full version is on line 608
+          } else {
+            console.log(
+              "No registration token available. Request permission to generate one."
+            );
+          }
+        })
+        .catch((err) => {
+          console.log("An error occurred while retrieving token. ", err);
+        });
       // fcm backup
 
       // await home(); disabled home page view count

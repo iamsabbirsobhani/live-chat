@@ -30,7 +30,7 @@
               <el-avatar :size="60" src="https://empty" @error="errorHandler">
                 <img :src="doc.phofilePhoto" />
               </el-avatar>
-              <h4>{{ doc.userName }}</h4>
+              <h4 style="color: #f9fafb;">{{ doc.userName }}</h4>
             </div>
           </router-link>
           <div class="title">
@@ -167,7 +167,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   max-width: 400px;
-  background-color: rgb(230, 230, 230);
+  background-color: #1e293b;
   margin: 10px auto;
   border-radius: 10px;
   padding: 10px;

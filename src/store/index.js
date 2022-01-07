@@ -8,7 +8,7 @@ export default createStore({
     dark: false,
     color: "#0f172a",
     otherProfileName: null,
-    explorePass: 63952,
+    explorePass: 639533,
     userExplorePass: null,
     messagesPass: 63952,
     userMessagesPass: null,

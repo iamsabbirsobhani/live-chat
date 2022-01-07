@@ -12,7 +12,8 @@
     v-if="
       msgPassword == userMsgPassword ||
         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+        user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
     "
   >
     Messages
@@ -22,7 +23,8 @@
     v-if="
       msgPassword == userMsgPassword ||
         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+        user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
     "
   >
     <div v-if="documents">
@@ -44,7 +46,9 @@
                       class="last-seen"
                       v-if="
                         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-                          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+                          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+                          user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
+
                       "
                     >
                       {{ doc.lastVisited }}
@@ -58,7 +62,8 @@
                   v-if="
                     (!(doc.userUid === user.uid) &&
                       user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`) ||
-                      user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+                      user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+                      user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
                   "
                   @click="openMaximizable(doc.userUid)"
                   icon="pi pi-map-marker"

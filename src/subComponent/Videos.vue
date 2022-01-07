@@ -3,7 +3,11 @@
     <el-card
       shadow="never"
       class="card-box"
-      v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+      v-if="
+        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+          user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1` ||
+          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+      "
     >
       <form @submit.prevent="submit">
         <el-input
@@ -66,7 +70,11 @@
           </div>
         </div>
         <el-popconfirm
-          v-if="user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`"
+          v-if="
+            user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+              user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1` ||
+              user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+          "
           confirm-button-text="OK"
           cancel-button-text="No, Thanks"
           icon="el-icon-info"
@@ -157,7 +165,6 @@ export default {
       await profileUpdateField({ key: "videoPlayed" });
     }, 2500);
 
-
     const addTags = () => {
       // console.log(tagInput.value);
       const random = Math.random();
@@ -187,7 +194,7 @@ export default {
       addTags,
       tagInput,
       tag,
-      urlT
+      urlT,
     };
   },
   methods: {

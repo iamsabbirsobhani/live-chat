@@ -4,13 +4,23 @@
     class="pghd"
     @back="goBack"
     content="Home"
-    v-if="msgPassword != userMsgPassword  && user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&  user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2`"
+    v-if="
+      msgPassword != userMsgPassword &&
+        user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&
+        user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2` &&
+        user.uid != `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
+    "
   >
   </el-page-header>
   <div
     style="background: none;"
     :style="getStyle"
-    v-if="msgPassword == userMsgPassword  || user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||  user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`"
+    v-if="
+      msgPassword == userMsgPassword ||
+        user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+        user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
+    "
   >
     <Navbar
       @delete="deletes"

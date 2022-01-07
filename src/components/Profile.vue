@@ -38,7 +38,7 @@
               >
               <el-dropdown-item
                 v-if="id == user.uid"
-                @click="frList"
+                @click="openMaximizableChat"
                 icon="pi pi-user"
                 >Friend List</el-dropdown-item
               >
@@ -53,7 +53,8 @@
               <el-dropdown-item
                 v-if="
                   `oJStHj6xShPbVyEFpwmK1B1rjAk2` == user.uid ||
-                    `MORuJJ0PWpb3inamywW5sSrHDGq2` == user.uid
+                    `MORuJJ0PWpb3inamywW5sSrHDGq2` == user.uid ||
+                    `UO1BAq0rxycSpKKt3cIlgWgkZpi1` == user.uid
                 "
                 @click="userActivity"
                 icon="pi pi-file-o"
@@ -148,46 +149,6 @@
           class="p-button-help"
           icon="far fa-edit"
         />
-        <!-- <div class="image-upload">
-          <el-upload action="#" list-type="picture-card" :auto-upload="false">
-            <template #default>
-              <i class="el-icon-plus"></i>
-            </template>
-            <template #file="{file}">
-              <div>
-                <img
-                  class="el-upload-list__item-thumbnail"
-                  :src="file.url"
-                  alt=""
-                />
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-preview"
-                    @click="handlePictureCardPreview(file)"
-                  >
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleDownload(file)"
-                    ><i class="el-icon-download"></i>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <i class="el-icon-delete"></i>
-                  </span>
-                </span>
-              </div>
-            </template>
-          </el-upload>
-          <el-dialog v-model="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
-        </div> -->
       </div>
     </form>
   </div>
@@ -203,7 +164,7 @@
     <el-card
       v-if="doc.post && user.uid == doc.userId"
       shadow="always"
-      style="border-radius: 10px; background-color: #0f172a; color:#f9fafb; "
+      style="border-radius: 4px; border: 1.5px solid #1e293b !important; background-color: #0f172a; color:#f9fafb; "
     >
       <div class="name">
         <el-avatar :size="40">
@@ -388,7 +349,10 @@
 
     <!-- public view on profile -->
     <div v-else-if="doc.post && doc.privacy == `public`">
-      <el-card shadow="always" style="border-radius: 10px;  background-color: #0f172a; color:#f9fafb; ">
+      <el-card
+        shadow="always"
+        style="border-radius: 4px; border: 1.5px solid #1e293b !important;  background-color: #0f172a; color:#f9fafb; "
+      >
         <div class="name">
           <el-avatar :size="40">
             <img :src="doc.dp" />
@@ -755,6 +719,44 @@
         </div>
       </form>
     </div>
+  </Dialog>
+  <Dialog
+    header="Authentication"
+    v-model:visible="displayMaximizableChat"
+    :style="styleObjectFriendList"
+    :maximizable="true"
+    :modal="true"
+  >
+    <div class="p-m-0">
+      <form @submit.prevent="submit">
+        <div class="password">
+          <el-input
+            v-model="passwordChat"
+            placeholder="Please input password"
+            show-password
+            required
+          />
+        </div>
+        <p v-if="passwordStateChat" class="empty">Incorrect Password</p>
+        <div class="p-btn">
+          <Button
+            v-if="!disableBtnChat"
+            class="p-btn-b"
+            label="Submit"
+            type="submit"
+          />
+          <Button
+            v-if="disableBtnChat"
+            icon="pi pi-spin pi-spinner"
+            class="p-btn-b"
+            disabled="disabled"
+            label="Submit"
+            type="submit"
+          />
+        </div>
+      </form>
+    </div>
+    <template #footer> </template>
   </Dialog>
 </template>
 
@@ -1131,6 +1133,7 @@ export default {
 
     const windWidth = ref(null);
     const styleObject = ref(null);
+    const styleObjectFriendList = ref(null);
     onMounted(async () => {
       windWidth.value = window.innerWidth;
       if (windWidth.value > 600) {
@@ -1138,10 +1141,16 @@ export default {
           width: `450px`,
           // height: `400px`,
         };
+        styleObjectFriendList.value = {
+          width: `50vw`,
+        };
       } else if (600 > windWidth.value) {
         styleObject.value = {
           width: `280px`,
           // height: `240px`,
+        };
+        styleObjectFriendList.value = {
+          width: `90vw`,
         };
       }
       // console.log(route.params.id, user.value.uid)
@@ -1191,8 +1200,38 @@ export default {
       openEditor.value = true;
       // await profileUpdateField({ key: "editorUsed" });
     };
+    const displayMaximizableChat = ref();
+
+    const openMaximizableChat = () => {
+      displayMaximizableChat.value = true;
+    };
+    const disableBtnChat = ref();
+    const passwordStateChat = ref();
+    const passwordChat = ref();
+    const submit = async () => {
+      disableBtnChat.value = true;
+      passwordStateChat.value = false;
+      if (passwordChat.value == store.state.messagesPass) {
+        passwordStateChat.value = false;
+        store.commit("setMessagesPass", passwordChat.value);
+        passwordChat.value = null;
+        await frList();
+        disableBtnChat.value = false;
+      } else {
+        passwordStateChat.value = true;
+        store.commit("setMessagesPass", passwordChat.value);
+        disableBtnChat.value = false;
+      }
+    };
 
     return {
+      openMaximizableChat,
+      displayMaximizableChat,
+      submit,
+      disableBtnChat,
+      passwordStateChat,
+      passwordChat,
+      styleObjectFriendList,
       info,
       chatroom,
       editProfile,

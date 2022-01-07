@@ -48,7 +48,7 @@ const signup = async (email, password, displayname) => {
     const dpChanged = 0;
     const imgDeleted = 0;
     const imgUploaded = 0;
-    const editorUsed = 0
+    const editorUsed = 0;
     const pageVisited = {
       home: 0,
       profile: 0,
@@ -61,14 +61,18 @@ const signup = async (email, password, displayname) => {
       friendRequest: 0,
       messagePage: 0,
     };
-    const isDark = false
-    const geoLocation = null
-    const exploreHome = 0
-    const submitReqForExploreHome = 0
-    const avideoPage = 0
-    const avideoPlayed = 0
-    const videoPlayed = 0
-    const fcmTokens = []
+    const isDark = false;
+    const geoLocation = null;
+    const exploreHome = 0;
+    const submitReqForExploreHome = 0;
+    const avideoPage = 0;
+    const avideoPlayed = 0;
+    const videoPlayed = 0;
+    const fcmTokens = [];
+    const ownChipColor = "#0084ff";
+    const otherChipColor = "#3f4b5b";
+    const ownTextColor = "#f9fafb";
+    const otherTextColor = "#ffffffde";
 
     const account = {
       userUid,
@@ -107,6 +111,10 @@ const signup = async (email, password, displayname) => {
       avideoPlayed,
       videoPlayed,
       fcmTokens,
+      ownChipColor,
+      otherChipColor,
+      ownTextColor,
+      otherTextColor,
     };
 
     projectFirestore

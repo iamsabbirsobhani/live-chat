@@ -7,7 +7,8 @@
     v-if="
       masterPass != userMasterPass &&
         user.uid != `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&
-        user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2`
+        user.uid != `MORuJJ0PWpb3inamywW5sSrHDGq2` &&
+        user.uid != `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
     "
   >
   </el-page-header>
@@ -15,7 +16,8 @@
     v-if="
       masterPass == userMasterPass ||
         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+        user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+        user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
     "
   >
     <el-menu
@@ -58,7 +60,8 @@
         <Button
           v-if="
             user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-              user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+              user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+              user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
           "
           @click="goPvtMsg"
           label="Messages"
@@ -92,7 +95,7 @@
             v-if="doc.post"
             :style="doc.id === seeCommentsDocId ? styleBorder : ''"
             shadow="always"
-            style="border-radius: 10px; border: 1px solid #EBEEF5 !important; background-color: #0f172a; color: #f9fafb;"
+            style="border-radius: 4px; border: 1.5px solid #1e293b !important; background-color: #0f172a; color: #f9fafb;"
           >
             <router-link
               style="text-decoration: none; margin: 0px"

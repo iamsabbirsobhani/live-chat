@@ -1,8 +1,5 @@
 <template>
   <div class="rand-card">
-
-
-
     <el-card :style="styleObject" class="box-card card-weather">
       <div class="text item">
         <WeatherCard />
@@ -25,7 +22,11 @@
 
     <el-skeleton v-else :style="styleObject" class="skeleton" /> -->
 
-    <el-card :style="styleObject" v-if="quotesText" class="box-card box-two quote">
+    <el-card
+      :style="styleObject"
+      v-if="quotesText"
+      class="box-card box-two quote"
+    >
       <h3>Quotes</h3>
       <div class="text item">
         <p>{{ quotesText }}</p>
@@ -43,8 +44,8 @@
 import { onMounted, ref } from "vue";
 import WeatherCard from "../subComponent/WeatherCard.vue";
 import ExploreMore from "../subComponent/ExploreMore.vue";
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 
 export default {
   components: { WeatherCard, ExploreMore, Accordion, AccordionTab },
@@ -150,7 +151,8 @@ p {
 
 .box-card {
   margin: auto;
-  border-radius: 10px;
+  border-radius: 4px;
+  border: 1.5px solid #1e293b !important;
   margin-top: 10px;
 
   background-image: url("../assets/JokesCircle.svg");
@@ -160,7 +162,6 @@ p {
 }
 
 .box-two {
-
   background-color: rgba(75, 228, 164, 0.055);
 }
 
@@ -170,7 +171,6 @@ p {
   // background-position: 100% 35%;
   // background-color: rgba(75, 228, 164, 0.055);
   // background-color: #4ade80;
-
 }
 .box-two {
   h3 {

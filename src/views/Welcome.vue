@@ -156,10 +156,11 @@ export default {
   width: 310px;
   height: 400px;
   margin: 10px auto;
-  border: 1px solid #e6e7e9;
+  /* border: 1px solid #e6e7e9; */
   border-top: 5px solid royalblue;
   border-radius: 10px;
-  box-shadow: 1px 1px 10px 0.6px #ececec;
+  /* box-shadow: 1px 1px 10px 0.6px #ececec; */
+  backdrop-filter: blur(5px);
 }
 .welcome label {
   display: block;

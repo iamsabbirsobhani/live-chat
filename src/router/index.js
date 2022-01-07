@@ -51,7 +51,8 @@ const requiredAuth = async (to, from, next) => {
 const adminPage = (to, from, next) => {
   if (
     user.value.uid !== `oJStHj6xShPbVyEFpwmK1B1rjAk2` &&
-    user.value.uid !== `MORuJJ0PWpb3inamywW5sSrHDGq2`
+    user.value.uid !== `MORuJJ0PWpb3inamywW5sSrHDGq2` &&
+    user.value.uid !== `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
   ) {
     next({ name: "Home" });
   } else {

@@ -23,56 +23,64 @@
     <h3 style="text-align: center; font-family: Roboto, sans-serif">
       Friend List
     </h3>
+    <div
+      v-if="
+        masterPass == userMasterPass ||
+          user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
+          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
+          user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
+      "
+    >
+      <div v-if="hasFriend">
+        <div v-for="doc in documents" :key="doc.userUid">
+          <div v-for="fr in info.friendList" :key="fr.id">
+            <div v-if="doc.id === fr">
+              <div class="users">
+                <router-link
+                  style="text-decoration: none"
+                  :to="{ name: 'Profile', params: { id: doc.userUid } }"
+                >
+                  <div class="name">
+                    <el-avatar :size="60">
+                      <img :src="doc.phofilePhoto" />
+                    </el-avatar>
+                    <h4 style="color: #f9fafb;">{{ doc.userName }}</h4>
+                  </div>
+                </router-link>
+                <div class="friend">
+                  <!-- unfriend process -->
+                  <Button
+                    style="margin-left: 10px"
+                    v-if="!(doc.userUid === user.uid)"
+                    @click="confirmPosition('top', user.uid, doc.userUid)"
+                    icon="pi pi-user-minus"
+                    class="p-button-rounded p-button-danger p-button-outlined"
+                  />
+                  <!-- end unfriend process -->
 
-    <div v-if="hasFriend">
-      <div v-for="doc in documents" :key="doc.userUid">
-        <div v-for="fr in info.friendList" :key="fr.id">
-          <div v-if="doc.id === fr">
-            <div class="users">
-              <router-link
-                style="text-decoration: none"
-                :to="{ name: 'Profile', params: { id: doc.userUid } }"
-              >
-                <div class="name">
-                  <el-avatar :size="60">
-                    <img :src="doc.phofilePhoto" />
-                  </el-avatar>
-                  <h4>{{ doc.userName }}</h4>
+                  <Button
+                    style="margin-left: 10px"
+                    v-if="!(doc.userUid === user.uid)"
+                    @click="
+                      privateChat(
+                        doc.userUid,
+                        doc.userName,
+                        doc.phofilePhoto,
+                        user.uid
+                      )
+                    "
+                    icon="pi pi-comments"
+                    class="p-button-rounded"
+                  />
                 </div>
-              </router-link>
-              <div class="friend">
-                <!-- unfriend process -->
-                <Button
-                  style="margin-left: 10px"
-                  v-if="!(doc.userUid === user.uid)"
-                  @click="confirmPosition('top', user.uid, doc.userUid)"
-                  icon="pi pi-user-minus"
-                  class="p-button-rounded p-button-danger p-button-outlined"
-                />
-                <!-- end unfriend process -->
-
-                <Button
-                  style="margin-left: 10px"
-                  v-if="!(doc.userUid === user.uid)"
-                  @click="
-                    privateChat(
-                      doc.userUid,
-                      doc.userName,
-                      doc.phofilePhoto,
-                      user.uid
-                    )
-                  "
-                  icon="pi pi-comments"
-                  class="p-button-rounded"
-                />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="empty">
-      <p>No Friends</p>
+      <div v-else class="empty">
+        <p>No Friends</p>
+      </div>
     </div>
   </div>
 
@@ -223,7 +231,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   max-width: 400px;
-  background-color: rgb(230, 230, 230);
+  background-color: #1e293b;
   margin: 10px auto;
   border-radius: 10px;
   padding: 10px;

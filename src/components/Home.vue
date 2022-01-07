@@ -744,6 +744,8 @@ export default {
 .el-menu-demo {
   display: flex;
   justify-content: space-between;
+  border: none !important;
+  box-shadow: 1px 1px 10px #1e293b !important;
   a {
     text-decoration: none;
     font-size: 18px;

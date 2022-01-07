@@ -169,7 +169,7 @@ export default {
   max-width: 400px;
   background-color: #1e293b;
   margin: 10px auto;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 10px;
 }
 .users:hover {

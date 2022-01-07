@@ -48,7 +48,6 @@
                         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
                           user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2` ||
                           user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1`
-
                       "
                     >
                       {{ doc.lastVisited }}
@@ -287,7 +286,7 @@ export default {
   max-width: 400px;
   background-color: #1e293b;
   margin: auto;
-  border-radius: 10px;
+  border-radius: 6px;
   transition: all 0.1s ease-in-out;
   margin-bottom: 15px;
   text-decoration: none;

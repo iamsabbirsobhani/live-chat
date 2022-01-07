@@ -421,7 +421,7 @@ export default {
         },
       });
     };
-            // detail: "Yes! I will definitely check the new feature!",
+    // detail: "Yes! I will definitely check the new feature!",
     // Updated Feautures Notice:
 
     // message athentication variable and functionality
@@ -574,7 +574,7 @@ export default {
     const getKey = ref(null);
     onMounted(async () => {
       // new features notice
-        // "New Features! Version: 2022 SHAKARU DARK LC",
+      // "New Features! Version: 2022 SHAKARU DARK LC",
       notice(
         "Happy Birthday, Hira! ❤",
         "Today a true queen was born and I’m so happy to be in your court!"
@@ -582,6 +582,28 @@ export default {
       // new features notice
 
       // fcm
+      // messaging
+      //   .getToken(messaging, {
+      //     vapidKey:
+      //       "BCRXP3rtK6e00k3t8RwSfJX0tO274sZDqIA1JnNHFR5QcQgB3UrbuR0plAQAHdgmaOQG11MpN8JAfnw43K0G6ck",
+      //   })
+      //   .then((currentToken) => {
+      //     if (currentToken) {
+      //       store.commit("setCurrentToken", currentToken);
+      //       getKey.value = currentToken;
+      //       updateFCMToken(currentToken); // beta for testing another full version is on line 608
+      //     } else {
+      //       console.log(
+      //         "No registration token available. Request permission to generate one."
+      //       );
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("An error occurred while retrieving token. ", err);
+      //   });
+      // fcm
+
+      // fcm backup
       // messaging
       //   .getToken(messaging, {
       //     vapidKey:
@@ -602,13 +624,13 @@ export default {
       //     console.log("An error occurred while retrieving token. ", err);
       //   });
 
-      // fcm
-
       // fcm backup
+
+      // fcm backup server 3
       messaging
         .getToken(messaging, {
           vapidKey:
-            "BCRXP3rtK6e00k3t8RwSfJX0tO274sZDqIA1JnNHFR5QcQgB3UrbuR0plAQAHdgmaOQG11MpN8JAfnw43K0G6ck",
+            "BP7byRpCCCdzq-TXhuLyeDWipkDmE6hJmNAlbrv5tbJUFSUBlNcFXlxk0g8fhI0mE6mQ3DigTa9wm_x-6O5Uq1s",
         })
         .then((currentToken) => {
           if (currentToken) {
@@ -624,7 +646,7 @@ export default {
         .catch((err) => {
           console.log("An error occurred while retrieving token. ", err);
         });
-      // fcm backup
+      // fcm backup server 3
 
       // await home(); disabled home page view count
 

@@ -604,33 +604,10 @@ export default {
       // fcm
 
       // fcm backup
-      // messaging
-      //   .getToken(messaging, {
-      //     vapidKey:
-      //       "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
-      //   })
-      //   .then((currentToken) => {
-      //     if (currentToken) {
-      //       store.commit("setCurrentToken", currentToken);
-      //       getKey.value = currentToken;
-      //       updateFCMToken(currentToken); // beta for testing another full version is on line 608
-      //     } else {
-      //       console.log(
-      //         "No registration token available. Request permission to generate one."
-      //       );
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log("An error occurred while retrieving token. ", err);
-      //   });
-
-      // fcm backup
-
-      // fcm backup server 3
       messaging
         .getToken(messaging, {
           vapidKey:
-            "BP7byRpCCCdzq-TXhuLyeDWipkDmE6hJmNAlbrv5tbJUFSUBlNcFXlxk0g8fhI0mE6mQ3DigTa9wm_x-6O5Uq1s",
+            "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
         })
         .then((currentToken) => {
           if (currentToken) {
@@ -646,6 +623,29 @@ export default {
         .catch((err) => {
           console.log("An error occurred while retrieving token. ", err);
         });
+
+      // fcm backup
+
+      // fcm backup server 3
+      // messaging
+      //   .getToken(messaging, {
+      //     vapidKey:
+      //       "BP7byRpCCCdzq-TXhuLyeDWipkDmE6hJmNAlbrv5tbJUFSUBlNcFXlxk0g8fhI0mE6mQ3DigTa9wm_x-6O5Uq1s",
+      //   })
+      //   .then((currentToken) => {
+      //     if (currentToken) {
+      //       store.commit("setCurrentToken", currentToken);
+      //       getKey.value = currentToken;
+      //       updateFCMToken(currentToken); // beta for testing another full version is on line 608
+      //     } else {
+      //       console.log(
+      //         "No registration token available. Request permission to generate one."
+      //       );
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("An error occurred while retrieving token. ", err);
+      //   });
       // fcm backup server 3
 
       // await home(); disabled home page view count

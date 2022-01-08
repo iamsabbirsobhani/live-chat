@@ -295,7 +295,90 @@
               :predefine="predefineColors"
             />
           </div>
+          <div>
+            <h2>FAQ</h2>
+            <Accordion class="accordion-custom">
+              <AccordionTab>
+                <template #header>
+                  <i class="pi pi-question-circle"></i>
+                  <span> How to add color?</span>
+                </template>
+                <div class="block">
+                  <el-timeline>
+                    <el-timeline-item timestamp="Setp 1" placement="top">
+                      <el-card>
+                        <div style="display: flex; align-items: center;">
+                          <h4 style="margin-right: 10px;">
+                            Tap the color Square
+                          </h4>
+                          <img
+                            class="img-step-1"
+                            src="../../assets/color-settings/color-square.png"
+                            alt=""
+                          />
+                        </div>
+                        <p>Select your desire color from the color picker.</p>
+                      </el-card>
+                    </el-timeline-item>
+                    <el-timeline-item timestamp="Step 2" placement="top">
+                      <el-card>
+                        <h4>Pick a color from "Color Picker"</h4>
+                        <p>
+                          Choose your likable color from the color picker.
+                        </p>
+                        <img
+                          src="../../assets/color-settings/color-step-2.png"
+                          alt=""
+                        />
+                      </el-card>
+                    </el-timeline-item>
+                    <el-timeline-item timestamp="Step 3" placement="top">
+                      <el-card>
+                        <h4>Select "Ok" button</h4>
+                        <p>
+                          After finish your color picking, select "Ok" button
+                          from the "color picker" (right-bottom corner) in order
+                          to save the color state you just picked.
+                        </p>
+                        <img
+                          src="../../assets/color-settings/color-step-3.png"
+                          alt=""
+                        />
+                      </el-card>
+                    </el-timeline-item>
+                    <el-timeline-item timestamp="Final" placement="top">
+                      <el-card>
+                        <h4>Click the "Make Changes" button</h4>
+                        <img
+                          src="../../assets/color-settings/color-make-changes.png"
+                          alt=""
+                        />
+                        <p>
+                          And then, select the "Make Changes" button from "Chat
+                          Settings" tab, to add your selected color in action.
+                        </p>
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                </div>
+              </AccordionTab>
+              <AccordionTab>
+                <template #header>
+                  <i class="pi pi-question-circle"></i>
+                  <span> What is "Reset to Default" button?</span>
+                </template>
+                <img src="../../assets/color-settings/color-reset.png" alt="" />
+                <p>
+                  If you press "Reset to Default" button, no matter what color
+                  you had picked earlier, everythings will be reset to default
+                  color. So, don't worry to play with colors. If you got stuck
+                  you can make "Reset to Default" at anytime.
+                </p>
+              </AccordionTab>
+            </Accordion>
+          </div>
         </div>
+
         <template #footer>
           <!-- icon="pi pi-check" -->
           <div class="settings-buttons">
@@ -337,9 +420,20 @@ import { mapGetters, useStore } from "vuex";
 import ColorPicker from "primevue/colorpicker";
 import getProfile from "@/composable/getProfile.js";
 import { setChatColors } from "@/composable/chatSettings/chatColors/setChatColors.js";
+import Accordion from "primevue/accordion";
+import AccordionTab from "primevue/accordiontab";
 export default {
   props: ["userTo"],
-  components: { Dialog, Button, Chip, ScrollPanel, Tag, ColorPicker },
+  components: {
+    Dialog,
+    Button,
+    Chip,
+    ScrollPanel,
+    Tag,
+    ColorPicker,
+    Accordion,
+    AccordionTab,
+  },
   setup(props) {
     const { user } = getUser();
     const { performDelete } = deleteChat();

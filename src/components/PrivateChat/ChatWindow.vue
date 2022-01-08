@@ -327,7 +327,7 @@
                           Choose your likable color from the color picker.
                         </p>
                         <img
-                          style="max-width: 220px;"
+                          style="max-width: 180px;"
                           src="../../assets/color-settings/color-step-2.png"
                           alt=""
                         />
@@ -342,7 +342,7 @@
                           to save the color state you just picked.
                         </p>
                         <img
-                          style="max-width: 220px;"
+                          style="max-width: 180px;"
                           src="../../assets/color-settings/color-step-3.png"
                           alt=""
                         />
@@ -352,7 +352,7 @@
                       <el-card>
                         <h4>Click the "Make Changes" button</h4>
                         <img
-                          style="max-width: 220px;"
+                          style="max-width: 180px;"
                           src="../../assets/color-settings/color-make-changes.png"
                           alt=""
                         />

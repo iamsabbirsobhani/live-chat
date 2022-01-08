@@ -327,6 +327,7 @@
                           Choose your likable color from the color picker.
                         </p>
                         <img
+                          style="max-width: 220px;"
                           src="../../assets/color-settings/color-step-2.png"
                           alt=""
                         />
@@ -341,6 +342,7 @@
                           to save the color state you just picked.
                         </p>
                         <img
+                          style="max-width: 220px;"
                           src="../../assets/color-settings/color-step-3.png"
                           alt=""
                         />
@@ -350,6 +352,7 @@
                       <el-card>
                         <h4>Click the "Make Changes" button</h4>
                         <img
+                          style="max-width: 220px;"
                           src="../../assets/color-settings/color-make-changes.png"
                           alt=""
                         />
@@ -367,7 +370,7 @@
                   <i class="pi pi-question-circle"></i>
                   <span> What is "Reset to Default" button?</span>
                 </template>
-                <img src="../../assets/color-settings/color-reset.png" alt="" />
+                <img style="max-width: 230px;" src="../../assets/color-settings/color-reset.png" alt="" />
                 <p>
                   If you press "Reset to Default" button, no matter what color
                   you had picked earlier, everythings will be reset to default

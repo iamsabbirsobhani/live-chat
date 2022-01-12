@@ -14,7 +14,7 @@ const getCollection = (collection, userTo, crUser) => {
     .collection("chat")
     .where("to", "in", [crUser, userTo])
     .orderBy("createdAt", "desc")
-    .limit(100);
+    .limit(50);
 
   // we can only add "custom id" documents under a "collection"
   // we can not add "custom id" documents inside a "document"

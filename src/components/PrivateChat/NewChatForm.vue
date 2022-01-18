@@ -212,7 +212,7 @@ export default {
           icon: self.phofilePhoto,
         };
         // fcm
-        // fetch("https://nodejs-express-postgres.herokuapp.com/api/fcm/", {
+        // fetch("https://nodejs-express-postgres-sequel.herokuapp.com/api/fcm/", {
         //   method: "POST",
         //   headers: {
         //     Accept: "application/json",
@@ -226,7 +226,7 @@ export default {
         // fcm
 
         // fcm backup
-        fetch("https://nodejs-express-postgres.herokuapp.com/api/fcmbackup/", {
+        fetch("https://nodejs-express-postgres-sequel.herokuapp.com/api/fcmbackup/", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -240,7 +240,7 @@ export default {
         // fcm backup
 
         // fcm backup three
-        // fetch("https://nodejs-express-postgres.herokuapp.com/api/fcmbackupthree/", {
+        // fetch("https://nodejs-express-postgres-sequel.herokuapp.com/api/fcmbackupthree/", {
         //   method: "POST",
         //   headers: {
         //     Accept: "application/json",

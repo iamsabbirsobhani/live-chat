@@ -17,6 +17,9 @@
         <TabPanel header="Videos">
           <Videos />
         </TabPanel>
+        <TabPanel header="Adult">
+          <AVideos />
+        </TabPanel>
         <TabPanel header="Story">
           <div class="story">
             <p class="story">
@@ -56,9 +59,9 @@ import { useRouter } from "vue-router";
 import { onMounted } from "@vue/runtime-core";
 import getUser from "@/composable/getUser.js";
 import { profileUpdateField } from "@/composable/profileUpdateField";
-
+import AVideos from "../subComponent/AVideos.vue";
 export default {
-  components: { TabPanel, TabView, Videos, Tag },
+  components: { TabPanel, TabView, Videos, Tag, AVideos },
   setup() {
     const router = useRouter();
     const store = useStore();

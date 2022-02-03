@@ -22,7 +22,13 @@
           <source :src="u.url" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div v-if="u.played && user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`">
+        <div
+          v-if="
+            (u.played && user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2`) ||
+              user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1` ||
+              user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+          "
+        >
           <p>Total Played: {{ u.played }}</p>
         </div>
 

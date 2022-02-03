@@ -226,17 +226,17 @@ export default {
         // fcm
 
         // fcm backup
-        fetch("https://nodejs-express-postgres-sequel.herokuapp.com/api/fcmbackup/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((res) => res.json())
-          .then((data) => console.log(data))
-          .catch((err) => console.log(err.message));
+        // fetch("https://nodejs-express-postgres-sequel.herokuapp.com/api/fcmbackup/", {
+        //   method: "POST",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(data),
+        // })
+        //   .then((res) => res.json())
+        //   .then((data) => console.log(data))
+        //   .catch((err) => console.log(err.message));
         // fcm backup
 
         // fcm backup three

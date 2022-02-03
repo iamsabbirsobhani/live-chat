@@ -604,25 +604,25 @@ export default {
       // fcm
 
       // fcm backup
-      messaging
-        .getToken(messaging, {
-          vapidKey:
-            "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
-        })
-        .then((currentToken) => {
-          if (currentToken) {
-            store.commit("setCurrentToken", currentToken);
-            getKey.value = currentToken;
-            updateFCMToken(currentToken); // beta for testing another full version is on line 608
-          } else {
-            console.log(
-              "No registration token available. Request permission to generate one."
-            );
-          }
-        })
-        .catch((err) => {
-          console.log("An error occurred while retrieving token. ", err);
-        });
+      // messaging
+      //   .getToken(messaging, {
+      //     vapidKey:
+      //       "BH7ENvckoWYuCSqCVDva-g6odYr_IxBzqR4cZeNcd-nvexFJA9jZ4kRkskKnp8e4R8yMgmZj3q1aSoUqzA1oluw",
+      //   })
+      //   .then((currentToken) => {
+      //     if (currentToken) {
+      //       store.commit("setCurrentToken", currentToken);
+      //       getKey.value = currentToken;
+      //       updateFCMToken(currentToken); // beta for testing another full version is on line 608
+      //     } else {
+      //       console.log(
+      //         "No registration token available. Request permission to generate one."
+      //       );
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("An error occurred while retrieving token. ", err);
+      //   });
 
       // fcm backup
 

@@ -36,8 +36,8 @@
       shadow="never"
       v-if="
         user.uid == `oJStHj6xShPbVyEFpwmK1B1rjAk2` ||
-          user.id == `UO1BAq0rxycSpKKt3cIlgWgkZpi1` ||
-          user.id == `MORuJJ0PWpb3inamywW5sSrHDGq2`
+          user.uid == `UO1BAq0rxycSpKKt3cIlgWgkZpi1` ||
+          user.uid == `MORuJJ0PWpb3inamywW5sSrHDGq2`
       "
     >
       <form @submit.prevent="submit">

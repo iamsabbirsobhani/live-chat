@@ -15,14 +15,14 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js");
 // live server
 
 // live server backup
-const firebaseConfig = {
-  apiKey: "AIzaSyDADPaaAvUiVhlvBZX_AidkXJZ90HTuZuc",
-  authDomain: "live-chat-31739.firebaseapp.com",
-  projectId: "live-chat-31739",
-  storageBucket: "live-chat-31739.appspot.com",
-  messagingSenderId: "286730120664",
-  appId: "1:286730120664:web:0579bb432f88a51efcd6ad",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDADPaaAvUiVhlvBZX_AidkXJZ90HTuZuc",
+//   authDomain: "live-chat-31739.firebaseapp.com",
+//   projectId: "live-chat-31739",
+//   storageBucket: "live-chat-31739.appspot.com",
+//   messagingSenderId: "286730120664",
+//   appId: "1:286730120664:web:0579bb432f88a51efcd6ad",
+// };
 // live server backup
 
 // live server backup 3

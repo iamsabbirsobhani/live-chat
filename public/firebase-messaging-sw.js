@@ -26,15 +26,15 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js");
 // live server backup
 
 // live server backup 3
-// const firebaseConfig = {
-//   apiKey: "AIzaSyD03dqVZkEqPzaxd3ooaA4gLm5XnwiQZjY",
-//   authDomain: "live-chat-backup-3.firebaseapp.com",
-//   projectId: "live-chat-backup-3",
-//   storageBucket: "live-chat-backup-3.appspot.com",
-//   messagingSenderId: "924435072394",
-//   appId: "1:924435072394:web:f3c9237e637378e1723473",
-//   measurementId: "G-6BE3TBH2PT"
-// };
+const firebaseConfig = {
+  apiKey: "AIzaSyD03dqVZkEqPzaxd3ooaA4gLm5XnwiQZjY",
+  authDomain: "live-chat-backup-3.firebaseapp.com",
+  projectId: "live-chat-backup-3",
+  storageBucket: "live-chat-backup-3.appspot.com",
+  messagingSenderId: "924435072394",
+  appId: "1:924435072394:web:f3c9237e637378e1723473",
+  measurementId: "G-6BE3TBH2PT",
+};
 // live server backup 3
 
 const app = firebase.initializeApp(firebaseConfig);

@@ -691,6 +691,10 @@ export default {
       fetch("https://fathomless-reaches-88372.herokuapp.com/api/")
         .then()
         .catch((err) => console.log(err));
+
+      fetch("https://short-chat-backend.herokuapp.com/")
+        .then()
+        .catch((err) => console.log(err));
     });
 
     const metaProfileName = (name) => {

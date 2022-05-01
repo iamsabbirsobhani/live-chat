@@ -4,6 +4,7 @@
     :class="{ chatMessagesDark: isDark, chatMessages: !isDark }"
     ref="messages"
   >
+    <SecureChat />
     <div v-if="error">{{ error }}</div>
     <el-skeleton :rows="15" animated v-if="!documents" />
     <div v-if="documents">
@@ -370,7 +371,11 @@
                   <i class="pi pi-question-circle"></i>
                   <span> What is "Reset to Default" button?</span>
                 </template>
-                <img style="max-width: 230px;" src="../../assets/color-settings/color-reset.png" alt="" />
+                <img
+                  style="max-width: 230px;"
+                  src="../../assets/color-settings/color-reset.png"
+                  alt=""
+                />
                 <p>
                   If you press "Reset to Default" button, no matter what color
                   you had picked earlier, everythings will be reset to default
@@ -425,6 +430,7 @@ import getProfile from "@/composable/getProfile.js";
 import { setChatColors } from "@/composable/chatSettings/chatColors/setChatColors.js";
 import Accordion from "primevue/accordion";
 import AccordionTab from "primevue/accordiontab";
+import SecureChat from "../SecureChat.vue";
 export default {
   props: ["userTo"],
   components: {
@@ -436,6 +442,7 @@ export default {
     ColorPicker,
     Accordion,
     AccordionTab,
+    SecureChat,
   },
   setup(props) {
     const { user } = getUser();

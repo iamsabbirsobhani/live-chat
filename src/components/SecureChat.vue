@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a class="sc-btn" href="https://short-chat.vercel.app/" target="_blank">
+    <a class="sc-btn" href="https://short-chat.vercel.app/">
       Secure chat
     </a>
   </div>

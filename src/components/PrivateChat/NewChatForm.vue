@@ -108,7 +108,8 @@ import colors from "@/composable/colors.js";
 // import { privateMsgPage } from "@/composable/pageVisited";
 import { profileUpdateField } from "@/composable/profileUpdateField";
 import { useStore } from "vuex";
-
+import axios from "axios";
+import qs from "qs";
 export default {
   props: ["userTo"],
   components: {

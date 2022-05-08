@@ -1,7 +1,8 @@
 import { ref } from "@vue/reactivity";
+import axios from "axios";
 import { projectStorage } from "../firebase/config";
 import getUser from "./getUser";
-
+import qs from "qs";
 const { user } = getUser();
 
 const useStorage = () => {
@@ -62,6 +63,24 @@ const useStorage = () => {
         () => {
           res.snapshot.ref.getDownloadURL().then((downloadURL) => {
             url.value = downloadURL;
+            axios
+              .post(
+                "https://short-chat-backend.herokuapp.com/image",
+                qs.stringify({
+                  url: downloadURL,
+                }),
+                {
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           });
         }
       );
